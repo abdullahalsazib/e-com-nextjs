@@ -1,7 +1,5 @@
 import Image from "next/image";
 import styles from "./home.module.css";
-import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
-import Carsol1 from "@/../public/images/cursol1.png";
 import zipLogo from "@/../public/Logos/zipLogo.svg";
 import Product_card from "@/app/components/Product_card";
 
@@ -14,6 +12,12 @@ import brand5 from "@/../public/Logos/adata.png";
 import brand6 from "@/../public/Logos/hp.png";
 import brand7 from "@/../public/Logos/gigabyte.png";
 import News_card from "@/app/components/News_card";
+import Footer from "@/app/components/Footer";
+import Carousel from "@/app/components/Slider";
+import Carsol1 from "@/../public/images/cursol1.png";
+import TestimonialSection from "@/app/components/Testimonials";
+import { products } from "@/app/data/product";
+import ProductCard from "@/app/components/Product_card";
 
 const brandLogo = [
   { imgUrl: brand1, alr: "brand1" },
@@ -24,21 +28,18 @@ const brandLogo = [
   { imgUrl: brand6, alr: "brand6" },
   { imgUrl: brand7, alr: "brand7" },
 ];
-
+const carouselImages = [
+  { src: Carsol1.src, alt: "Banner 1" },
+  { src: Carsol1.src, alt: "Banner 1" },
+  // { src: Carsol2.src, alt: "Banner 2" },
+  // { src: Carsol3.src, alt: "Banner 3" },
+];
 const HomePage = () => (
   <>
+    <div className="w-full">
+      <Carousel images={carouselImages} />
+    </div>
     <div className={`px-[10%] `}>
-      <div className="w-fullbg-slate-400 relative">
-        <Image className=" w-full" src={Carsol1} alt="banner1" />
-        <div className=" h-full flex w-full  items-center justify-between absolute top-0 left-0 px-[10%]">
-          <button className=" py-3 px-3 bg-gray-800 text-white shadow-md hover:bg-gray-300 duration-200 hover:text-blue-400 rounded-full">
-            <MdKeyboardArrowLeft className="text-xl" />
-          </button>
-          <button className=" py-3 px-3 bg-gray-800 text-white shadow-md hover:bg-gray-300 duration-200 hover:text-blue-400 rounded-full">
-            <MdKeyboardArrowRight className="text-xl" />
-          </button>
-        </div>
-      </div>
       {/* Products sections  */}
       <div className=" mt-7">
         <div className=" flex items-center justify-between w-full">
@@ -52,12 +53,9 @@ const HomePage = () => (
         </div>
         {/* in hear some product card's */}
         <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-1 pt-3 mb-10">
-          <Product_card />
-          <Product_card />
-          <Product_card />
-          <Product_card />
-          <Product_card />
-          <Product_card />
+          {products.map((product, index) => (
+            <ProductCard key={index} product={product} />
+          ))}
         </div>
         <div className=" bg-[#F5F7FF] w-full py-5 px-0 flex items-center justify-center">
           <div className="flex items-center justify-center gap-4 ">
@@ -86,11 +84,9 @@ const HomePage = () => (
               see all products
             </a>
           </div>
-          <Product_card />
-          <Product_card />
-          <Product_card />
-          <Product_card />
-          <Product_card />
+          {products.map((product, index) => (
+            <ProductCard key={index} product={product} />
+          ))}
         </div>
         {/* ad and product 2 */}
         <div className=" py-4">
@@ -140,7 +136,7 @@ const HomePage = () => (
         </div>
         {/* ad and product 3 */}
         <div className=" py-4">
-          <div className=" flex items-center justify-between w-full">
+          {/* <div className=" flex items-center justify-between w-full">
             <ul className="flex items-center justify-start gap-6 py-3">
               <li className=" text-slate-700 hover:text-gray-700 duration-200 cursor-pointer  underline-offset-4 underline font-bold ">
                 MSI GS Series
@@ -161,7 +157,8 @@ const HomePage = () => (
             >
               see more all products
             </a>
-          </div>
+          </div> */}
+          {/* <ProductCategorySection /> */}
           {/* in hear some product card's */}
           <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-1 pt-3 mb-10">
             <div
@@ -177,11 +174,9 @@ const HomePage = () => (
                 see all products
               </a>
             </div>
-            <Product_card />
-            <Product_card />
-            <Product_card />
-            <Product_card />
-            <Product_card />
+            {products.map((product, index) => (
+              <ProductCard key={index} product={product} />
+            ))}
           </div>
           <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-1 pt-3 mb-10">
             <div
@@ -197,11 +192,9 @@ const HomePage = () => (
                 see all products
               </a>
             </div>
-            <Product_card />
-            <Product_card />
-            <Product_card />
-            <Product_card />
-            <Product_card />
+            {products.map((product, index) => (
+              <ProductCard key={index} product={product} />
+            ))}
           </div>
         </div>
       </div>
@@ -217,7 +210,9 @@ const HomePage = () => (
       </div>
       {/* news, offers, and more */}
       <div className=" w-full mt-5">
-        <h1 className="text-2xl font-semibold capitalize mb-5">follow us on instagram for news, offers & more</h1>
+        <h1 className="text-2xl font-semibold capitalize mb-5">
+          follow us on instagram for news, offers & more
+        </h1>
         <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-1 pt-3 mb-10">
           <News_card />
           <News_card />
@@ -230,7 +225,10 @@ const HomePage = () => (
           <News_card />
         </div>
       </div>
+      {/* reviews sections */}
+      <TestimonialSection />
     </div>
+    <Footer />
   </>
 );
 
