@@ -1,0 +1,28 @@
+
+
+
+/* adBanner */
+.adBanner{
+      background: linear-gradient(rgba(0, 0, 0, 0.155), rgba(4, 4, 54, 0.166)), url("../../../../../public/AdImage/ad1.png");
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+}
+.adBanner2{
+      background: linear-gradient(rgba(0, 0, 0, 0.155), rgba(4, 4, 54, 0.166)), url("../../../../../public/AdImage/ad2.png");
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+}
+.adBanner3{
+      background: linear-gradient(rgba(0, 0, 0, 0.155), rgba(4, 4, 54, 0.166)), url("../../../../../public/AdImage/ad3.png");
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+}
+.adBanner4{
+      background: linear-gradient(rgba(0, 0, 0, 0.155), rgba(4, 4, 54, 0.166)), url("../../../../../public/AdImage/ad4.png");
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+}
