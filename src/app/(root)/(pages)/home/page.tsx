@@ -228,7 +228,7 @@ const HomePage = () => (
       {/* reviews sections */}
       <TestimonialSection />
     </div>
-    <Footer />
+    {/* <Footer /> */}
   </>
 );
 

@@ -1,9 +1,15 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 
-const Tabs = ({ tab }: { tab: { title: string }[] }) => {
-  const [activeIndex, setActiveIndex] = useState(0); // default active: first
-
+const Tabs = ({
+  tab,
+  activeIndex,
+  setActiveIndex,
+}: {
+  tab: { title: string }[];
+  activeIndex: number;
+  setActiveIndex: (index: number) => void;
+}) => {
   return (
     <ul className="flex items-center justify-start gap-4 capitalize">
       {tab.map((item, index) => (
