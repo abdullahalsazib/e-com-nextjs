@@ -10,7 +10,7 @@ const LoginPage = () => {
           home <FaAngleRight className="text-blue-500" /> Login
         </p>
         <h1 className=" text-2xl font-semibold capitalize py-3">
-          Customaer Login
+          customer Login
         </h1>
       </div>
       <div className="flex items-center justify-between px-40 py-10 gap-10">
