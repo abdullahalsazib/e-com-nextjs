@@ -1,8 +1,12 @@
+"use client";
 import LoginBtn from "@/app/components/buttons/LoginBtn";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { FaAngleRight } from "react-icons/fa6";
 
 const LoginPage = () => {
+  const route = useRouter();
+
   return (
     <div className=" px-[10%] py-2">
       <div className=" mt-5">
@@ -68,7 +72,10 @@ const LoginPage = () => {
               <li>Track orders and more.</li>
             </ul>
           </div>
-          <LoginBtn title="Create and account" />
+          <LoginBtn
+            onClick={() => route.push("/register")}
+            title="Create and account"
+          />
         </div>
       </div>
     </div>
