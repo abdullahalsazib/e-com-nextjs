@@ -6,6 +6,7 @@ import { BiSearch, BiArrowToTop } from "react-icons/bi";
 import { LuShoppingCart } from "react-icons/lu";
 import { FaUserCircle, FaBars } from "react-icons/fa";
 import { PiX } from "react-icons/pi";
+import { CgClose } from "react-icons/cg";
 
 const navLink = [
   { title: "Laptops", dropDown: true },
@@ -18,6 +19,7 @@ const navLink = [
 ];
 
 export default function Navbar() {
+  const [isDesktopSearch, setIsDesktopSearch] = useState<boolean>(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showScrollButton, setShowScrollButton] = useState(false);
@@ -59,31 +61,48 @@ export default function Navbar() {
       >
         <Topbar />
         <nav className="border-b border-b-gray-300 bg-white py-5 px-4 lg:px-5 xl:px-[10%] flex items-center justify-between">
-          <div className="flex items-center justify-between w-full md:w-auto md:gap-10">
+          <div className=" flex items-center justify-start w-full relative md:gap-10">
             <div className="flex items-center">
               <BsBoxSeamFill className="text-3xl md:text-5xl text-blue-600" />
             </div>
+            {/* Desktop nav-links */}
 
-            {/* Desktop navlinks */}
-            <ul className="hidden lg:flex items-center justify-center gap-7">
-              {navLink.map((item, index) => (
-                <li
-                  className="text-sm font-semibold text-black hover:text-blue-500 duration-300 transition-colors cursor-pointer"
-                  key={index}
-                >
-                  {item.title}
-                </li>
-              ))}
-              <button className="border-2 text-sm border-blue-500 rounded-full py-1.5 px-5 bg-white text-blue-500 hover:bg-blue-500 hover:text-white active:scale-105 font-bold duration-300 transition-colors capitalize cursor-pointer">
-                our deals
-              </button>
-            </ul>
+            {/* here  is the search bar for the desktop search button */}
+
+            {!isDesktopSearch ? (
+              <ul className="hidden lg:flex items-center justify-center gap-7">
+                {navLink.map((item, index) => (
+                  <li
+                    className="text-sm font-semibold text-black hover:text-blue-500 duration-300 transition-colors cursor-pointer"
+                    key={index}
+                  >
+                    {item.title}
+                  </li>
+                ))}
+                <button className="border-2 text-sm border-blue-500 rounded-full py-1.5 px-5 bg-white text-blue-500 hover:bg-blue-500 hover:text-white active:scale-105 font-bold duration-300 transition-colors capitalize cursor-pointer">
+                  our deals
+                </button>
+              </ul>
+            ) : (
+              <div className="relative w-full self-center px-5">
+                <div className=" w-full ">
+                  <input
+                    type=" text"
+                    placeholder="Search in here.."
+                    className=" w-full py-2 px-5 border-2 border-gray-300 rounded-lg focus:outline-1 focus:outline-sky-200 focus:bg-slate-100"
+                  />
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Desktop right section */}
-          <div className="hidden lg:flex items-center justify-center gap-6">
-            <button className="text-2xl font-bold">
-              <BiSearch />
+          <div className="hidden lg:flex items-center justify-center gap-6 relative">
+            <button
+              className="text-2xl font-bold"
+              onClick={() => setIsDesktopSearch(!isDesktopSearch)}
+            >
+              {!isDesktopSearch ? <BiSearch /> : <CgClose />}
             </button>
             <button className="text-2xl font-bold">
               <LuShoppingCart />
@@ -95,8 +114,11 @@ export default function Navbar() {
 
           {/* Mobile right section */}
           <div className="flex lg:hidden items-center justify-center gap-4">
-            <button className="text-xl font-bold">
-              <BiSearch />
+            <button
+              className="text-xl font-bold"
+              onClick={() => setIsDesktopSearch(!isDesktopSearch)}
+            >
+              {!isDesktopSearch ? <BiSearch /> : <CgClose />}
             </button>
             <button className="text-xl font-bold">
               <LuShoppingCart />
@@ -110,7 +132,6 @@ export default function Navbar() {
             </button>
           </div>
         </nav>
-
         {/* Mobile menu */}
         {isMobileMenuOpen && (
           <div className="lg:hidden bg-white shadow-lg">
