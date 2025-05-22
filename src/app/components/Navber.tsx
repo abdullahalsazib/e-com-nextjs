@@ -55,9 +55,8 @@ export default function Navbar() {
   return (
     <>
       <div
-        className={`w-full text-black ${
-          isScrolled ? "fixed top-0 left-0 z-50 shadow-md" : ""
-        }`}
+        className={`w-full text-black ${isScrolled ? "fixed top-0 left-0 z-50 shadow-md" : ""
+          }`}
       >
         <Topbar />
         <nav className="border-b border-b-gray-300 bg-white py-5 px-4 lg:px-5 xl:px-[10%] flex items-center justify-between">
@@ -70,14 +69,18 @@ export default function Navbar() {
             {/* here  is the search bar for the desktop search button */}
 
             {!isDesktopSearch ? (
-              <ul className="hidden lg:flex items-center justify-center gap-7">
+              <ul className="hidden lg:flex items-center justify-center gap-7 relative">
                 {navLink.map((item, index) => (
                   <li
                     className="text-sm font-semibold text-black hover:text-blue-500 duration-300 transition-colors cursor-pointer"
                     key={index}
                   >
                     {item.title}
+
+                    <div className={` ${item.dropDown ? "hover:translate-y-10" : " translate-y-0"} w-[300px] bg-white py-4 px-4 border-2 border-red-500 h-[300px] absolute top-13 left-0 z-50`}></div>
+
                   </li>
+
                 ))}
                 <button className="border-2 text-sm border-blue-500 rounded-full py-1.5 px-5 bg-white text-blue-500 hover:bg-blue-500 hover:text-white active:scale-105 font-bold duration-300 transition-colors capitalize cursor-pointer">
                   our deals

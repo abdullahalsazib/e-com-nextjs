@@ -12,7 +12,7 @@ import brand5 from "@/../public/Logos/adata.png";
 import brand6 from "@/../public/Logos/hp.png";
 import brand7 from "@/../public/Logos/gigabyte.png";
 import News_card from "@/app/components/News_card";
-import Footer from "@/app/components/Footer";
+// import Footer from "@/app/components/Footer";
 import Carousel from "@/app/components/Slider";
 import Carsol1 from "@/../public/images/cursol1.png";
 import TestimonialSection from "@/app/components/Testimonials";
@@ -58,7 +58,7 @@ const HomePage = () => (
           ))}
         </div>
         <div className=" bg-[#F5F7FF] w-full py-5 px-0 flex items-center justify-center">
-          <div className="flex items-center justify-center gap-4 ">
+          <div className="flex items-center justify-center gap-3 ">
             <Image src={zipLogo} alt="ziplogo" /> |{" "}
             <span className=" text-[#272560] font-light">
               <span className="font-bold text-lg">own </span>it now, up to 6
@@ -89,7 +89,7 @@ const HomePage = () => (
           ))}
         </div>
         {/* ad and product 2 */}
-        <div className=" py-4">
+        <div className=" py-3">
           <div className=" flex items-center justify-between w-full">
             <ul className="flex items-center justify-start gap-6 py-3">
               <li className=" text-slate-700 hover:text-gray-700 duration-200 cursor-pointer  underline-offset-4 underline font-bold ">
@@ -203,7 +203,9 @@ const HomePage = () => (
         <div className="flex items-center justify-between gap-7">
           {brandLogo.map((item, index) => (
             <div key={index} className=" p-2">
-              <Image key={index} src={item.imgUrl} alt={item.alr} />
+              <a href="#">
+                <Image className=" hover:scale-110 duration-300 cursor-pointer" key={index} src={item.imgUrl} alt={item.alr} />
+              </a>
             </div>
           ))}
         </div>
