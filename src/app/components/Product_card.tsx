@@ -6,6 +6,7 @@ import { FaCartArrowDown, FaRegHeart, FaHeart, FaStar } from "react-icons/fa";
 import { GrMore } from "react-icons/gr";
 import p1 from "@/../public/product-image/image-1.png";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
+import { useRouter } from "next/navigation";
 
 interface Product {
   id: number;
@@ -34,6 +35,7 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const router = useRouter();
 
   // Safe destructuring with fallbacks
   const {
@@ -158,7 +160,10 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product }) => {
           <FaCartArrowDown />
           <span>Add</span>
         </button>
-        <button className="p-2 rounded-full border border-gray-300 text-gray-700 hover:bg-gray-100">
+        <button
+          onClick={() => router.push("/product-about")}
+          className="p-2 rounded-full border border-gray-300 text-gray-700 hover:bg-gray-100"
+        >
           <GrMore size={14} />
         </button>
       </div>
@@ -195,7 +200,10 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product }) => {
             <FaCartArrowDown />
             <span>Add to Cart</span>
           </button>
-          <button className="w-full py-2 px-4 rounded-full text-sm font-medium flex items-center justify-center gap-2 border border-gray-300 hover:bg-gray-100">
+          <button
+            onClick={() => router.push("/product-about")}
+            className="w-full py-2 px-4 rounded-full text-sm font-medium flex items-center justify-center gap-2 border border-gray-300 hover:bg-gray-100"
+          >
             <GrMore size={14} />
             <span>Quick View</span>
           </button>

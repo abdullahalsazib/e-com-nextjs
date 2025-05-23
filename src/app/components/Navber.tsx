@@ -1,39 +1,133 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Topbar from "./Topbar/Topbar";
 import { BsBoxSeamFill } from "react-icons/bs";
-import { BiSearch, BiArrowToTop } from "react-icons/bi";
+import { BiSearch, BiArrowToTop, BiTrash } from "react-icons/bi";
 import { LuShoppingCart } from "react-icons/lu";
 import { FaUserCircle, FaBars } from "react-icons/fa";
 import { PiX } from "react-icons/pi";
 import { CgClose } from "react-icons/cg";
+import Link from "next/link";
+import Image from "next/image";
+
+import product1 from "@/../public/product-image/image-1.png";
 
 const navLink = [
-  { title: "Laptops", dropDown: true },
-  { title: "Desktop PCs", dropDown: true },
-  { title: "Networking Devices", dropDown: true },
-  { title: "Printers & Scanners", dropDown: true },
-  { title: "PC parts", dropDown: true },
-  { title: "All Other Products", dropDown: true },
-  { title: "Repairs", dropDown: true },
+  { title: "Home", link: "/", dropDown: false },
+  { title: "About us", link: "/aboutus", dropDown: false },
+  { title: "Contact Us", link: "/contactus", dropDown: false },
+  {
+    title: "Laptops",
+    link: "#",
+    dropDown: true,
+    content: [
+      {
+        title: "Gaming Laptops",
+        link: "#",
+        nested: [
+          { title: "High-End Gaming", link: "#" },
+          { title: "Mid-Range Gaming", link: "#" },
+          { title: "Budget Gaming", link: "#" },
+        ],
+      },
+      {
+        title: "Business Laptops",
+        link: "#",
+        nested: [
+          { title: "Executive Laptops", link: "#" },
+          { title: "Durable Laptops", link: "#" },
+          { title: "Ultraportable", link: "#" },
+        ],
+      },
+      { title: "Ultrabooks", link: "#" },
+      { title: "2-in-1 Laptops", link: "#" },
+      { title: "Budget Laptops", link: "#" },
+    ],
+  },
+  {
+    title: "Printers & Scanners",
+    link: "#",
+    dropDown: true,
+    content: [
+      {
+        title: "Inkjet Printers",
+        link: "#",
+        nested: [
+          { title: "Home Inkjet", link: "#" },
+          { title: "Office Inkjet", link: "#" },
+          { title: "Photo Inkjet", link: "#" },
+        ],
+      },
+      {
+        title: "Laser Printers",
+        link: "#",
+        nested: [
+          { title: "Monochrome", link: "#" },
+          { title: "Color Laser", link: "#" },
+          { title: "Multifunction", link: "#" },
+        ],
+      },
+      { title: "All-in-One Printers", link: "#" },
+      { title: "Photo Printers", link: "#" },
+      { title: "3D Printers", link: "#" },
+    ],
+  },
+  {
+    title: "PC parts",
+    link: "#",
+    dropDown: true,
+    content: [
+      {
+        title: "Processors",
+        link: "#",
+        nested: [
+          { title: "Intel", link: "#" },
+          { title: "AMD", link: "#" },
+          { title: "Server CPUs", link: "#" },
+        ],
+      },
+      {
+        title: "Graphics Cards",
+        link: "#",
+        nested: [
+          { title: "NVIDIA", link: "#" },
+          { title: "AMD Radeon", link: "#" },
+          { title: "Workstation GPUs", link: "#" },
+        ],
+      },
+      { title: "Motherboards", link: "#" },
+      { title: "RAM", link: "#" },
+      { title: "Storage", link: "#" },
+    ],
+  },
+  { title: "FAQ", link: "/faq", dropDown: false },
 ];
 
 export default function Navbar() {
   const [isDesktopSearch, setIsDesktopSearch] = useState<boolean>(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [showScrollButton, setShowScrollButton] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+  const [showScrollButton, setShowScrollButton] = useState<boolean>(false);
+  const [isAddToCartOpen, setIsAddtoCartOpen] = useState<boolean>(false);
+  const [activeDropdowns, setActiveDropdowns] = useState<number[]>([]);
+  const [activeNestedDropdowns, setActiveNestedDropdowns] = useState<{
+    [key: string]: number[];
+  }>({});
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
-      // Check if scrolled more than 100vh
       if (window.scrollY > window.innerHeight) {
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
       }
 
-      // Show scroll-to-top button when scrolled down
       if (window.scrollY > 300) {
         setShowScrollButton(true);
       } else {
@@ -45,6 +139,24 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Close dropdown when clicking outside of the box
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsDropdownOpen(false);
+        setIsAddtoCartOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -52,47 +164,137 @@ export default function Navbar() {
     });
   };
 
+  const handleDropdownEnter = (index: number) => {
+    setActiveDropdowns((prev) => [...prev, index]);
+  };
+
+  const handleDropdownLeave = (index: number) => {
+    setActiveDropdowns((prev) => prev.filter((i) => i !== index));
+    // Also clear any nested dropdowns for this item
+    setActiveNestedDropdowns((prev) => {
+      const newState = { ...prev };
+      delete newState[`${index}`];
+      return newState;
+    });
+  };
+
+  const handleNestedEnter = (parentIndex: number, childIndex: number) => {
+    setActiveNestedDropdowns((prev) => ({
+      ...prev,
+      [`${parentIndex}`]: [...(prev[`${parentIndex}`] || []), childIndex],
+    }));
+  };
+
+  const handleNestedLeave = (parentIndex: number, childIndex: number) => {
+    setActiveNestedDropdowns((prev) => ({
+      ...prev,
+      [`${parentIndex}`]: (prev[`${parentIndex}`] || []).filter(
+        (i) => i !== childIndex
+      ),
+    }));
+  };
+
   return (
     <>
       <div
-        className={`w-full text-black ${isScrolled ? "fixed top-0 left-0 z-50 shadow-md" : ""
-          }`}
+        className={`w-full text-black ${
+          isScrolled ? "fixed top-0 left-0 z-50 shadow-md" : ""
+        }`}
       >
         <Topbar />
         <nav className="border-b border-b-gray-300 bg-white py-5 px-4 lg:px-5 xl:px-[10%] flex items-center justify-between">
-          <div className=" flex items-center justify-start w-full relative md:gap-10">
+          <div className="flex items-center justify-between w-full relative md:gap-10">
             <div className="flex items-center">
               <BsBoxSeamFill className="text-3xl md:text-5xl text-blue-600" />
             </div>
+
             {/* Desktop nav-links */}
-
-            {/* here  is the search bar for the desktop search button */}
-
             {!isDesktopSearch ? (
               <ul className="hidden lg:flex items-center justify-center gap-7 relative">
                 {navLink.map((item, index) => (
                   <li
-                    className="text-sm font-semibold text-black hover:text-blue-500 duration-300 transition-colors cursor-pointer"
                     key={index}
+                    className="relative group"
+                    onMouseEnter={() =>
+                      item.dropDown && handleDropdownEnter(index)
+                    }
+                    onMouseLeave={() =>
+                      item.dropDown && handleDropdownLeave(index)
+                    }
                   >
-                    {item.title}
+                    {item.dropDown ? (
+                      <button
+                        className="text-sm font-semibold text-black hover:text-blue-500 duration-300 transition-colors cursor-pointer py-2"
+                        onClick={(e) => {
+                          if (!item.dropDown && item.link) {
+                            // Handle navigation if needed
+                          } else {
+                            e.preventDefault();
+                          }
+                        }}
+                      >
+                        {item.title}
+                      </button>
+                    ) : (
+                      <Link href={item.link}>
+                        <h1 className="text-sm font-semibold text-black hover:text-blue-500 duration-300 transition-colors cursor-pointer py-2">
+                          {item.title}
+                        </h1>
+                      </Link>
+                    )}
 
-                    <div className={` ${item.dropDown ? "hover:translate-y-10" : " translate-y-0"} w-[300px] bg-white py-4 px-4 border-2 border-red-500 h-[300px] absolute top-13 left-0 z-50`}></div>
-
+                    {/* Dropdown content */}
+                    {item.dropDown && activeDropdowns.includes(index) && (
+                      <div className="absolute -right-20 top-full mt-0 w-56 bg-white shadow-lg rounded-b-md z-50 border-t-2 border-blue-500">
+                        {item.content?.map((subItem: any, subIndex: number) => (
+                          <div
+                            key={subIndex}
+                            className="relative"
+                            onMouseEnter={() =>
+                              handleNestedEnter(index, subIndex)
+                            }
+                            onMouseLeave={() =>
+                              handleNestedLeave(index, subIndex)
+                            }
+                          >
+                            <a
+                              href={subItem.link}
+                              className="block px-4 py-2 text-sm text-gray-600 hover:text-blue-500 hover:bg-gray-50"
+                            >
+                              {subItem.title}
+                            </a>
+                            {subItem.nested &&
+                              activeNestedDropdowns[index]?.includes(
+                                subIndex
+                              ) && (
+                                <div className="absolute left-full top-0 ml-0 w-56 bg-white shadow-lg rounded-r-md z-50 border-l-2 border-blue-500">
+                                  {subItem.nested.map(
+                                    (nestedItem: any, nestedIndex: number) => (
+                                      <a
+                                        key={nestedIndex}
+                                        href={nestedItem.link}
+                                        className="block px-4 py-2 text-sm text-gray-500 hover:text-blue-500 hover:bg-gray-50"
+                                      >
+                                        {nestedItem.title}
+                                      </a>
+                                    )
+                                  )}
+                                </div>
+                              )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </li>
-
                 ))}
-                <button className="border-2 text-sm border-blue-500 rounded-full py-1.5 px-5 bg-white text-blue-500 hover:bg-blue-500 hover:text-white active:scale-105 font-bold duration-300 transition-colors capitalize cursor-pointer">
-                  our deals
-                </button>
               </ul>
             ) : (
               <div className="relative w-full self-center px-5">
-                <div className=" w-full ">
+                <div className="w-full">
                   <input
-                    type=" text"
+                    type="text"
                     placeholder="Search in here.."
-                    className=" w-full py-2 px-5 border-2 border-gray-300 rounded-lg focus:outline-1 focus:outline-sky-200 focus:bg-slate-100"
+                    className="w-full py-2 px-5 border-2 border-gray-300 rounded-lg focus:outline-1 focus:outline-sky-200 focus:bg-slate-100"
                   />
                 </div>
               </div>
@@ -100,19 +302,132 @@ export default function Navbar() {
           </div>
 
           {/* Desktop right section */}
-          <div className="hidden lg:flex items-center justify-center gap-6 relative">
-            <button
-              className="text-2xl font-bold"
-              onClick={() => setIsDesktopSearch(!isDesktopSearch)}
-            >
-              {!isDesktopSearch ? <BiSearch /> : <CgClose />}
-            </button>
-            <button className="text-2xl font-bold">
-              <LuShoppingCart />
-            </button>
-            <button className="text-3xl font-bold">
-              <FaUserCircle />
-            </button>
+          <div
+            ref={dropdownRef}
+            className="hidden lg:flex items-center justify-center gap-6 relative pr-0 md:px-10"
+          >
+            <div>
+              <button
+                className="text-2xl font-bold"
+                onClick={() => setIsDesktopSearch(!isDesktopSearch)}
+              >
+                {!isDesktopSearch ? <BiSearch /> : <CgClose />}
+              </button>
+            </div>
+
+            {/* for add to cart button */}
+            <div className=" relative">
+              <button
+                onMouseEnter={() => setIsAddtoCartOpen(true)}
+                // onClick={() => setIsAddtoCartOpen(!isAddToCartOpen)}
+                className={`text-2xl font-bold hover:text-blue-500 duration-200 ${
+                  isAddToCartOpen ? "text-blue-500" : " text-black"
+                }`}
+              >
+                <LuShoppingCart />
+              </button>
+              {isAddToCartOpen && (
+                <div
+                  onMouseEnter={() => setIsAddtoCartOpen(true)}
+                  onMouseLeave={() => setIsAddtoCartOpen(false)}
+                  className="absolute top-10 right-0 z-50 w-80 bg-white rounded-md shadow-lg border border-gray-200 flex items-center justify-center flex-col py-3 gap-2"
+                >
+                  {/* add to cart content's */}
+                  <div className=" flex items-center justify-center flex-col w-full">
+                    <h1 className=" text-xl font-semibold text-black text-center">
+                      My cart
+                    </h1>
+                    <p className=" text-xs text-gray-500 capitalize">
+                      {" "}
+                      2 item in Cart
+                    </p>
+                  </div>
+                  <button className=" py-2 px-6 text-sm rounded-full border-blue-500 border-2 bg-white text-blue-500 hover:border-blue-400 hover:bg-blue-500 hover:text-white duration-200 ">
+                    View or edit Cart
+                  </button>
+                  <div className="  py-5 w-full flex items-center justify-center flex-col gap-0">
+                    {/* here is the content of small cart */}
+                    <SmallCart />
+                    <SmallCart />
+                    <SmallCart />
+                    <SmallCart />
+                  </div>
+                  <h2 className=" text-center text-lg font-bold text-gray-400">
+                    Subtotal: <span className=" text-black"> $30000</span>
+                  </h2>
+                  <div className=" px-5 w-full flex items-center justify-center gap-2 flex-col">
+                    <button className=" w-full py-3 px-6 rounded-full text-sm bg-blue-500 text-white hover:bg-blue-600 duration-200 capitalize font-bold">
+                      Go to checkout
+                    </button>
+                    <button className=" w-full py-3 px-6 rounded-full text-sm bg-blue-500 text-white hover:bg-blue-600 duration-200 capitalize font-bold flex items-center justify-center gap-2">
+                      checkout with{" "}
+                      <FaCcPaypal fill="red" className="text-2xl" />
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* for the account button */}
+            <div className="relative">
+              <button
+                onClick={toggleDropdown}
+                className="text-3xl font-bold hover:text-blue-500 transition-colors"
+                aria-label="User account"
+                aria-expanded={isDropdownOpen}
+              >
+                <FaUserCircle />
+              </button>
+
+              {isDropdownOpen && (
+                <div className="absolute top-12 right-0 z-50 w-64 bg-white rounded-md shadow-lg border border-gray-200">
+                  <div className="p-4">
+                    <ul className="space-y-3 text-sm text-gray-700">
+                      <li>
+                        <a
+                          href="#"
+                          className="block hover:text-blue-500 transition-colors"
+                        >
+                          My Account
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          href="#"
+                          className="block hover:text-blue-500 transition-colors"
+                        >
+                          My Wish List (0)
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          href="#"
+                          className="block hover:text-blue-500 transition-colors"
+                        >
+                          Compare (0)
+                        </a>
+                      </li>
+                      <li className="border-t border-gray-200 pt-3">
+                        <a
+                          href="#"
+                          className="block hover:text-blue-500 transition-colors"
+                        >
+                          Create an Account
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          href="#"
+                          className="block hover:text-blue-500 transition-colors"
+                        >
+                          Sign In
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Mobile right section */}
@@ -126,7 +441,6 @@ export default function Navbar() {
             <button className="text-xl font-bold">
               <LuShoppingCart />
             </button>
-            {/* Mobile menu button */}
             <button
               className="lg:hidden ml-4 text-2xl"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -135,17 +449,13 @@ export default function Navbar() {
             </button>
           </div>
         </nav>
+
         {/* Mobile menu */}
         {isMobileMenuOpen && (
           <div className="lg:hidden bg-white shadow-lg">
             <ul className="flex flex-col items-start px-4 py-2">
               {navLink.map((item, index) => (
-                <li
-                  className="w-full py-3 border-b border-gray-200 text-sm font-semibold text-black hover:text-blue-500 duration-300 transition-colors cursor-pointer"
-                  key={index}
-                >
-                  {item.title}
-                </li>
+                <MobileNavItem key={index} item={item} index={index} />
               ))}
               <button className="w-full mt-3 border-2 text-sm border-blue-500 rounded-full py-1.5 px-5 bg-white text-blue-500 hover:bg-blue-500 hover:text-white active:scale-105 font-bold duration-300 transition-colors capitalize cursor-pointer">
                 our deals
@@ -173,3 +483,104 @@ export default function Navbar() {
     </>
   );
 }
+
+// Mobile navigation item component with nested support
+const MobileNavItem = ({ item, index }: { item: any; index: number }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <li className="w-full py-3 border-b border-gray-200">
+      <div
+        className="flex justify-between items-center text-sm font-semibold text-black hover:text-blue-500 duration-300 transition-colors cursor-pointer"
+        onClick={() => item.dropDown && setIsOpen(!isOpen)}
+      >
+        {item.dropDown ? (
+          <span>{item.title}</span>
+        ) : (
+          <Link href={item.link}>
+            <h1>{item.title}</h1>
+          </Link>
+        )}
+        {item.dropDown && (
+          <svg
+            className={`w-4 h-4 transition-transform duration-200 ${
+              isOpen ? "rotate-90" : ""
+            }`}
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 5l7 7-7 7"
+            />
+          </svg>
+        )}
+      </div>
+
+      {/* First level dropdown */}
+      {item.dropDown && isOpen && (
+        <div className="pl-4 mt-2">
+          {item.content?.map((subItem: any, subIndex: number) => (
+            <div key={subIndex}>
+              <a
+                href={subItem.link}
+                className="block py-2 text-sm text-gray-600 hover:text-blue-500"
+              >
+                {subItem.title}
+              </a>
+
+              {/* Second level nested dropdown */}
+              {subItem.nested && (
+                <div className="pl-4">
+                  {subItem.nested.map(
+                    (nestedItem: any, nestedIndex: number) => (
+                      <a
+                        key={nestedIndex}
+                        href={nestedItem.link}
+                        className="block py-2 text-sm text-gray-500 hover:text-blue-500"
+                      >
+                        {nestedItem.title}
+                      </a>
+                    )
+                  )}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </li>
+  );
+};
+
+import { FaCcPaypal } from "react-icons/fa6";
+const SmallCart = () => {
+  return (
+    <>
+      <div className=" py-3 px-3 w-full flex items-center justify-between gap-4 border-y border-gray-200">
+        <h3 className=" text-xs font-semibold text-black text-nowrap">
+          <span className=" text-xl font-bold">1</span> X
+        </h3>
+        <Image
+          className=" px-0 py-0 w-10"
+          src={product1}
+          alt="product images"
+        />
+        <h3 className=" text-xs font-light">
+          EX DISPLAY : MSI Pro 16 Flex-036AU 15.6 MULTITOUCH All-In-On...
+        </h3>
+        <div className=" text-xs flex items-start justify-end gap-1 flex-col ">
+          <div className=" p-1 border border-gray-400 rounded-full">
+            <CgClose className=" text-gray-400" />
+          </div>
+          <div className=" p-1 border border-gray-400 rounded-full">
+            <BiTrash className=" text-gray-400" />
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};

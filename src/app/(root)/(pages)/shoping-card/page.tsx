@@ -146,8 +146,6 @@ const ShoppingCart = () => {
                 <span>${total.toFixed(2)}</span>
               </div>
             </div>
-
-            <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-md font-medium mt-6">
               Proceed to Checkout
             </button>
 

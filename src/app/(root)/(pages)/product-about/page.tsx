@@ -3,7 +3,6 @@ import Tabs from "@/app/components/smallComponent/Tab";
 import Image from "next/image";
 import styles from "./product.module.css";
 // import icons
-import { GoChevronRight } from "react-icons/go";
 import { FaRegHeart } from "react-icons/fa6";
 import { HiOutlineBars3BottomRight } from "react-icons/hi2";
 import { VscMail } from "react-icons/vsc";
@@ -85,14 +84,14 @@ const Page = () => {
             <input
               type="number"
               placeholder="00"
-              className="w-[70px] bg-slate-100 focus:outline-slate-300 py-2 px-4"
+              className="w-[70px] focus:w-[200px] duration-200 bg-slate-100 focus:outline-slate-300 py-2 px-4"
             />
 
             <div className="flex items-center justify-center gap-2 text-sm w-full sm:w-auto">
               <button className="py-2 px-4 sm:px-6 rounded-full bg-gray-500 hover:bg-blue-600 duration-200 cursor-pointer font-semibold text-white capitalize whitespace-nowrap">
                 add to cart
               </button>
-              <button className="py-2 px-4 sm:px-7 rounded-full bg-[#FFB800] hover:bg-[#ffd877] duration-200 cursor-pointer font-semibold text-white capitalize">
+              <button className="py-3 px-4 sm:px-7 rounded-full bg-[#FFB800] hover:bg-[#ffd877] duration-200 cursor-pointer font-semibold text-white capitalize">
                 <Image
                   src={paypal}
                   className="w-full max-w-[60px]"
@@ -324,9 +323,8 @@ const SpecTable = () => {
       {specs2.map((item, index) => (
         <div
           key={index}
-          className={`flex justify-between px-4 py-3 ${
-            index % 2 === 1 ? "bg-blue-50" : "bg-white"
-          }`}
+          className={`flex justify-between px-4 py-3 ${index % 2 === 1 ? "bg-blue-50" : "bg-white"
+            }`}
         >
           <span className="font-medium text-black">{item.label}</span>
           <span className="text-gray-500">{item.value}</span>
