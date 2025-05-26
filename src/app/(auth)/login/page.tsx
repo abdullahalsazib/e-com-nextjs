@@ -1,12 +1,12 @@
 "use client";
 import LoginBtn from "@/app/components/buttons/LoginBtn";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import React from "react";
 import { FaAngleRight } from "react-icons/fa6";
 
 const LoginPage = () => {
-  const route = useRouter();
+  // const route = useRouter();
 
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-2">

@@ -1,7 +1,6 @@
 "use client";
 import LoginBtn from "@/app/components/buttons/LoginBtn";
 import Breadcrumb from "@/app/components/smallComponent/Breadcrumb";
-import { useRouter } from "next/navigation";
 import React from "react";
 
 const breadcrumb = [{ label: "Home" }, { label: "Register", active: true }];

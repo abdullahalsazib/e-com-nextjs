@@ -85,7 +85,7 @@ const ForgotPage = () => {
                     </Link>
                   </p>
                   <p className="text-sm text-gray-600 mt-2">
-                    Don't have an account?{' '}
+                    Don&apos;t have an account?{' '}
                     <Link
                       href="/register"
                       className="text-indigo-600 hover:text-indigo-800 font-medium inline-flex items-center"

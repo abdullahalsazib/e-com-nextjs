@@ -18,18 +18,18 @@ const FAQ = () => {
             requires otherwise:
           </p>
           <ul className="list-disc pl-5 space-y-1">
-            <li>"Shop" means Shop Pty Ltd ABN 11 222 333 444;</li>
+            <li>`&quot;`Shop`&quot;` means Shop Pty Ltd ABN 11 222 333 444;</li>
             <li>
-              "Customer" means the person or corporation placing an order for
+              &quot;Customer&quot; means the person or corporation placing an order for
               the purchase of goods or services from Shop;
             </li>
             <li>
-              "Products" means any goods, materials, equipment or services
+              &quot;Products&quot; means any goods, materials, equipment or services
               provided to the Customer by Shop;
             </li>
             <li>
               if the Customer comprises more than one person, each of those
-              person's liability is joint and several;
+              person&apos;s liability is joint and several;
             </li>
             <li>
               references to a party or a person includes any form of entity and
@@ -57,10 +57,10 @@ const FAQ = () => {
             internet, are subject to acceptance by Shop.
           </p>
           <p>
-            The acceptance of the Customer's order by Shop is expressly made
-            conditional upon the Customer's assent to these Terms and Conditions
+            The acceptance of the Customer&apos;s order by Shop is expressly made
+            conditional upon the Customer&apos;s assent to these Terms and Conditions
             which will prevail notwithstanding anything that may be stated to
-            the contrary on the Customer's order.
+            the contrary on the Customer&apos;s order.
           </p>
           <p>
             Shop reserves the right to vary any of these terms at any time and
@@ -99,7 +99,7 @@ const FAQ = () => {
           </p>
           <p>
             It as agreed that should the Customer fail for any reason to acquire
-            the quantity of Products sold then without limiting Shop' other
+            the quantity of Products sold then without limiting Shop&apos; other
             rights and remedies the unit price charged for the goods sold may be
             amended to take into account any variation in the total quantity
             purchased by the Customer.
@@ -153,7 +153,7 @@ const FAQ = () => {
         <p className="text-gray-700">
           Any commercial credit arrangements that are provided to the Customer
           by Shop will continue until terminated by Shop at it sole discretion.
-          In the event that Shop terminates the Customer's commercial credit
+          In the event that Shop terminates the Customer&apos;s commercial credit
           arrangement, the Customer will be notified in writing and termination
           will take effect upon receipt of that notification by the Customer.
         </p>
@@ -178,9 +178,9 @@ const FAQ = () => {
             fees and expenses incurred or suffered by Shop in trading with any
             person, company (including the same company but with a different
             shareholder or shareholders) or other entity (including a trust)
-            which may have purchased the Customer's business or any interest in
-            the Customer's business or any of the shares in the Customer and
-            used the Customer's previously approved account for trading.
+            which may have purchased the Customer&apos;s business or any interest in
+            the Customer&apos;s business or any of the shares in the Customer and
+            used the Customer&apos;s previously approved account for trading.
           </p>
           <p>
             Where a Customer has been authorised by Shop to make payments
@@ -214,7 +214,7 @@ const FAQ = () => {
         <div className="text-gray-700 space-y-2">
           <p>
             The means of delivering the Products to the Customer will be at
-            Shop' discretion. Shop reserves the right to deliver Products in
+            Shop&apos; discretion. Shop reserves the right to deliver Products in
             part deliveries.
           </p>
           <p>
@@ -228,7 +228,7 @@ const FAQ = () => {
           <p>
             Shop will not be liable for any loss or damage resulting from any
             late delivery of the Products and late delivery will not entitle the
-            Customer to rescind or repudiate the Customer's order for the
+            Customer to rescind or repudiate the Customer&apos;s order for the
             Products.
           </p>
         </div>
@@ -264,9 +264,8 @@ const FAQ = () => {
                   {item.question}
                 </h2>
                 <svg
-                  className={`w-5 h-5 text-gray-500 transition-transform duration-200 ${
-                    activeIndex === index ? "transform rotate-180" : ""
-                  }`}
+                  className={`w-5 h-5 text-gray-500 transition-transform duration-200 ${activeIndex === index ? "transform rotate-180" : ""
+                    }`}
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -282,9 +281,8 @@ const FAQ = () => {
             </button>
             <div
               id={`faq-content-${index}`}
-              className={`px-6 pb-4 ${
-                activeIndex === index ? "block" : "hidden"
-              }`}
+              className={`px-6 pb-4 ${activeIndex === index ? "block" : "hidden"
+                }`}
               aria-hidden={activeIndex !== index}
             >
               {item.answer}

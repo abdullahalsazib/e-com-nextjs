@@ -27,6 +27,14 @@ const ShoppingCart = () => {
   const [showShipping, setShowShipping] = useState(false);
   const [showDiscount, setShowDiscount] = useState(false);
 
+  setCartItems([
+    {
+      id: 1,
+      name: "MSI MEG Trident X (Intel i7 1070Kx, 2070 SUPER, 32GB RAM, 1TB SSD)",
+      price: 4348.0,
+      quantity: 3,
+      image: product1,
+    }])
   const subtotal = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
