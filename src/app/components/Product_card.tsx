@@ -7,6 +7,7 @@ import { GrMore } from "react-icons/gr";
 import p1 from "@/../public/product-image/image-1.png";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface Product {
   id: number;
@@ -80,18 +81,16 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product }) => {
 
   return (
     <div
-      className={`bg-white px-4 py-4 flex flex-col cursor-pointer transition-all duration-300 border border-gray-200 rounded-lg relative overflow-hidden ${
-        isHovered ? "shadow-lg" : "shadow-sm hover:shadow-md"
-      }`}
+      className={`bg-white px-4 py-4 flex flex-col cursor-pointer transition-all duration-300 border border-gray-200 rounded-lg relative overflow-hidden ${isHovered ? "shadow-lg" : "shadow-sm hover:shadow-md"
+        }`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Stock Status */}
       <div className="flex justify-between items-start w-full">
         <p
-          className={`text-xs flex items-center gap-1 ${
-            inStock ? "text-green-700" : "text-red-600"
-          }`}
+          className={`text-xs flex items-center gap-1 ${inStock ? "text-green-700" : "text-red-600"
+            }`}
         >
           <IoCheckmarkCircle />
           {inStock ? "In stock" : "Out of stock"}
@@ -151,11 +150,10 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product }) => {
         <button
           onClick={handleAddToCart}
           disabled={isAddingToCart || !inStock}
-          className={`flex-1 py-2 px-3 rounded-full text-xs font-medium flex items-center justify-center gap-1 transition-colors ${
-            isAddingToCart || !inStock
+          className={`flex-1 py-2 px-3 rounded-full text-xs font-medium flex items-center justify-center gap-1 transition-colors ${isAddingToCart || !inStock
               ? "bg-gray-300 cursor-not-allowed"
               : "bg-blue-500 hover:bg-blue-600 text-white"
-          }`}
+            }`}
         >
           <FaCartArrowDown />
           <span>Add</span>
@@ -170,9 +168,8 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product }) => {
 
       {/* Desktop Hover Actions */}
       <div
-        className={`hidden md:flex flex-col gap-2 absolute inset-0 bg-white bg-opacity-95 p-4 transition-opacity duration-300 ${
-          isHovered ? "opacity-100" : "opacity-0 pointer-events-none"
-        }`}
+        className={`hidden md:flex flex-col gap-2 absolute inset-0 bg-white bg-opacity-95 p-4 transition-opacity duration-300 ${isHovered ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}
       >
         <div className="flex justify-end">
           <button
@@ -191,22 +188,22 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product }) => {
           <button
             onClick={handleAddToCart}
             disabled={isAddingToCart || !inStock}
-            className={`w-full py-2 px-4 rounded-full text-sm font-medium flex items-center justify-center gap-2 transition-colors ${
-              isAddingToCart || !inStock
+            className={`w-full py-2 px-4 rounded-full text-sm font-medium flex items-center justify-center gap-2 transition-colors ${isAddingToCart || !inStock
                 ? "bg-gray-300 cursor-not-allowed"
                 : "bg-blue-500 hover:bg-blue-600 text-white"
-            }`}
+              }`}
           >
             <FaCartArrowDown />
             <span>Add to Cart</span>
           </button>
-          <button
-            onClick={() => router.push("/product-about")}
+          <Link
+            href={"/product-about"}
+            // onClick={() => router.push("/product-about")}
             className="w-full py-2 px-4 rounded-full text-sm font-medium flex items-center justify-center gap-2 border border-gray-300 hover:bg-gray-100"
           >
             <GrMore size={14} />
             <span>Quick View</span>
-          </button>
+          </Link>
         </div>
       </div>
     </div>

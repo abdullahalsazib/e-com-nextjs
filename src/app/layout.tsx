@@ -3,6 +3,7 @@ import { Geist } from "next/font/google";
 import "./globals.css";
 import Navber from "./components/Navber";
 import Footer from "./components/Footer";
+import NextTopLoader from "nextjs-toploader";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,6 +26,7 @@ export default function RootLayout({
         cz-shortcut-listen="true"
         className={`${geistSans.className}  antialiased`}
       >
+        <NextTopLoader />
         <Navber />
         {children}
         <Footer />
