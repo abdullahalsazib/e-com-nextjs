@@ -1,21 +1,20 @@
 "use client";
 import LoginBtn from "@/app/components/buttons/LoginBtn";
+import Breadcrumb from "@/app/components/smallComponent/Breadcrumb";
 import Link from "next/link";
-// import { useRouter } from "next/navigation";
 import React from "react";
-import { FaAngleRight } from "react-icons/fa6";
 
+const breadcrumbItems = [
+  { label: "Home", link: "/" },
+  { label: "Login", active: true },
+];
 const LoginPage = () => {
   // const route = useRouter();
 
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-2">
       <div className="mt-5">
-        <p className="text-xs md:text-sm font-light capitalize mb-1 text-gray-700 flex items-center gap-1">
-          <Link href="/" className="hover:text-blue-500">Home</Link>
-          <FaAngleRight className="text-blue-500" />
-          <span>Login</span>
-        </p>
+        <Breadcrumb items={breadcrumbItems} />
         <h1 className="text-xl sm:text-2xl md:text-3xl font-semibold capitalize py-3">
           Customer Login
         </h1>
@@ -35,7 +34,10 @@ const LoginPage = () => {
 
           <form className="space-y-6">
             <div className="space-y-2">
-              <label htmlFor="email" className="block text-sm md:text-base font-medium">
+              <label
+                htmlFor="email"
+                className="block text-sm md:text-base font-medium"
+              >
                 Email
               </label>
               <input
@@ -47,7 +49,10 @@ const LoginPage = () => {
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="password" className="block text-sm md:text-base font-medium">
+              <label
+                htmlFor="password"
+                className="block text-sm md:text-base font-medium"
+              >
                 Password
               </label>
               <input

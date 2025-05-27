@@ -1,4 +1,5 @@
 // import { Facebook } from '';
+import Link from "next/link";
 import React from "react";
 import { FaFacebook, FaInstagram } from "react-icons/fa6";
 
@@ -15,9 +16,12 @@ const Topbar = () => {
         <p className="text-sm font-light text-slate-300">
           Visit our showroom in 1234 Street Adress City Address, 1234
         </p>
-        <a href="#" className="text-sm font-semibold text-white underline underline-offset-4 duration-200 hover:underline-offset-2">
+        <Link
+          href="/contactus"
+          className="text-sm font-semibold text-white underline underline-offset-4 duration-200 hover:underline-offset-2"
+        >
           Contact Us
-        </a>
+        </Link>
       </div>
       <div>
         <div className="font-semibold flex items-center justify-center gap-5 text-sm text-white">

@@ -8,7 +8,10 @@ import about5 from "@/../public/about5.png";
 import Image from "next/image";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 
-const breadcrumb = [{ label: "Home" }, { label: "About us", active: true }];
+const breadcrumb = [
+  { label: "Home", link: "/" },
+  { label: "About us", active: true },
+];
 
 // Reusable Section Component
 const AboutSection: React.FC<{

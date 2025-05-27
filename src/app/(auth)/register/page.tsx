@@ -3,7 +3,10 @@ import LoginBtn from "@/app/components/buttons/LoginBtn";
 import Breadcrumb from "@/app/components/smallComponent/Breadcrumb";
 import React from "react";
 
-const breadcrumb = [{ label: "Home" }, { label: "Register", active: true }];
+const breadcrumb = [
+  { label: "Home", link: "/" },
+  { label: "Register", active: true },
+];
 
 const RegisterPage = () => {
   // const route = useRouter();
@@ -28,7 +31,10 @@ const RegisterPage = () => {
           <form className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
               <div className="space-y-2">
-                <label htmlFor="firstName" className="block text-sm font-medium">
+                <label
+                  htmlFor="firstName"
+                  className="block text-sm font-medium"
+                >
                   First Name
                 </label>
                 <input
@@ -78,7 +84,10 @@ const RegisterPage = () => {
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="confirmPassword" className="block text-sm font-medium">
+                <label
+                  htmlFor="confirmPassword"
+                  className="block text-sm font-medium"
+                >
                   Confirm Password
                 </label>
                 <input

@@ -28,7 +28,7 @@ const contactData = [
 ];
 
 const breadcrumbItems = [
-  { label: "Home" },
+  { label: "Home", link: "/" },
   { label: "Contact us", active: true },
 ];
 
