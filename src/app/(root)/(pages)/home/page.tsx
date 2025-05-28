@@ -31,8 +31,6 @@ const brandLogo = [
 const carouselImages = [
   { src: Carsol1.src, alt: "Banner 1" },
   { src: Carsol1.src, alt: "Banner 1" },
-  // { src: Carsol2.src, alt: "Banner 2" },
-  // { src: Carsol3.src, alt: "Banner 3" },
 ];
 const HomePage = () => (
   <>
@@ -204,7 +202,12 @@ const HomePage = () => (
           {brandLogo.map((item, index) => (
             <div key={index} className=" p-2">
               <a href="#">
-                <Image className=" hover:scale-110 duration-300 cursor-pointer" key={index} src={item.imgUrl} alt={item.alr} />
+                <Image
+                  className=" hover:scale-110 duration-300 cursor-pointer"
+                  key={index}
+                  src={item.imgUrl}
+                  alt={item.alr}
+                />
               </a>
             </div>
           ))}

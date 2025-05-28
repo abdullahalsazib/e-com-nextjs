@@ -204,6 +204,7 @@ export default function Navbar() {
                         </h1>
                       </Link>
                     )}
+
                     {/* Dropdown content */}
                     {item.dropDown && activeDropdowns.includes(index) && (
                       <div className="absolute -right-20 top-full mt-0 w-56 bg-white shadow-lg rounded-b-md z-50 border-t-2 border-blue-500">
