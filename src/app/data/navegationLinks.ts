@@ -1,21 +1,22 @@
 export const accountNavagationLink = [
   {
-    title: "My Account", link: "/", dropDown: true,
+    title: "My Account",
+    link: "#",
+    dropDown: true,
     content: [
       {
-        title: "my account", link: "#",
+        title: "my account",
+        link: "#",
         nested: [
-          { title: "my wish list ", link: "#" },
-          { title: "compare", link: "#" },
-          { title: "create an account", link: "/register" },
+          { title: "my wish list ", link: "/shoping-card" },
+          // { title: "compare", link: "#" },
+          { title: "create an account", link: "/register" },  
           { title: "sign in", link: "/login" },
         ],
-
-
       },
-    ]
+    ],
   },
-]
+];
 export const NavLink = [
   { title: "Home", link: "/", dropDown: false },
   { title: "About us", link: "/aboutus", dropDown: false },
@@ -106,4 +107,3 @@ export const NavLink = [
   },
   { title: "FAQ", link: "/faq", dropDown: false },
 ];
-

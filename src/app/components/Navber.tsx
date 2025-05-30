@@ -126,7 +126,7 @@ export default function Navbar() {
       setActiveNestedDropdowns((prev) => ({
         ...prev,
         [`${parentIndex}`]: (prev[`${parentIndex}`] || []).filter(
-          (i) => i !== childIndex,
+          (i) => i !== childIndex
         ),
       }));
     }
@@ -227,13 +227,13 @@ export default function Navbar() {
                             </a>
                             {subItem.nested &&
                               activeNestedDropdowns[index]?.includes(
-                                subIndex,
+                                subIndex
                               ) && (
                                 <div className="absolute left-full top-0 ml-0 w-56 bg-white shadow-lg rounded-r-md z-50 border-l-2 border-blue-500">
                                   {subItem.nested.map(
                                     (
                                       nestedItem: NestedItem,
-                                      nestedIndex: number,
+                                      nestedIndex: number
                                     ) => (
                                       <a
                                         key={nestedIndex}
@@ -242,7 +242,7 @@ export default function Navbar() {
                                       >
                                         {nestedItem.title}
                                       </a>
-                                    ),
+                                    )
                                   )}
                                 </div>
                               )}
@@ -311,7 +311,7 @@ export default function Navbar() {
                     <button className="w-full py-3 px-6 rounded-full text-sm bg-blue-500 text-white hover:bg-blue-600 duration-200 capitalize font-bold">
                       Go to checkout
                     </button>
-                    <button className="w-full py-3 px-6 rounded-full text-sm bg-blue-500 text-white hover:bg-blue-600 duration-200 capitalize font-bold flex items-center justify-center gap-2">
+                    <button className="w-full py-3 px-6 rounded-full text-sm bg-yellow-500 text-white hover:bg-blue-600 duration-200 capitalize font-bold flex items-center justify-center gap-2">
                       checkout with <FaCcPaypal className="text-2xl" />
                     </button>
                   </div>
@@ -343,21 +343,21 @@ export default function Navbar() {
                         </a>
                       </li>
                       <li>
-                        <a
-                          href="#"
+                        <Link
                           className="block hover:text-blue-500 transition-colors"
+                          href={"/shoping-card"}
                         >
                           My Wish List {`(0)`}
-                        </a>
+                        </Link>
                       </li>
-                      <li>
-                        <a
-                          href="#"
-                          className="block hover:text-blue-500 transition-colors"
-                        >
-                          Compare {`(0)`}{" "}
-                        </a>
-                      </li>
+                      {/* <li> */}
+                      {/*   <a */}
+                      {/*     href="#" */}
+                      {/*     className="block hover:text-blue-500 transition-colors" */}
+                      {/*   > */}
+                      {/*     Compare {`(0)`}{" "} */}
+                      {/*   </a> */}
+                      {/* </li> */}
                       <li className="border-t border-gray-200 pt-3">
                         <Link
                           href="/register"
@@ -442,7 +442,7 @@ export default function Navbar() {
                   <button className="w-full py-3 rounded-full text-sm bg-blue-500 text-white">
                     Go to Checkout
                   </button>
-                  <button className="w-full py-3 rounded-full text-sm bg-blue-500 text-white flex items-center justify-center gap-2">
+                  <button className="w-full py-3 rounded-full text-sm bg-yelllow-500 text-white flex items-center justify-center gap-2">
                     Checkout with <FaCcPaypal className="text-xl" />
                   </button>
                 </div>
@@ -472,7 +472,7 @@ const MobileNavItem = ({ item, index }: { item: Item; index: number }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <h4 key={index} className="w-full py-3 border-b border-gray-200">
+    <h4 key={index} className="w-full py-3 border-b border-gray-200 capitalize">
       <div
         className="flex justify-between items-center text-sm font-semibold text-black hover:text-blue-500 duration-300 transition-colors cursor-pointer"
         onClick={() => {
@@ -527,7 +527,7 @@ const MobileNavItem = ({ item, index }: { item: Item; index: number }) => {
                       >
                         {nestedItem.title}
                       </a>
-                    ),
+                    )
                   )}
                 </div>
               )}
