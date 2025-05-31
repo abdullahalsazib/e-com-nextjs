@@ -14,6 +14,7 @@ import {
   NavLink as navLink,
 } from "../data/navegationLinks";
 import { Item, NestedItem, SubItem } from "../type/type";
+import { useAuth } from "../context/AuthContext";
 
 export default function Navbar() {
   const router = useRouter();
@@ -32,6 +33,9 @@ export default function Navbar() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const cartRef = useRef<HTMLDivElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
+
+  // useAuth
+  const { user, isLoading, logout } = useAuth();
 
   useEffect(() => {
     const handleResize = () => {
@@ -126,7 +130,7 @@ export default function Navbar() {
       setActiveNestedDropdowns((prev) => ({
         ...prev,
         [`${parentIndex}`]: (prev[`${parentIndex}`] || []).filter(
-          (i) => i !== childIndex
+          (i) => i !== childIndex,
         ),
       }));
     }
@@ -227,13 +231,13 @@ export default function Navbar() {
                             </a>
                             {subItem.nested &&
                               activeNestedDropdowns[index]?.includes(
-                                subIndex
+                                subIndex,
                               ) && (
                                 <div className="absolute left-full top-0 ml-0 w-56 bg-white shadow-lg rounded-r-md z-50 border-l-2 border-blue-500">
                                   {subItem.nested.map(
                                     (
                                       nestedItem: NestedItem,
-                                      nestedIndex: number
+                                      nestedIndex: number,
                                     ) => (
                                       <a
                                         key={nestedIndex}
@@ -242,7 +246,7 @@ export default function Navbar() {
                                       >
                                         {nestedItem.title}
                                       </a>
-                                    )
+                                    ),
                                   )}
                                 </div>
                               )}
@@ -358,22 +362,28 @@ export default function Navbar() {
                       {/*     Compare {`(0)`}{" "} */}
                       {/*   </a> */}
                       {/* </li> */}
-                      <li className="border-t border-gray-200 pt-3">
-                        <Link
-                          href="/register"
-                          className="block hover:text-blue-500 transition-colors"
-                        >
-                          Create an Account
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          href="/login"
-                          className="block hover:text-blue-500 transition-colors"
-                        >
-                          Sign In
-                        </Link>
-                      </li>
+                      {isLoading && <h1>Loading data...</h1>}
+                      {!user && (
+                        <>
+                          {" "}
+                          <li className="border-t border-gray-200 pt-3">
+                            <Link
+                              href="/register"
+                              className="block hover:text-blue-500 transition-colors"
+                            >
+                              Create an Account
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              href="/login"
+                              className="block hover:text-blue-500 transition-colors"
+                            >
+                              Sign In
+                            </Link>
+                          </li>{" "}
+                        </>
+                      )}
                     </ul>
                   </div>
                 </div>
@@ -527,7 +537,7 @@ const MobileNavItem = ({ item, index }: { item: Item; index: number }) => {
                       >
                         {nestedItem.title}
                       </a>
-                    )
+                    ),
                   )}
                 </div>
               )}

@@ -1,15 +1,67 @@
 "use client";
 import LoginBtn from "@/app/components/buttons/LoginBtn";
 import Breadcrumb from "@/app/components/smallComponent/Breadcrumb";
-import React from "react";
+import { registerUser } from "@/services/auth.service";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 
+interface FormDataType {
+  name: string;
+  email: string;
+  password: string;
+  role: string;
+}
 const breadcrumb = [
   { label: "Home", link: "/" },
   { label: "Register", active: true },
 ];
 
 const RegisterPage = () => {
-  // const route = useRouter();
+  const route = useRouter();
+  const [formData, setFormData] = useState<FormDataType>({
+    name: "",
+    email: "",
+    password: "",
+    role: "user",
+  });
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+
+    try {
+      // Add client-side validation
+      // if (formData.password.length < 6) {
+      //   setError("Password must be at least 6 characters");
+      //   return;
+      // }
+
+      const { data } = await registerUser({
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        role: formData.role,
+      });
+
+      // console.log("Registration successful:", data.message);
+
+      route.push("/");
+
+      console.log(data.message);
+      // if (data.token) {
+      //   localStorage.setItem("authToken", data.token);
+      // }
+    } catch (err: any) {
+      // console.log("Full error:", error);
+      setError(
+        err.response?.data?.message ||
+          err.response?.data?.error ||
+          err.message ||
+          "Registration failed. Please try again.",
+      );
+    }
+  };
 
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-2">
@@ -21,14 +73,18 @@ const RegisterPage = () => {
         </h1>
       </div>
 
+      {error && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+          {error}
+        </div>
+      )}
       <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12 py-8">
         {/* Registration Form */}
         <div className="bg-[#F5F7FF] p-6 sm:p-8 md:p-10 w-full rounded-lg shadow-sm">
           <h1 className="text-lg md:text-xl font-bold capitalize pb-5">
             Personal Information
           </h1>
-
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
               <div className="space-y-2">
                 <label
@@ -41,10 +97,10 @@ const RegisterPage = () => {
                   id="firstName"
                   type="text"
                   placeholder="Your first name"
-                  className="mt-1 py-2 sm:py-3 px-4 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
+                  disabled
+                  className="cursor-not-allowed mt-1 py-2 sm:py-3 px-4 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
                 />
               </div>
-
               <div className="space-y-2">
                 <label htmlFor="lastName" className="block text-sm font-medium">
                   Last Name
@@ -53,9 +109,26 @@ const RegisterPage = () => {
                   id="lastName"
                   type="text"
                   placeholder="Your last name"
-                  className="mt-1 py-2 sm:py-3 px-4 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
+                  disabled
+                  className=" cursor-not-allowed  mt-1 py-2 sm:py-3 px-4 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
                 />
-              </div>
+              </div>{" "}
+            </div>
+            <div className=" w-full">
+              <label htmlFor="name" className="block text-sm font-medium">
+                Name
+              </label>
+              <input
+                id="name"
+                type="text"
+                value={formData.name}
+                onChange={(e) =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
+                required
+                placeholder="Your name"
+                className="   mt-1 py-2 sm:py-3 px-4 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
+              />
             </div>
 
             <div className="space-y-2">
@@ -65,6 +138,11 @@ const RegisterPage = () => {
               <input
                 id="email"
                 type="email"
+                value={formData.email}
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
+                required
                 placeholder="Your email"
                 className="mt-1 py-2 sm:py-3 px-4 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
               />
@@ -78,12 +156,17 @@ const RegisterPage = () => {
                 <input
                   id="password"
                   type="password"
+                  value={formData.password}
+                  onChange={(e) =>
+                    setFormData({ ...formData, password: e.target.value })
+                  }
+                  required
                   placeholder="Your password"
                   className="mt-1 py-2 sm:py-3 px-4 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
                 />
               </div>
 
-              <div className="space-y-2">
+              {/* <div className="space-y-2">
                 <label
                   htmlFor="confirmPassword"
                   className="block text-sm font-medium"
@@ -94,12 +177,20 @@ const RegisterPage = () => {
                   id="confirmPassword"
                   type="password"
                   placeholder="Confirm password"
+                  value={formData.confirmPassword}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      confirmPassword: e.target.value,
+                    })
+                  }
+                  required
                   className="mt-1 py-2 sm:py-3 px-4 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
                 />
-              </div>
+              </div> */}
             </div>
 
-            <div className="space-y-2">
+            {/* <div className="space-y-2">
               <label htmlFor="phone" className="block text-sm font-medium">
                 Phone Number (Optional)
               </label>
@@ -109,10 +200,14 @@ const RegisterPage = () => {
                 placeholder="Your phone number"
                 className="mt-1 py-2 sm:py-3 px-4 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
               />
-            </div>
+            </div> */}
 
             <div className="pt-4">
-              <LoginBtn title="Create Account" className="w-full md:w-auto" />
+              <LoginBtn
+                type="submit"
+                title="Create Account"
+                className="w-full md:w-auto"
+              />
             </div>
           </form>
         </div>

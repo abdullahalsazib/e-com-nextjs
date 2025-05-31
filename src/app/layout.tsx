@@ -4,6 +4,7 @@ import "./globals.css";
 import Navber from "./components/Navber";
 import Footer from "./components/Footer";
 import NextTopLoader from "nextjs-toploader";
+import { AuthProvider } from "./context/AuthContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,10 +27,12 @@ export default function RootLayout({
         cz-shortcut-listen="true"
         className={`${geistSans.className}  antialiased`}
       >
-        <NextTopLoader />
-        <Navber />
-        {children}
-        <Footer />
+        <AuthProvider>
+          <NextTopLoader />
+          <Navber />
+          {children}
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );

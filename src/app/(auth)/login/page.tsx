@@ -1,15 +1,59 @@
 "use client";
 import LoginBtn from "@/app/components/buttons/LoginBtn";
 import Breadcrumb from "@/app/components/smallComponent/Breadcrumb";
+import { useAuth } from "@/app/context/AuthContext";
+import { login as loginUser } from "@/services/auth.service";
+import { log } from "console";
 import Link from "next/link";
-import React from "react";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 
+interface LoginFormType {
+  email: string;
+  password: string;
+}
 const breadcrumbItems = [
   { label: "Home", link: "/" },
   { label: "Login", active: true },
 ];
 const LoginPage = () => {
-  // const route = useRouter();
+  const route = useRouter();
+  const { login } = useAuth();
+  const [formData, setFormData] = useState<LoginFormType>({
+    email: "",
+    password: "",
+  });
+
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+
+    try {
+      const { data } = await loginUser({
+        email: formData.email,
+        password: formData.password,
+      });
+      console.log("login response data: ", data);
+      if (data.access_token) {
+        await login(data.access_token);
+        localStorage.setItem("authToken", data.access_token);
+        route.push("/");
+      } else {
+        throw new Error("No access token found");
+      }
+
+      // window.location.reload();
+    } catch (err: any) {
+      setError(
+        err.response?.data?.message ||
+          err.response?.data?.error ||
+          err.message ||
+          "Registration failed. Please try again.",
+      );
+    }
+  };
 
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-2">
@@ -19,6 +63,11 @@ const LoginPage = () => {
           Customer Login
         </h1>
       </div>
+      {error && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+          {error}
+        </div>
+      )}
 
       <div className="flex flex-col lg:flex-row items-center justify-between gap-6 md:gap-8 lg:gap-10 py-6 md:py-8 lg:py-10">
         {/* Login Form */}
@@ -32,7 +81,7 @@ const LoginPage = () => {
             </p>
           </div>
 
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleSubmit}>
             <div className="space-y-2">
               <label
                 htmlFor="email"
@@ -43,6 +92,10 @@ const LoginPage = () => {
               <input
                 id="email"
                 type="email"
+                value={formData.email}
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
                 placeholder="Your email"
                 className="mt-1 py-2 sm:py-3 px-4 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
               />
@@ -57,6 +110,10 @@ const LoginPage = () => {
               </label>
               <input
                 id="password"
+                value={formData.password}
+                onChange={(e) =>
+                  setFormData({ ...formData, password: e.target.value })
+                }
                 type="password"
                 placeholder="Your password"
                 className="mt-1 py-2 sm:py-3 px-4 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
@@ -64,7 +121,11 @@ const LoginPage = () => {
             </div>
 
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-              <LoginBtn title="Sign in" className="w-full sm:w-auto" />
+              <LoginBtn
+                type="submit"
+                title="Sign in"
+                className="w-full sm:w-auto"
+              />
               <Link
                 href="/forgot"
                 className="text-sm md:text-base font-semibold text-indigo-500 hover:text-indigo-600 duration-200 capitalize text-center sm:text-left"
@@ -90,6 +151,11 @@ const LoginPage = () => {
               <li>Keep more than one address</li>
               <li>Track orders and more</li>
             </ul>
+            <div>
+              <h1>demo account: user</h1>
+              <p>jack@jack.com</p>
+              <p>1234</p>
+            </div>
           </div>
 
           <LoginBtn
