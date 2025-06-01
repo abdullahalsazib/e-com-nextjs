@@ -5,6 +5,7 @@ import Navber from "./components/Navber";
 import Footer from "./components/Footer";
 import NextTopLoader from "nextjs-toploader";
 import { AuthProvider } from "./context/AuthContext";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,6 +30,7 @@ export default function RootLayout({
       >
         <AuthProvider>
           <NextTopLoader />
+          <Toaster position="top-center" />
           <Navber />
           {children}
           <Footer />

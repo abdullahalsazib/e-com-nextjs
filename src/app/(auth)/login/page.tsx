@@ -3,10 +3,10 @@ import LoginBtn from "@/app/components/buttons/LoginBtn";
 import Breadcrumb from "@/app/components/smallComponent/Breadcrumb";
 import { useAuth } from "@/app/context/AuthContext";
 import { login as loginUser } from "@/services/auth.service";
-import { log } from "console";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 
 interface LoginFormType {
   email: string;
@@ -18,7 +18,7 @@ const breadcrumbItems = [
 ];
 const LoginPage = () => {
   const route = useRouter();
-  const { login } = useAuth();
+  const { login, isLoading } = useAuth();
   const [formData, setFormData] = useState<LoginFormType>({
     email: "",
     password: "",
@@ -37,16 +37,25 @@ const LoginPage = () => {
       });
       console.log("login response data: ", data);
       if (data.access_token) {
+        toast.success(data.message);
         await login(data.access_token);
         localStorage.setItem("authToken", data.access_token);
         route.push("/");
       } else {
+        toast.error("No access token found");
         throw new Error("No access token found");
       }
 
       // window.location.reload();
     } catch (err: any) {
       setError(
+        err.response?.data?.message ||
+          err.response?.data?.error ||
+          err.message ||
+          "Registration failed. Please try again.",
+      );
+
+      toast.error(
         err.response?.data?.message ||
           err.response?.data?.error ||
           err.message ||
@@ -63,6 +72,11 @@ const LoginPage = () => {
           Customer Login
         </h1>
       </div>
+      {isLoading && (
+        <div className="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded mb-4">
+          Loading....
+        </div>
+      )}
       {error && (
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
           {error}
@@ -155,6 +169,13 @@ const LoginPage = () => {
               <h1>demo account: user</h1>
               <p>jack@jack.com</p>
               <p>1234</p>
+
+              <div>
+                {`
+"email": "admin2@admin2.com",
+  "password": "12345",
+`}
+              </div>
             </div>
           </div>
 

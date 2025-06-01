@@ -37,6 +37,11 @@ export default function Navbar() {
   // useAuth
   const { user, isLoading, logout } = useAuth();
 
+  console.log(user);
+  const handleLogout = () => {
+    logout();
+  };
+
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 1024);
@@ -339,12 +344,12 @@ export default function Navbar() {
                   <div className="p-4">
                     <ul className="space-y-3 text-sm text-gray-700">
                       <li>
-                        <a
-                          href="#"
+                        <Link
+                          href="/user-account"
                           className="block hover:text-blue-500 transition-colors"
                         >
                           My Account
-                        </a>
+                        </Link>
                       </li>
                       <li>
                         <Link
@@ -363,7 +368,7 @@ export default function Navbar() {
                       {/*   </a> */}
                       {/* </li> */}
                       {isLoading && <h1>Loading data...</h1>}
-                      {!user && (
+                      {!user ? (
                         <>
                           {" "}
                           <li className="border-t border-gray-200 pt-3">
@@ -383,6 +388,12 @@ export default function Navbar() {
                             </Link>
                           </li>{" "}
                         </>
+                      ) : (
+                        <li onClick={handleLogout}>
+                          <p className=" cursor-pointer block hover:text-blue-500 transition-colors">
+                            Log out
+                          </p>
+                        </li>
                       )}
                     </ul>
                   </div>

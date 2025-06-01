@@ -3,11 +3,13 @@
 
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { getProfile } from "@/services/auth.service";
+import toast from "react-hot-toast";
 
 interface User {
   id: string;
   name: string;
   email: string;
+  role: "admin" | "superadmin" | "user";
 }
 
 interface AuthContextType {
@@ -24,12 +26,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchUser = async () => {
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      setUser(null);
+      setIsLoading(false);
+      return;
+    }
+
     try {
       const res = await getProfile();
       setUser(res.data.data);
     } catch (err) {
       console.error("getProfile failed:", err);
-      logout(); // Clear token and user
+      logout();
     } finally {
       setIsLoading(false);
     }
@@ -50,12 +59,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const logout = () => {
-    localStorage.removeItem("authToken");
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("authToken");
+    }
+    toast.success("Log out Successfully");
     setUser(null);
   };
 
   const value = useMemo(
-    () => ({ user, isLoading, login, logout }),
+    () => ({
+      user,
+      isLoading,
+      isAuthenticated: !!user,
+      login,
+      logout,
+    }),
     [user, isLoading],
   );
 

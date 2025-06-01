@@ -3,11 +3,11 @@
 import apiClient from "@/lib/api-client";
 
 export const getProducts = async () => {
-  const response = await apiClient.get('api/v1/products');
-  return response.data;
+  const response = await apiClient.get("api/v1/products");
+  return response;
 };
 
 export const getProductById = async (id: string) => {
   const response = await apiClient.get(`/api/v1/products/${id}`);
   return response.data;
-}; 
+};

@@ -4,6 +4,7 @@ import Breadcrumb from "@/app/components/smallComponent/Breadcrumb";
 import { registerUser } from "@/services/auth.service";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 
 interface FormDataType {
   name: string;
@@ -46,15 +47,16 @@ const RegisterPage = () => {
 
       // console.log("Registration successful:", data.message);
 
-      route.push("/");
-
-      console.log(data.message);
-      // if (data.token) {
-      //   localStorage.setItem("authToken", data.token);
-      // }
+      toast.success(data.message);
+      route.push("/login");
     } catch (err: any) {
-      // console.log("Full error:", error);
       setError(
+        err.response?.data?.message ||
+          err.response?.data?.error ||
+          err.message ||
+          "Registration failed. Please try again.",
+      );
+      toast.error(
         err.response?.data?.message ||
           err.response?.data?.error ||
           err.message ||
