@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
-import Navber from "./components/Navber";
-import Footer from "./components/Footer";
 import NextTopLoader from "nextjs-toploader";
 import { AuthProvider } from "./context/AuthContext";
 import { Toaster } from "react-hot-toast";
+import { Suspense } from "react";
+import Loading from "./components/Loading";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,13 +28,15 @@ export default function RootLayout({
         cz-shortcut-listen="true"
         className={`${geistSans.className}  antialiased`}
       >
-        <AuthProvider>
-          <NextTopLoader />
-          <Toaster position="top-center" />
-          <Navber />
-          {children}
-          <Footer />
-        </AuthProvider>
+        <Suspense fallback={<Loading />}>
+          <AuthProvider>
+            <NextTopLoader />
+            <Toaster position="top-center" />
+            {/* <Navber /> */}
+            {children}
+            {/* <Footer /> */}
+          </AuthProvider>
+        </Suspense>
       </body>
     </html>
   );

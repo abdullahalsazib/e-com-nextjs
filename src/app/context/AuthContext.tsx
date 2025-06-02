@@ -4,6 +4,7 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { getProfile } from "@/services/auth.service";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 interface User {
   id: string;
@@ -22,6 +23,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const route = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -56,6 +58,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const login = async (token: string) => {
     localStorage.setItem("authToken", token);
     await fetchUser();
+    switch (user?.role) {
+      case "admin":
+        route.push("/seller");
+      case "superadmin":
+        route.push("/");
+      default:
+        route.push("/");
+    }
   };
 
   const logout = () => {

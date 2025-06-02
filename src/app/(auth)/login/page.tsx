@@ -4,7 +4,6 @@ import Breadcrumb from "@/app/components/smallComponent/Breadcrumb";
 import { useAuth } from "@/app/context/AuthContext";
 import { login as loginUser } from "@/services/auth.service";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 
@@ -17,7 +16,7 @@ const breadcrumbItems = [
   { label: "Login", active: true },
 ];
 const LoginPage = () => {
-  const route = useRouter();
+  // const route = useRouter();
   const { login, isLoading } = useAuth();
   const [formData, setFormData] = useState<LoginFormType>({
     email: "",
@@ -40,7 +39,7 @@ const LoginPage = () => {
         toast.success(data.message);
         await login(data.access_token);
         localStorage.setItem("authToken", data.access_token);
-        route.push("/");
+        // route.push("/");
       } else {
         toast.error("No access token found");
         throw new Error("No access token found");

@@ -36,8 +36,7 @@ export default function Navbar() {
 
   // useAuth
   const { user, isLoading, logout } = useAuth();
-
-  console.log(user);
+  // console.log(user);
   const handleLogout = () => {
     logout();
   };
@@ -343,22 +342,37 @@ export default function Navbar() {
                 <div className="absolute top-12 right-0 z-50 w-64 bg-white rounded-md shadow-lg border border-gray-200">
                   <div className="p-4">
                     <ul className="space-y-3 text-sm text-gray-700">
-                      <li>
-                        <Link
-                          href="/user-account"
-                          className="block hover:text-blue-500 transition-colors"
-                        >
-                          My Account
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          className="block hover:text-blue-500 transition-colors"
-                          href={"/shoping-card"}
-                        >
-                          My Wish List {`(0)`}
-                        </Link>
-                      </li>
+                      {user?.role == "admin" ? (
+                        <>
+                          <li>
+                            <Link
+                              href={"/seller"}
+                              className="block hover:text-blue-500 transition-colors"
+                            >
+                              Seller Dashboard
+                            </Link>
+                          </li>
+                        </>
+                      ) : (
+                        <>
+                          <li>
+                            <Link
+                              href="/user-account"
+                              className="block hover:text-blue-500 transition-colors"
+                            >
+                              My Account
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              className="block hover:text-blue-500 transition-colors"
+                              href={"/shoping-card"}
+                            >
+                              My Wish List {`(0)`}
+                            </Link>
+                          </li>
+                        </>
+                      )}
                       {/* <li> */}
                       {/*   <a */}
                       {/*     href="#" */}
