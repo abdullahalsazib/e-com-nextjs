@@ -6,29 +6,30 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 if (!API_BASE_URL) {
   throw new Error(
-    "NEXT_PUBLIC_API_URL is not defined in environment variables",
+    "NEXT_PUBLIC_API_URL is not defined in environment variables"
   );
 }
+
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
+  withCredentials: true,
 });
-
 // Request interceptor for adding auth token
 
 apiClient.interceptors.request.use(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (config: any) => {
-    const token = localStorage.getItem("authToken");
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    if (typeof window !== "undefined") {
+      const token = localStorage.getItem("authToken");
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
     }
     return config;
   },
   (error: AxiosError) => {
     return Promise.reject(error);
-  },
+  }
 );
 // Response interceptor for handling errors
 apiClient.interceptors.response.use(
@@ -42,8 +43,7 @@ apiClient.interceptors.response.use(
       }
     }
     return Promise.reject(error);
-  },
+  }
 );
 
 export default apiClient;
-

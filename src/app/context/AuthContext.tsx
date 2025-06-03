@@ -1,7 +1,13 @@
-// src/context/AuthContext.tsx
 "use client";
 
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  useCallback,
+} from "react";
 import { getProfile } from "@/services/auth.service";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -27,7 +33,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchUser = async () => {
+  const fetchUser = useCallback(async () => {
     const token = localStorage.getItem("authToken");
     if (!token) {
       setUser(null);
@@ -44,37 +50,45 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     } finally {
       setIsLoading(false);
     }
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     if (token) {
-      fetchUser(); // Only if token exists
+      fetchUser();
     } else {
-      setIsLoading(false); // No user, but loading complete
+      setIsLoading(false);
     }
-  }, []);
+  }, [fetchUser]);
 
-  const login = async (token: string) => {
-    localStorage.setItem("authToken", token);
-    await fetchUser();
-    switch (user?.role) {
-      case "admin":
-        route.push("/seller");
-      case "superadmin":
-        route.push("/");
-      default:
-        route.push("/");
-    }
-  };
+  const login = useCallback(
+    async (token: string) => {
+      localStorage.setItem("authToken", token);
+      await fetchUser();
 
-  const logout = () => {
+      switch (user?.role) {
+        case "admin":
+          route.push("/seller");
+          break;
+        case "superadmin":
+          route.push("/");
+          break;
+        default:
+          route.push("/");
+          break;
+      }
+    },
+    [fetchUser, route, user?.role]
+  );
+
+  const logout = useCallback(() => {
     if (typeof window !== "undefined") {
       localStorage.removeItem("authToken");
     }
     toast.success("Log out Successfully");
     setUser(null);
-  };
+  }, []);
 
   const value = useMemo(
     () => ({
@@ -84,7 +98,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       login,
       logout,
     }),
-    [user, isLoading],
+    [user, isLoading, login, logout]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

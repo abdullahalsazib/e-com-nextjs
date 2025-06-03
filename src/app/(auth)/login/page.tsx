@@ -3,6 +3,7 @@ import LoginBtn from "@/app/components/buttons/LoginBtn";
 import Breadcrumb from "@/app/components/smallComponent/Breadcrumb";
 import { useAuth } from "@/app/context/AuthContext";
 import { login as loginUser } from "@/services/auth.service";
+import axios from "axios";
 import Link from "next/link";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
@@ -11,6 +12,7 @@ interface LoginFormType {
   email: string;
   password: string;
 }
+
 const breadcrumbItems = [
   { label: "Home", link: "/" },
   { label: "Login", active: true },
@@ -46,20 +48,23 @@ const LoginPage = () => {
       }
 
       // window.location.reload();
-    } catch (err: any) {
-      setError(
-        err.response?.data?.message ||
-          err.response?.data?.error ||
-          err.message ||
-          "Registration failed. Please try again.",
-      );
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        console.log(err);
+        setError(
+          err.response?.data?.message ||
+            err.response?.data?.error ||
+            err.message ||
+            "Registration failed. Please try again."
+        );
 
-      toast.error(
-        err.response?.data?.message ||
-          err.response?.data?.error ||
-          err.message ||
-          "Registration failed. Please try again.",
-      );
+        toast.error(
+          err.response?.data?.message ||
+            err.response?.data?.error ||
+            err.message ||
+            "Registration failed. Please try again."
+        );
+      }
     }
   };
 

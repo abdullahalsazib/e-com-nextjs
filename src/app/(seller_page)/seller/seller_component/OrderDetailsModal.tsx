@@ -2,6 +2,30 @@
 
 import { useState } from "react";
 
+// Define OrderStatus type
+type OrderStatus =
+  | "pending"
+  | "processing"
+  | "shipped"
+  | "delivered"
+  | "cancelled";
+
+// Define OrderItem and Order interfaces
+interface OrderItem {
+  product: string;
+  quantity: number;
+  price: number;
+}
+
+interface Order {
+  id: string;
+  customer: string;
+  date: string; // ISO string
+  amount: number;
+  status: OrderStatus;
+  items: OrderItem[];
+}
+
 interface OrderDetailsModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -102,7 +126,7 @@ const OrderDetailsModal = ({
           <h4 className="text-md font-medium text-gray-700 mb-2">
             Order Items
           </h4>
-          <div className="bg-gray-50 rounded-lg p-4">
+          <div className="bg-gray-50 rounded-lg p-4 overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead>
                 <tr>

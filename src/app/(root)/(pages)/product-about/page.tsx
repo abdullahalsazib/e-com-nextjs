@@ -8,7 +8,6 @@ import { HiOutlineBars3BottomRight } from "react-icons/hi2";
 import { VscMail } from "react-icons/vsc";
 
 //image import
-import paypal from "@/../public/paypal.svg";
 import product1 from "@/../public/product-image/image2.png";
 import zipTextLogo from "@/../public/ZipTextLogo.svg";
 import banner from "@/../public/images/Rectangle-11.png";
@@ -88,10 +87,10 @@ const Page = () => {
             />
 
             {/* <div className="flex items-center  bg-red-400 md:justify-center gap-2 text-sm w-full sm:w-auto"> */}
-              <button className="py-2 px-4 sm:px-6 rounded-full bg-blue-500 hover:bg-blue-600 duration-200 cursor-pointer font-semibold text-white capitalize whitespace-nowrap">
-                add to cart  
-              </button>
-             {/*  <button className="py-3 px-4 sm:px-7 rounded-full bg-[#FFB800] hover:bg-[#ffd877] duration-200 cursor-pointer font-semibold text-white capitalize">
+            <button className="py-2 px-4 sm:px-6 rounded-full bg-blue-500 hover:bg-blue-600 duration-200 cursor-pointer font-semibold text-white capitalize whitespace-nowrap">
+              add to cart
+            </button>
+            {/*  <button className="py-3 px-4 sm:px-7 rounded-full bg-[#FFB800] hover:bg-[#ffd877] duration-200 cursor-pointer font-semibold text-white capitalize">
                 <Image
                   src={paypal}
                   className="w-full max-w-[60px]"

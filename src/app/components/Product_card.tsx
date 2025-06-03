@@ -1,38 +1,26 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
-import Image from "next/image";
+
 import React, { useState } from "react";
 import { IoCheckmarkCircle } from "react-icons/io5";
 import { FaCartArrowDown, FaRegHeart, FaHeart, FaStar } from "react-icons/fa";
 import { GrMore } from "react-icons/gr";
 import p1 from "@/../public/product-image/image-1.png";
-import { StaticImport } from "next/dist/shared/lib/get-img-props";
+
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Product2 } from "../data/product";
 
-interface Product {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  originalPrice?: number;
-  rating: number;
-  reviewCount: number;
-  image: string | StaticImport;
-  inStock: boolean;
-}
-
-const defaultProduct: Product = {
-  id: 0,
+const defaultProduct: Product2 = {
+  ID: 0,
   name: "Product Name",
   description: "Product description not available",
   price: 0,
-  rating: 0,
-  reviewCount: 0,
-  image: p1,
-  inStock: false,
+  stock: 0,
+  image_url: p1.src,
 };
 
-const ProductCard = ({ product = defaultProduct }: { product?: Product }) => {
+const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
@@ -40,15 +28,17 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product }) => {
 
   // Safe destructuring with fallbacks
   const {
-    inStock = false,
-    image = "/placeholder-product.png",
+    stock = 0,
+    image_url = "sorce-of-image.jpg",
     name = "Product Name",
-    description = "Description not available",
+    // description = "Description not available",
     price = 0,
-    originalPrice,
+    original_price,
     rating = 0,
-    reviewCount = 0,
+    review_count = 0,
   } = product || {};
+
+  const inStock = stock > 0;
 
   const renderStars = () => {
     const stars = [];
@@ -81,16 +71,18 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product }) => {
 
   return (
     <div
-      className={`bg-white px-4 py-4 flex flex-col cursor-pointer transition-all duration-300 border border-gray-200 rounded-lg relative overflow-hidden ${isHovered ? "shadow-lg" : "shadow-sm hover:shadow-md"
-        }`}
+      className={`bg-white px-4 py-4 flex flex-col cursor-pointer transition-all duration-300 border border-gray-200 rounded-lg relative overflow-hidden ${
+        isHovered ? "shadow-lg" : "shadow-sm hover:shadow-md"
+      }`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Stock Status */}
       <div className="flex justify-between items-start w-full">
         <p
-          className={`text-xs flex items-center gap-1 ${inStock ? "text-green-700" : "text-red-600"
-            }`}
+          className={`text-xs flex items-center gap-1 ${
+            inStock ? "text-green-700" : "text-red-600"
+          }`}
         >
           <IoCheckmarkCircle />
           {inStock ? "In stock" : "Out of stock"}
@@ -107,36 +99,29 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product }) => {
 
       {/* Product Image */}
       <div className="w-full h-40 md:h-48 flex items-center justify-center my-4 relative">
-        <Image
-          src={image}
-          alt={name}
-          width={160}
-          height={160}
-          className="object-contain w-full h-full"
-          onError={(e) => {
-            (e.target as HTMLImageElement).src = "/placeholder-product.png";
-          }}
-        />
+        <img width={160} height={160} src={image_url} alt={name} />
       </div>
 
       {/* Product Info */}
       <div className="flex flex-col w-full space-y-3">
         {/* Rating */}
-        <div className="flex items-center">
-          <div className="flex">{renderStars()}</div>
-          <span className="text-xs text-gray-500 ml-2">({reviewCount})</span>
-        </div>
+        {rating && (
+          <div className="flex items-center">
+            <div className="flex">{renderStars()}</div>
+            <span className="text-xs text-gray-500 ml-2">({review_count})</span>
+          </div>
+        )}
 
         {/* Product Name/Description */}
         <h3 className="text-sm font-medium text-gray-800 line-clamp-2">
-          <span className="font-bold">EX DISPLAY:</span> {description}
+          {name}
         </h3>
 
         {/* Price */}
         <div className="flex flex-col">
-          {originalPrice && (
+          {original_price && (
             <del className="text-xs text-gray-400">
-              ${originalPrice.toFixed(2)}
+              ${original_price.toFixed(2)}
             </del>
           )}
           <span className="text-lg font-bold text-gray-900">
@@ -150,16 +135,17 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product }) => {
         <button
           onClick={handleAddToCart}
           disabled={isAddingToCart || !inStock}
-          className={`flex-1 py-2 px-3 rounded-full text-xs font-medium flex items-center justify-center gap-1 transition-colors ${isAddingToCart || !inStock
+          className={`flex-1 py-2 px-3 rounded-full text-xs font-medium flex items-center justify-center gap-1 transition-colors ${
+            isAddingToCart || !inStock
               ? "bg-gray-300 cursor-not-allowed"
               : "bg-blue-500 hover:bg-blue-600 text-white"
-            }`}
+          }`}
         >
           <FaCartArrowDown />
           <span>Add</span>
         </button>
         <button
-          onClick={() => router.push("/product-about")}
+          onClick={() => router.push(`/product/${product?.ID}`)}
           className="p-2 rounded-full border border-gray-300 text-gray-700 hover:bg-gray-100"
         >
           <GrMore size={14} />
@@ -168,8 +154,9 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product }) => {
 
       {/* Desktop Hover Actions */}
       <div
-        className={`hidden md:flex flex-col gap-2 absolute inset-0 bg-white bg-opacity-95 p-4 transition-opacity duration-300 ${isHovered ? "opacity-100" : "opacity-0 pointer-events-none"
-          }`}
+        className={`hidden md:flex flex-col gap-2 absolute inset-0 bg-white bg-opacity-95 p-4 transition-opacity duration-300 ${
+          isHovered ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
       >
         <div className="flex justify-end">
           <button
@@ -188,17 +175,17 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product }) => {
           <button
             onClick={handleAddToCart}
             disabled={isAddingToCart || !inStock}
-            className={`w-full py-2 px-4 rounded-full text-sm font-medium flex items-center justify-center gap-2 transition-colors ${isAddingToCart || !inStock
+            className={`w-full py-2 px-4 rounded-full text-sm font-medium flex items-center justify-center gap-2 transition-colors ${
+              isAddingToCart || !inStock
                 ? "bg-gray-300 cursor-not-allowed"
                 : "bg-blue-500 hover:bg-blue-600 text-white"
-              }`}
+            }`}
           >
             <FaCartArrowDown />
             <span>Add to Cart</span>
           </button>
           <Link
-            href={"/product-about"}
-            // onClick={() => router.push("/product-about")}
+            href={`/product/${product?.ID}`}
             className="w-full py-2 px-4 rounded-full text-sm font-medium flex items-center justify-center gap-2 border border-gray-300 hover:bg-gray-100"
           >
             <GrMore size={14} />

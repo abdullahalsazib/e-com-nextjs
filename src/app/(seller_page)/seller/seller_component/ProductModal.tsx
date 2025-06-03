@@ -1,45 +1,46 @@
 "use client";
 
+import { Product } from "@/app/data/product";
 import { useState } from "react";
 
 interface ProductModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (product: {
-    name: string;
-    price: number;
-    stock: number;
-    category: string;
-    image: string;
-  }) => void;
+  onSubmit: (product: Product) => void;
 }
 
 const ProductModal = ({ isOpen, onClose, onSubmit }: ProductModalProps) => {
-  const [product, setProduct] = useState({
-    name: "",
+  const [product, setProduct] = useState<Product>({
+    product_name: "",
+    description: "",
     price: 0,
     stock: 0,
-    category: "",
-    image: "",
+    image_url: "",
+    category_id: 0,
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
-    setProduct({
-      ...product,
-      [name]: name === "price" || name === "stock" ? parseFloat(value) : value,
-    });
+    setProduct((prev) => ({
+      ...prev,
+      [name]: ["price", "stock", "category_id"].includes(name)
+        ? parseFloat(value)
+        : value,
+    }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSubmit(product);
     setProduct({
-      name: "",
+      product_name: "",
+      description: "",
       price: 0,
       stock: 0,
-      category: "",
-      image: "",
+      image_url: "",
+      category_id: 0,
     });
   };
 
@@ -73,98 +74,41 @@ const ProductModal = ({ isOpen, onClose, onSubmit }: ProductModalProps) => {
               </svg>
             </button>
           </div>
-          <form onSubmit={handleSubmit}>
-            <div className="mb-4">
-              <label
-                htmlFor="name"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Product Name
-              </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={product.name}
-                onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                required
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-4 mb-4">
-              <div>
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {[
+              { label: "Product Name", name: "product_name", type: "text" },
+              { label: "Price ($)", name: "price", type: "number" },
+              { label: "Stock", name: "stock", type: "number" },
+              { label: "Category ID", name: "category_id", type: "number" },
+              { label: "Image URL", name: "image_url", type: "text" },
+              { label: "Description", name: "description", type: "text" },
+            ].map(({ label, name, type }) => (
+              <div key={name}>
                 <label
-                  htmlFor="price"
+                  htmlFor={name}
                   className="block text-sm font-medium text-gray-700 mb-1"
                 >
-                  Price ($)
+                  {label}
                 </label>
                 <input
-                  type="number"
-                  id="price"
-                  name="price"
-                  value={product.price}
+                  type={type}
+                  id={name}
+                  name={name}
+                  value={
+                    (product[name as keyof Product] ?? "") as
+                      | string
+                      | number
+                      | readonly string[]
+                  }
                   onChange={handleChange}
-                  min="0"
-                  step="0.01"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                   required
                 />
               </div>
-              <div>
-                <label
-                  htmlFor="stock"
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                >
-                  Stock
-                </label>
-                <input
-                  type="number"
-                  id="stock"
-                  name="stock"
-                  value={product.stock}
-                  onChange={handleChange}
-                  min="0"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                  required
-                />
-              </div>
-            </div>
-            <div className="mb-4">
-              <label
-                htmlFor="category"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Category
-              </label>
-              <input
-                type="text"
-                id="category"
-                name="category"
-                value={product.category}
-                onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                required
-              />
-            </div>
-            <div className="mb-4">
-              <label
-                htmlFor="image"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Image URL
-              </label>
-              <input
-                type="text"
-                id="image"
-                name="image"
-                value={product.image}
-                onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-                required
-              />
-            </div>
-            <div className="flex justify-end space-x-3">
+            ))}
+
+            <div className="flex justify-end space-x-3 pt-2">
               <button
                 type="button"
                 onClick={onClose}

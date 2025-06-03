@@ -1,9 +1,31 @@
 "use client";
-import React, { useState } from "react";
-import Product_card from "./Product_card";
-import { products } from "../data/product";
+import React, { useEffect, useState } from "react";
+import { Product2 } from "../data/product";
+import apiClient from "@/lib/api-client";
+import ProductCard from "./Product_card";
 
 const ProductCategorySection = () => {
+  const [products, setProducts] = useState<Product2[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const [error, setError] = useState<string>("");
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await apiClient.get("/api/v1/products");
+        // console.log("response: ", response.data);
+        setProducts(response.data);
+      } catch (err) {
+        setError("Failed to load products");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
   // Dynamic category data
   const categories = [
     { id: 1, name: "MSI GS Series", active: true },
@@ -20,8 +42,6 @@ const ProductCategorySection = () => {
 
   const handleCategoryChange = (categoryId: number) => {
     setActiveCategory(categoryId);
-    // Here you would typically filter products based on the selected category
-    // For now we'll just demonstrate the UI interaction
   };
 
   return (
@@ -56,9 +76,6 @@ const ProductCategorySection = () => {
 
       {/* Product Grid */}
       <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 pt-3 mb-10">
-        {/* Featured Category Banner - shows on larger screens */}
-
-        {/* Mobile Featured Banner - shows on small screens */}
         <div className="md:hidden bg-gradient-to-r from-blue-600 to-purple-600 w-full h-40 rounded-lg flex items-center justify-center flex-col gap-4 col-span-full">
           <h2 className="text-xl text-center font-bold capitalize text-white px-4">
             {featuredCategory}
@@ -70,11 +87,11 @@ const ProductCategorySection = () => {
             Shop now
           </a>
         </div>
-
-        {/* Product Cards */}
-        {products.map((product, index) => (
-          <Product_card key={index} product={product} />
-        ))}
+        {loading && <h1>Product is Loading...</h1>}
+        {error && <h1>{error}</h1>}
+        {products.map((product) => (
+          <ProductCard key={product.ID} product={product} />
+        ))}{" "}
       </div>
     </div>
   );

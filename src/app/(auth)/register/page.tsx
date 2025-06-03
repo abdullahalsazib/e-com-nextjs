@@ -2,6 +2,7 @@
 import LoginBtn from "@/app/components/buttons/LoginBtn";
 import Breadcrumb from "@/app/components/smallComponent/Breadcrumb";
 import { registerUser } from "@/services/auth.service";
+import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
@@ -49,19 +50,21 @@ const RegisterPage = () => {
 
       toast.success(data.message);
       route.push("/login");
-    } catch (err: any) {
-      setError(
-        err.response?.data?.message ||
-          err.response?.data?.error ||
-          err.message ||
-          "Registration failed. Please try again.",
-      );
-      toast.error(
-        err.response?.data?.message ||
-          err.response?.data?.error ||
-          err.message ||
-          "Registration failed. Please try again.",
-      );
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        setError(
+          err.response?.data?.message ||
+            err.response?.data?.error ||
+            err.message ||
+            "Registration failed. Please try again."
+        );
+        toast.error(
+          err.response?.data?.message ||
+            err.response?.data?.error ||
+            err.message ||
+            "Registration failed. Please try again."
+        );
+      }
     }
   };
 

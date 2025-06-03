@@ -1,37 +1,32 @@
-import { StaticImport } from "next/dist/shared/lib/get-img-props";
+// src/types/product.ts
+
 export interface Product {
-  id: number;
+  product_name: string;
+  description: string;
+  price: number | string;
+  stock: number | string;
+  image_url: string;
+  category_id: number | null;
+}
+// src/types/product.ts
+export interface Product2 {
+  ID: number;
+  CreatedAt?: string;
+  UpdatedAt?: string;
+  DeletedAt?: string | null;
+  user_id?: number;
   name: string;
   description: string;
   price: number;
-  originalPrice?: number;
-  rating: number;
-  reviewCount: number;
-  image: string | StaticImport;
-  inStock: boolean;
+  stock: number;
+  image_url: string;
+  created_by?: number;
+  CategoryID?: number;
+  original_price?: number; // Optional field for discounted price
+  rating?: number; // Optional field for product rating
+  review_count?: number; // Optional field for review count
 }
-//
-// import p1 from "@/../public/product-image/image-1.png";
-//
-// export const products: Product[] = [
-//   {
-//     id: 1,
-//     name: "MSI GS66 Stealth",
-//     category: "Gaming Laptop",
-//     brand: "MSI",
-//     description:
-//       '15.6" FHD 240Hz, Intel Core i9-12900H, RTX 3080 Ti, 32GB DDR5, 1TB NVMe SSD',
-//     price: 2499.99,
-//     originalPrice: 2799.99,
-//     rating: 4.5,
-//     reviewCount: 86,
-//     image: p1,
-//     inStock: true,
-//     features: [
-//       "240Hz refresh rate",
-//       "Per-key RGB keyboard",
-//       "Cooler Boost Trinity+",
-//       "99.9Whr battery",
-//     ],
-//   },
-// ];
+
+export interface ErrorType {
+  err: string;
+}

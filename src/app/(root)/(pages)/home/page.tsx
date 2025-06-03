@@ -1,8 +1,8 @@
 "use client";
+
 import Image from "next/image";
 import styles from "./home.module.css";
 import zipLogo from "@/../public/Logos/zipLogo.svg";
-import Product_card from "@/app/components/Product_card";
 
 // impor the logo images
 import brand1 from "@/../public/Logos/roccat.png";
@@ -16,8 +16,10 @@ import News_card from "@/app/components/News_card";
 import Carousel from "@/app/components/Slider";
 import Carsol1 from "@/../public/images/cursol1.png";
 import TestimonialSection from "@/app/components/Testimonials";
-import { getProducts } from "@/services/product.service";
+
 import { useEffect, useState } from "react";
+import apiClient from "@/lib/api-client";
+import { Product2 } from "@/app/data/product";
 import ProductCard from "@/app/components/Product_card";
 
 const brandLogo = [
@@ -34,21 +36,18 @@ const carouselImages = [
   { src: Carsol1.src, alt: "Banner 1" },
 ];
 export default function HomePage() {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<Product2[]>([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState<boolean>(true);
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await getProducts();
-        if (response.data == "") {
-          setError("Product Data is empty");
-        }
+        const response = await apiClient.get("/api/v1/products");
+        // console.log("response: ", response.data);
         setProducts(response.data);
-        console.log(response);
-        console.log("products: ", products);
       } catch (err) {
-        // setError("Failed to load products");
+        setError("Failed to load products");
         console.error(err);
       } finally {
         setLoading(false);
@@ -57,7 +56,19 @@ export default function HomePage() {
 
     fetchProducts();
   }, []);
-
+  // Function to enhance product data with additional fields
+  const enhanceProductData = (product: Product2) => {
+    return {
+      ...product,
+      // Add rating and review count if not provided
+      rating: product.rating || Math.random() * 2 + 3, // Random rating between 3-5
+      review_count: product.review_count || Math.floor(Math.random() * 100),
+      // Add original_price if not provided (for showing discount)
+      original_price:
+        product.original_price ||
+        (Math.random() > 0.5 ? product.price * 1.2 : undefined), // 50% chance to show original price
+    };
+  };
   return (
     <>
       <div className="w-full">
@@ -79,9 +90,12 @@ export default function HomePage() {
           <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-1 pt-3 mb-10">
             {loading && <h1>Product is Loading...</h1>}
             {error && <h1>{error}</h1>}
-            {products.map((product, index) => (
-              <ProductCard key={index} product={product} />
-            ))}
+            {products.map((product) => (
+              <ProductCard
+                key={product.ID}
+                product={enhanceProductData(product)}
+              />
+            ))}{" "}
           </div>
           <div className=" bg-[#F5F7FF] w-full py-5 px-0 flex items-center justify-center">
             <div className="flex items-center justify-center gap-3 ">
@@ -110,9 +124,12 @@ export default function HomePage() {
                 see all products
               </a>
             </div>
-            {/* {products.map((product, index) => ( */}
-            {/*   <ProductCard key={index} product={product} /> */}
-            {/* ))} */}
+            {products.map((product) => (
+              <ProductCard
+                key={product.ID}
+                product={enhanceProductData(product)}
+              />
+            ))}{" "}
           </div>
           {/* ad and product 2 */}
           <div className=" py-3">
@@ -153,37 +170,16 @@ export default function HomePage() {
                   see all products
                 </a>
               </div>
-              <Product_card />
-              <Product_card />
-              <Product_card />
-              <Product_card />
-              <Product_card />
+              {products.map((product) => (
+                <ProductCard
+                  key={product.ID}
+                  product={enhanceProductData(product)}
+                />
+              ))}{" "}
             </div>
           </div>
           {/* ad and product 3 */}
           <div className=" py-4">
-            {/* <div className=" flex items-center justify-between w-full">
-            <ul className="flex items-center justify-start gap-6 py-3">
-              <li className=" text-slate-700 hover:text-gray-700 duration-200 cursor-pointer  underline-offset-4 underline font-bold ">
-                MSI GS Series
-              </li>
-              <li className=" text-slate-500 hover:text-gray-700 duration-200 cursor-pointer  underline-offset-4 hover:underline font-bold">
-                MSI GS Series
-              </li>
-              <li className=" text-slate-500 hover:text-gray-700 duration-200 cursor-pointer  underline-offset-4 hover:underline font-bold">
-                MSI GS Series
-              </li>
-              <li className=" text-slate-500 hover:text-gray-700 duration-200 cursor-pointer  underline-offset-4 hover:underline font-bold">
-                MSI GS Series
-              </li>
-            </ul>
-            <a
-              href="#"
-              className="text-sm font-semibold capitalize text-blue-500 hover:text-blue-700 duration-200 underline underline-offset-2"
-            >
-              see more all products
-            </a>
-          </div> */}
             {/* <ProductCategorySection /> */}
             {/* in hear some product card's */}
             <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-1 pt-3 mb-10">
@@ -200,9 +196,12 @@ export default function HomePage() {
                   see all products
                 </a>
               </div>
-              {/* {products.map((product, index) => ( */}
-              {/*   <ProductCard key={index} product={product} /> */}
-              {/* ))} */}
+              {products.map((product) => (
+                <ProductCard
+                  key={product.ID}
+                  product={enhanceProductData(product)}
+                />
+              ))}{" "}
             </div>
             <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-1 pt-3 mb-10">
               <div
@@ -218,9 +217,12 @@ export default function HomePage() {
                   see all products
                 </a>
               </div>
-              {/* {products.map((product, index) => ( */}
-              {/*   <ProductCard key={index} product={product} /> */}
-              {/* ))} */}
+              {products.map((product) => (
+                <ProductCard
+                  key={product.ID}
+                  product={enhanceProductData(product)}
+                />
+              ))}{" "}
             </div>
           </div>
         </div>
