@@ -77,7 +77,7 @@ const Products = () => {
   }, []);
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -288,7 +288,7 @@ const Products = () => {
                     >
                       {header}
                     </th>
-                  )
+                  ),
                 )}
               </tr>
             </thead>

@@ -134,7 +134,7 @@ export default function Navbar() {
       setActiveNestedDropdowns((prev) => ({
         ...prev,
         [`${parentIndex}`]: (prev[`${parentIndex}`] || []).filter(
-          (i) => i !== childIndex,
+          (i) => i !== childIndex
         ),
       }));
     }
@@ -235,13 +235,13 @@ export default function Navbar() {
                             </a>
                             {subItem.nested &&
                               activeNestedDropdowns[index]?.includes(
-                                subIndex,
+                                subIndex
                               ) && (
                                 <div className="absolute left-full top-0 ml-0 w-56 bg-white shadow-lg rounded-r-md z-50 border-l-2 border-blue-500">
                                   {subItem.nested.map(
                                     (
                                       nestedItem: NestedItem,
-                                      nestedIndex: number,
+                                      nestedIndex: number
                                     ) => (
                                       <a
                                         key={nestedIndex}
@@ -250,7 +250,7 @@ export default function Navbar() {
                                       >
                                         {nestedItem.title}
                                       </a>
-                                    ),
+                                    )
                                   )}
                                 </div>
                               )}
@@ -260,17 +260,26 @@ export default function Navbar() {
                     )}
                   </li>
                 ))}
+
+                <button
+                  onClick={() => router.push("/seller-login")}
+                  className=" py-2 px-4 rounded-lg text-sm font-semibold capitalize text-white bg-blue-500 hover:bg-blue-600 duration-200"
+                >
+                  Seller Page
+                </button>
               </ul>
             ) : (
-              <div className="relative w-full self-center px-5">
-                <div className="w-full">
-                  <input
-                    type="text"
-                    placeholder="Search in here.."
-                    className="w-full py-2 px-5 border-2 border-gray-300 rounded-lg focus:outline-1 focus:outline-sky-200 focus:bg-slate-100"
-                  />
+              <>
+                <div className="relative w-full self-center px-5">
+                  <div className="w-full">
+                    <input
+                      type="text"
+                      placeholder="Search in here.."
+                      className="w-full py-2 px-5 border-2 border-gray-300 rounded-lg focus:outline-1 focus:outline-sky-200 focus:bg-slate-100"
+                    />
+                  </div>
                 </div>
-              </div>
+              </>
             )}
           </div>
 
@@ -562,7 +571,7 @@ const MobileNavItem = ({ item, index }: { item: Item; index: number }) => {
                       >
                         {nestedItem.title}
                       </a>
-                    ),
+                    )
                   )}
                 </div>
               )}
