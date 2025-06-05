@@ -36,22 +36,19 @@ const LoginPage = () => {
         email: formData.email,
         password: formData.password,
       });
-      if (data.role === "admin") {
-        console.log("no user no admin");
-        // console.log("login response data: ", data);
-        // if (data.access_token) {
-        //   toast.success(data.message);
-        //   await login(data.access_token);
-        //   localStorage.setItem("authToken", data.access_token);
-        //   // route.push("/");
-        // } else {
-        //   toast.error("No access token found");
-        //   throw new Error("No access token found");
-        // }
-      } else if (data.role === "user") {
-        toast.error("hello");
+      if (data.role !== "admin") {
+        toast.error("if you are a user please use the user-login page");
       } else {
-        console.log("no user no admin");
+        console.log("login response data: ", data);
+        if (data.access_token) {
+          toast.success(data.message);
+          await login(data.access_token);
+          localStorage.setItem("authToken", data.access_token);
+          // route.push("/");
+        } else {
+          toast.error("No access token found");
+          throw new Error("No access token found");
+        }
       }
 
       // window.location.reload();

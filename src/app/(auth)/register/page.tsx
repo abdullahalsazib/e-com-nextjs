@@ -74,7 +74,7 @@ const RegisterPage = () => {
         <Breadcrumb items={breadcrumb} />
 
         <h1 className="text-2xl sm:text-3xl font-semibold capitalize py-3">
-          Create an Account
+          Create an Customer Account
         </h1>
       </div>
 
@@ -210,7 +210,7 @@ const RegisterPage = () => {
             <div className="pt-4">
               <LoginBtn
                 type="submit"
-                title="Create Account"
+                title="Create an Account"
                 className="w-full md:w-auto"
               />
             </div>
@@ -237,7 +237,7 @@ const RegisterPage = () => {
 
           <LoginBtn
             href="/login"
-            title="Sign In"
+            title="Sign in"
             className="w-full md:w-auto"
           />
         </div>

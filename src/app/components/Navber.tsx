@@ -15,6 +15,7 @@ import {
 } from "../data/navegationLinks";
 import { Item, NestedItem, SubItem } from "../type/type";
 import { useAuth } from "../context/AuthContext";
+import toast from "react-hot-toast";
 
 export default function Navbar() {
   const router = useRouter();
@@ -39,6 +40,13 @@ export default function Navbar() {
   // console.log(user);
   const handleLogout = () => {
     logout();
+  };
+  const handleRolteSell = () => {
+    toast.loading("Wait please");
+    router.push("/seller-login");
+    setTimeout(() => {
+      toast.dismiss();
+    }, 1000);
   };
 
   useEffect(() => {
@@ -260,13 +268,14 @@ export default function Navbar() {
                     )}
                   </li>
                 ))}
-
-                <button
-                  onClick={() => router.push("/seller-login")}
-                  className=" py-2 px-4 rounded-lg text-sm font-semibold capitalize text-white bg-blue-500 hover:bg-blue-600 duration-200"
-                >
-                  Seller Page
-                </button>
+                {user?.role !== "admin" && (
+                  <button
+                    onClick={handleRolteSell}
+                    className=" py-2 px-4 rounded-lg text-sm font-semibold capitalize text-white bg-blue-500 hover:bg-blue-600 duration-200"
+                  >
+                    Seller Page
+                  </button>
+                )}
               </ul>
             ) : (
               <>

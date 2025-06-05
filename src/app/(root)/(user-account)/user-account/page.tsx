@@ -26,7 +26,7 @@ type SectionKey =
   | "newsletters";
 
 const breadcrumb = [
-  { label: "Home", href: "/" },
+  { label: "Home", link: "/" },
   { label: "User account", active: true },
 ];
 

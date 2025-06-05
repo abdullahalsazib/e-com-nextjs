@@ -185,7 +185,7 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
             <span>Add to Cart</span>
           </button>
           <Link
-            href={`/product/${product?.ID}`}
+            href={`/products/${product?.ID}`}
             className="w-full py-2 px-4 rounded-full text-sm font-medium flex items-center justify-center gap-2 border border-gray-300 hover:bg-gray-100"
           >
             <GrMore size={14} />

@@ -169,18 +169,6 @@ const LoginPage = () => {
               <li>Keep more than one address</li>
               <li>Track orders and more</li>
             </ul>
-            <div>
-              <h1>demo account: user</h1>
-              <p>jack@jack.com</p>
-              <p>1234</p>
-
-              <div>
-                {`
-"email": "admin2@admin2.com",
-  "password": "12345",
-`}
-              </div>
-            </div>
           </div>
 
           <LoginBtn
