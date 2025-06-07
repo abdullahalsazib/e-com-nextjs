@@ -1,5 +1,5 @@
 "use client";
-import { JSX, useState } from "react";
+import React, { JSX, useState } from "react";
 import Breadcrumb from "@/app/components/smallComponent/Breadcrumb";
 import {
   FiUser,
@@ -13,6 +13,8 @@ import {
   FiMail,
   FiHome,
 } from "react-icons/fi";
+import { useAuth } from "@/app/context/AuthContext";
+import PrivateRoute from "@/app/components/PrivateRoute";
 type SectionKey =
   | "dashboard"
   | "account"
@@ -90,9 +92,10 @@ const User_account = () => {
     },
   ];
   // Section components with proper typing
+  const { user } = useAuth();
   const sections: Record<SectionKey, JSX.Element> = {
-    dashboard: <DashboardSection />,
-    account: <AccountInfoSection />,
+    dashboard: <DashboardSection user={user} />,
+    account: <AccountInfoSection user={user} />,
     address: <AddressBookSection />,
     orders: <OrdersSection />,
     downloads: <DownloadsSection />,
@@ -102,122 +105,143 @@ const User_account = () => {
     reviews: <ReviewsSection />,
     newsletters: <NewslettersSection />,
   };
+
   return (
-    <div className="bg-gray-50 min-h-screen">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Breadcrumb items={breadcrumb} />
+    <PrivateRoute allowedRoles={["user"]}>
+      <div className="bg-gray-50 min-h-screen">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <Breadcrumb items={breadcrumb} />
 
-        <h1 className="text-3xl font-bold text-gray-900 mt-6 mb-8">
-          My Dashboard
-        </h1>
+          <h1 className="text-3xl font-bold text-gray-900 mt-6 mb-8">
+            My Dashboard
+          </h1>
 
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* Sidebar Navigation */}
-          <div className="w-full lg:w-1/4 space-y-6">
-            <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-              <ul className="divide-y divide-gray-100">
-                {menuItems.map((item, index) =>
-                  item.divider ? (
-                    <div
-                      key={`divider-${index}`}
-                      className="border-t border-gray-100 my-1"
-                    />
-                  ) : (
-                    <li key={item.label}>
-                      <button
-                        onClick={() => setActiveSection(item.section!)}
-                        className={`w-full px-4 py-3 text-left flex items-center gap-3 transition-colors ${
-                          activeSection === item.section
-                            ? "bg-blue-50 text-blue-600"
-                            : "hover:bg-gray-50 text-gray-700"
-                        }`}
-                      >
-                        <span
-                          className={`text-lg ${
+          <div className="flex flex-col lg:flex-row gap-8">
+            {/* Sidebar Navigation */}
+            <div className="w-full lg:w-1/4 space-y-6">
+              <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+                <ul className="divide-y divide-gray-100">
+                  {menuItems.map((item, index) =>
+                    item.divider ? (
+                      <div
+                        key={`divider-${index}`}
+                        className="border-t border-gray-100 my-1"
+                      />
+                    ) : (
+                      <li key={item.label}>
+                        <button
+                          onClick={() => setActiveSection(item.section!)}
+                          className={`w-full px-4 py-3 text-left flex items-center gap-3 transition-colors ${
                             activeSection === item.section
-                              ? "text-blue-500"
-                              : "text-gray-400"
+                              ? "bg-blue-50 text-blue-600"
+                              : "hover:bg-gray-50 text-gray-700"
                           }`}
                         >
-                          {item.icon}
-                        </span>
-                        <span className="font-medium">{item.label}</span>
-                      </button>
-                    </li>
-                  )
-                )}
-              </ul>
+                          <span
+                            className={`text-lg ${
+                              activeSection === item.section
+                                ? "text-blue-500"
+                                : "text-gray-400"
+                            }`}
+                          >
+                            {item.icon}
+                          </span>
+                          <span className="font-medium">{item.label}</span>
+                        </button>
+                      </li>
+                    )
+                  )}
+                </ul>
+              </div>
+
+              {/* Widgets */}
+              <CompareProductsWidget />
+              <WishlistWidget />
             </div>
 
-            {/* Widgets */}
-            <CompareProductsWidget />
-            <WishlistWidget />
+            {/* Main Content - Dynamic based on selection */}
+            <div className="w-full lg:w-3/4">{sections[activeSection]}</div>
           </div>
+        </div>
+      </div>
+    </PrivateRoute>
+  );
+};
 
-          {/* Main Content - Dynamic based on selection */}
-          <div className="w-full lg:w-3/4">{sections[activeSection]}</div>
+// Component for each section
+
+interface User {
+  name: string;
+  email: string;
+}
+
+interface Props {
+  user: User | null;
+}
+const DashboardSection: React.FC<Props> = ({ user }) => {
+  if (!user) return <div>user loged out</div>;
+  return (
+    <>
+      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+        <div className="border-b border-gray-100 px-6 py-4">
+          <h2 className="text-xl font-semibold text-gray-900">
+            Account Dashboard
+          </h2>
+        </div>
+        <div className="p-6">
+          <p className="text-gray-600 mb-4">Hello, {user.name}</p>
+          <p className="text-gray-600">
+            From your account dashboard you can view your recent orders, manage
+            your shipping and billing addresses, and edit your password and
+            account details.
+          </p>
+        </div>
+      </div>
+    </>
+  );
+};
+const AccountInfoSection: React.FC<Props> = ({ user }) => {
+  if (!user) return <div>User Loged Out</div>;
+  return (
+    <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+      <div className="border-b border-gray-100 px-6 py-4">
+        <h2 className="text-xl font-semibold text-gray-900">
+          Account Information
+        </h2>
+      </div>
+      <div className="p-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <h3 className="text-lg font-medium text-gray-900 mb-4">
+              Contact Information
+            </h3>
+            <p className="text-gray-600">{user?.name}</p>
+            <p className="text-gray-600">{user?.email}</p>
+            <div className="mt-4 space-x-3">
+              <button className="px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700">
+                Edit
+              </button>
+              <button className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-300">
+                Change Password
+              </button>
+            </div>
+          </div>
+          <div>
+            <h3 className="text-lg font-medium text-gray-900 mb-4">
+              Newsletters
+            </h3>
+            <p className="text-gray-600">
+              You are currently not subscribed to any newsletter.
+            </p>
+            <button className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700">
+              Edit Subscription
+            </button>
+          </div>
         </div>
       </div>
     </div>
   );
 };
-
-// Component for each section
-const DashboardSection = () => (
-  <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-    <div className="border-b border-gray-100 px-6 py-4">
-      <h2 className="text-xl font-semibold text-gray-900">Account Dashboard</h2>
-    </div>
-    <div className="p-6">
-      <p className="text-gray-600 mb-4">Hello, John Doe!</p>
-      <p className="text-gray-600">
-        From your account dashboard you can view your recent orders, manage your
-        shipping and billing addresses, and edit your password and account
-        details.
-      </p>
-    </div>
-  </div>
-);
-
-const AccountInfoSection = () => (
-  <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-    <div className="border-b border-gray-100 px-6 py-4">
-      <h2 className="text-xl font-semibold text-gray-900">
-        Account Information
-      </h2>
-    </div>
-    <div className="p-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <h3 className="text-lg font-medium text-gray-900 mb-4">
-            Contact Information
-          </h3>
-          <p className="text-gray-600">John Doe</p>
-          <p className="text-gray-600">john.doe@example.com</p>
-          <div className="mt-4 space-x-3">
-            <button className="px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700">
-              Edit
-            </button>
-            <button className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-300">
-              Change Password
-            </button>
-          </div>
-        </div>
-        <div>
-          <h3 className="text-lg font-medium text-gray-900 mb-4">
-            Newsletters
-          </h3>
-          <p className="text-gray-600">
-            You are currently not subscribed to any newsletter.
-          </p>
-          <button className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700">
-            Edit Subscription
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-);
 
 const AddressBookSection = () => (
   <div className="bg-white rounded-xl shadow-sm overflow-hidden">
