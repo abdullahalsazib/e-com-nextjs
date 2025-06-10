@@ -4,7 +4,7 @@ import { Product } from "@/app/data/product";
 import apiClient from "@/lib/api-client";
 
 export const getProducts = async () => {
-  const response = await apiClient.get("/api/v1/products/");
+  const response = await apiClient.get("/api/v1/products");
   return response;
 };
 

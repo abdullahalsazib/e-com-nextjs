@@ -64,7 +64,7 @@ const Products = () => {
       try {
         const response = await getProducts();
         setProducts(response.data); // Fallback to empty array if undefined
-        // console.log(response);
+        console.log(response.data); // console the getProducts all
       } catch (err) {
         console.error("Error fetching products:", err);
         toast.error("Failed to load products");
@@ -77,7 +77,7 @@ const Products = () => {
   }, []);
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -288,7 +288,7 @@ const Products = () => {
                     >
                       {header}
                     </th>
-                  ),
+                  )
                 )}
               </tr>
             </thead>
@@ -321,10 +321,6 @@ const Products = () => {
                               className="h-10 w-10 rounded-full object-cover"
                               src={product.image_url}
                               alt={product.product_name}
-                              onError={(e) => {
-                                (e.target as HTMLImageElement).src =
-                                  "https://via.placeholder.com/40";
-                              }}
                             />
                           </div>
                         )}
