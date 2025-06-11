@@ -11,7 +11,7 @@ export default function NotFound() {
           href={"/"}
           className=" py-2 px-4 font-semibold text-3xl capitalize rounded-lg bg-blue-500 hover:bg-blue-600 text-white "
         >
-          Home
+          Home jack sparrow
         </Link>
       </div>
     </div>
