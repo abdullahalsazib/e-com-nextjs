@@ -20,6 +20,7 @@ const breadcrumbItems = [
 const LoginPage = () => {
   // const route = useRouter();
   const { login, isLoading } = useAuth();
+  const [loading, setLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<LoginFormType>({
     email: "",
     password: "",
@@ -30,6 +31,7 @@ const LoginPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
 
     try {
       const { data } = await loginUser({
@@ -69,6 +71,8 @@ const LoginPage = () => {
             "Registration failed. Please try again."
         );
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -145,7 +149,7 @@ const LoginPage = () => {
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
               <LoginBtn
                 type="submit"
-                title="Sign in"
+                title={loading ? "loading.. sign in" : "Sign in"}
                 className="w-full sm:w-auto"
               />
               <Link

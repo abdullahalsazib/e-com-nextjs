@@ -56,7 +56,7 @@ const Seller_dashboard = () => {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {[1, 2, 3, 4, 5].map((order) => (
+                  {[1].map((order) => (
                     <tr key={order}>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                         #ORD-{1000 + order}

@@ -5,6 +5,7 @@ import { Suspense, useState } from "react";
 import Sidebar from "./seller_component/Sidebar";
 import PrivateRoute from "@/app/components/PrivateRoute";
 import { BsPersonFillX } from "react-icons/bs";
+import { useAuth } from "@/app/context/AuthContext";
 
 export default function SellerLayout({
   children,
@@ -13,6 +14,10 @@ export default function SellerLayout({
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [profileOpen, setProfileOpen] = useState(false);
+  const { user, logout } = useAuth();
+  const handleLogout = () => {
+    logout();
+  };
   const toggleProfle = () => {
     setProfileOpen(!profileOpen);
   };
@@ -127,17 +132,24 @@ export default function SellerLayout({
                     <button onClick={toggleProfle} className=" relative">
                       <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white font-semibold">
                         {!profileOpen ? (
-                          "SD"
+                          user?.ID
                         ) : (
                           <BsPersonFillX className="text-2xl" />
                         )}
                       </div>
                       <div
-                        className={` absolute top-10 right-0 w-50 h-auto bg-white border border-gray-300 shadow-lg rounded-lg ${profileOpen ? "translate-y-0 opacity-90 duration-150" : " opacity-0 -translate-y-10 duration-200"} `}
+                        className={` absolute top-10 right-0 w-50 h-auto bg-white border border-gray-300 shadow-lg rounded-lg ${
+                          profileOpen
+                            ? "translate-y-0 opacity-90 duration-150"
+                            : " opacity-0 -translate-y-10 duration-200"
+                        } `}
                       >
                         <ul className=" p-2">
-                          <li className="py-2 px-3 bg-slate-300 capitalize text-black hover:text-blue-500 duration-200 rounded-md">
-                            <p>Logout</p>
+                          <li
+                            onClick={handleLogout}
+                            className="py-2 px-3 bg-slate-300 capitalize text-black hover:text-blue-500 duration-200 rounded-md"
+                          >
+                            logout
                           </li>
                         </ul>
                       </div>

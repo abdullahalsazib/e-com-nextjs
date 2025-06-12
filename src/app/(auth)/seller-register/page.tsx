@@ -20,25 +20,21 @@ const breadcrumb = [
 
 const RegisterPage = () => {
   const route = useRouter();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormDataType>({
     name: "",
     email: "",
     password: "",
-    role: "user",
+    role: "admin",
   });
   const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    setIsLoading(true);
 
     try {
-      // Add client-side validation
-      // if (formData.password.length < 6) {
-      //   setError("Password must be at least 6 characters");
-      //   return;
-      // }
-
       const { data } = await registerUser({
         name: formData.name,
         email: formData.email,
@@ -46,25 +42,21 @@ const RegisterPage = () => {
         role: formData.role,
       });
 
-      // console.log("Registration successful:", data.message);
-
       toast.success(data.message);
-      route.push("/login");
+      route.push("/");
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
-        setError(
+        const errorMessage =
           err.response?.data?.message ||
-            err.response?.data?.error ||
-            err.message ||
-            "Registration failed. Please try again."
-        );
-        toast.error(
-          err.response?.data?.message ||
-            err.response?.data?.error ||
-            err.message ||
-            "Registration failed. Please try again."
-        );
+          err.response?.data?.error ||
+          err.message ||
+          "Registration failed. Please try again.";
+
+        setError(errorMessage);
+        toast.error(errorMessage);
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -83,6 +75,7 @@ const RegisterPage = () => {
           {error}
         </div>
       )}
+
       <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12 py-8">
         {/* Registration Form */}
         <div className="bg-[#F5F7FF] p-6 sm:p-8 md:p-10 w-full rounded-lg shadow-sm">
@@ -132,7 +125,8 @@ const RegisterPage = () => {
                 }
                 required
                 placeholder="Your name"
-                className="   mt-1 py-2 sm:py-3 px-4 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
+                className="mt-1 py-2 sm:py-3 px-4 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
+                disabled={isLoading}
               />
             </div>
 
@@ -150,6 +144,7 @@ const RegisterPage = () => {
                 required
                 placeholder="Your email"
                 className="mt-1 py-2 sm:py-3 px-4 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
+                disabled={isLoading}
               />
             </div>
 
@@ -168,50 +163,17 @@ const RegisterPage = () => {
                   required
                   placeholder="Your password"
                   className="mt-1 py-2 sm:py-3 px-4 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
+                  disabled={isLoading}
                 />
               </div>
-
-              {/* <div className="space-y-2">
-                <label
-                  htmlFor="confirmPassword"
-                  className="block text-sm font-medium"
-                >
-                  Confirm Password
-                </label>
-                <input
-                  id="confirmPassword"
-                  type="password"
-                  placeholder="Confirm password"
-                  value={formData.confirmPassword}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      confirmPassword: e.target.value,
-                    })
-                  }
-                  required
-                  className="mt-1 py-2 sm:py-3 px-4 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
-                />
-              </div> */}
             </div>
-
-            {/* <div className="space-y-2">
-              <label htmlFor="phone" className="block text-sm font-medium">
-                Phone Number (Optional)
-              </label>
-              <input
-                id="phone"
-                type="tel"
-                placeholder="Your phone number"
-                className="mt-1 py-2 sm:py-3 px-4 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
-              />
-            </div> */}
 
             <div className="pt-4">
               <LoginBtn
                 type="submit"
-                title="Create Account"
+                title={isLoading ? "Creating Account..." : "Create Account"}
                 className="w-full md:w-auto"
+                disabled={isLoading}
               />
             </div>
           </form>

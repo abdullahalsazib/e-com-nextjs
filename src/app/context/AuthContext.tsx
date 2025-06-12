@@ -13,7 +13,7 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
 interface User {
-  id: string;
+  ID: string;
   name: string;
   email: string;
   role: "admin" | "superadmin" | "user";

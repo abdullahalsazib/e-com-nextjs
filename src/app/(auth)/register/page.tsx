@@ -20,6 +20,7 @@ const breadcrumb = [
 
 const RegisterPage = () => {
   const route = useRouter();
+  const [Loading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormDataType>({
     name: "",
     email: "",
@@ -31,6 +32,7 @@ const RegisterPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    setIsLoading(true);
 
     try {
       // Add client-side validation
@@ -65,6 +67,8 @@ const RegisterPage = () => {
             "Registration failed. Please try again."
         );
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -210,8 +214,9 @@ const RegisterPage = () => {
             <div className="pt-4">
               <LoginBtn
                 type="submit"
-                title="Create an Account"
+                title={Loading ? "Creating Account..." : "Create Account"}
                 className="w-full md:w-auto"
+                disabled={Loading}
               />
             </div>
           </form>

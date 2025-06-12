@@ -42,48 +42,48 @@ const Orders = () => {
         { product: "Phone Case", quantity: 1, price: 39.99 },
       ],
     },
-    {
-      id: "ORD-1002",
-      customer: "Maria Garcia",
-      date: "2023-05-16",
-      amount: 54.97,
-      status: "shipped",
-      items: [
-        { product: "Organic Cotton T-Shirt", quantity: 2, price: 24.99 },
-        { product: "Stainless Steel Bottle", quantity: 1, price: 24.99 },
-      ],
-    },
-    {
-      id: "ORD-1003",
-      customer: "James Wilson",
-      date: "2023-05-17",
-      amount: 89.99,
-      status: "processing",
-      items: [{ product: "Smart Watch", quantity: 1, price: 89.99 }],
-    },
-    {
-      id: "ORD-1004",
-      customer: "Sarah Miller",
-      date: "2023-05-18",
-      amount: 74.97,
-      status: "pending",
-      items: [
-        { product: "Yoga Mat", quantity: 1, price: 29.99 },
-        { product: "Resistance Bands", quantity: 1, price: 19.99 },
-        { product: "Foam Roller", quantity: 1, price: 24.99 },
-      ],
-    },
-    {
-      id: "ORD-1005",
-      customer: "David Lee",
-      date: "2023-05-14",
-      amount: 199.95,
-      status: "cancelled",
-      items: [
-        { product: "Bluetooth Speaker", quantity: 1, price: 129.99 },
-        { product: "USB-C Cable", quantity: 2, price: 34.98 },
-      ],
-    },
+    // {
+    //   id: "ORD-1002",
+    //   customer: "Maria Garcia",
+    //   date: "2023-05-16",
+    //   amount: 54.97,
+    //   status: "shipped",
+    //   items: [
+    //     { product: "Organic Cotton T-Shirt", quantity: 2, price: 24.99 },
+    //     { product: "Stainless Steel Bottle", quantity: 1, price: 24.99 },
+    //   ],
+    // },
+    // {
+    //   id: "ORD-1003",
+    //   customer: "James Wilson",
+    //   date: "2023-05-17",
+    //   amount: 89.99,
+    //   status: "processing",
+    //   items: [{ product: "Smart Watch", quantity: 1, price: 89.99 }],
+    // },
+    // {
+    //   id: "ORD-1004",
+    //   customer: "Sarah Miller",
+    //   date: "2023-05-18",
+    //   amount: 74.97,
+    //   status: "pending",
+    //   items: [
+    //     { product: "Yoga Mat", quantity: 1, price: 29.99 },
+    //     { product: "Resistance Bands", quantity: 1, price: 19.99 },
+    //     { product: "Foam Roller", quantity: 1, price: 24.99 },
+    //   ],
+    // },
+    // {
+    //   id: "ORD-1005",
+    //   customer: "David Lee",
+    //   date: "2023-05-14",
+    //   amount: 199.95,
+    //   status: "cancelled",
+    //   items: [
+    //     { product: "Bluetooth Speaker", quantity: 1, price: 129.99 },
+    //     { product: "USB-C Cable", quantity: 2, price: 34.98 },
+    //   ],
+    // },
   ];
 
   const filteredOrders = orders.filter((order) => {
@@ -265,7 +265,7 @@ const Orders = () => {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span
                         className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(
-                          order.status,
+                          order.status
                         )}`}
                       >
                         {order.status.charAt(0).toUpperCase() +

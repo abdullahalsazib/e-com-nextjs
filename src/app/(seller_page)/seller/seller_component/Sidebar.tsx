@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuth } from "@/app/context/AuthContext";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -10,6 +11,7 @@ interface SidebarProps {
 
 const Sidebar = ({ isOpen }: SidebarProps) => {
   const pathname = usePathname();
+  const { user } = useAuth();
 
   const navItems = [
     {
@@ -116,12 +118,12 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
       <div className="p-4 border-t border-gray-200">
         <div className="flex items-center">
           <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center text-white font-semibold">
-            JD
+            {user?.ID}
           </div>
           {isOpen && (
             <div className="ml-3">
-              <p className="text-sm font-medium text-gray-700">John Doe</p>
-              <p className="text-xs text-gray-500">Seller</p>
+              <p className="text-sm font-medium text-gray-700">{user?.name}</p>
+              <p className="text-xs text-gray-500">{user?.role}</p>
             </div>
           )}
         </div>

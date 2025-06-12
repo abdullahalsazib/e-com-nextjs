@@ -7,7 +7,16 @@ const LoginBtn: React.FC<{
   className?: string;
   onClick?: () => void;
   type?: "button" | "submit" | "reset";
-}> = ({ href, title, className = "", onClick, type = "button", children }) => {
+  disabled?: boolean;
+}> = ({
+  href,
+  title,
+  className = "",
+  onClick,
+  type = "button",
+  children,
+  disabled,
+}) => {
   const sharedClasses = `flex items-center justify-center gap-2 text-sm py-2 px-10 font-medium bg-blue-500 text-white hover:bg-blue-700 duration-200 rounded-full ${className}`;
 
   if (href) {
@@ -21,10 +30,15 @@ const LoginBtn: React.FC<{
   }
 
   return (
-    <button type={type} onClick={onClick} className={sharedClasses}>
+    <button
+      type={type}
+      onClick={onClick}
+      className={sharedClasses}
+      disabled={disabled}
+    >
       {children} {title}
     </button>
   );
 };
 
-export default LoginBtn
+export default LoginBtn;

@@ -21,3 +21,14 @@ export const createProduct = async (productData: Product) => {
   });
   return response.data;
 };
+export const updateProduct = async (
+  id: number | string,
+  productData: Product
+) => {
+  const response = await apiClient.put(`/api/v1/products/${id}`, productData);
+  return response;
+};
+export const deleteProduct = async (id: number | string) => {
+  const response = await apiClient.delete(`/api/v1/products/${id}`);
+  return response;
+};
