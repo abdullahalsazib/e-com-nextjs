@@ -10,6 +10,8 @@ import p1 from "@/../public/product-image/image-1.png";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Product2 } from "../data/product";
+import { useWishlist } from "../context/WishlistContext";
+import toast from "react-hot-toast";
 
 const defaultProduct: Product2 = {
   ID: 0,
@@ -22,9 +24,10 @@ const defaultProduct: Product2 = {
 
 const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const [isWishlisted, setIsWishlisted] = useState(false);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const router = useRouter();
+  const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
+  const isWishlisted = wishlist.some((item) => item.product.id === product.ID);
 
   // Safe destructuring with fallbacks
   const {
@@ -66,7 +69,26 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
   };
 
   const toggleWishlist = () => {
-    setIsWishlisted(!isWishlisted);
+    if (isWishlisted) {
+      const item = wishlist.find((item) => item.product.id === product.ID);
+      if (item) {
+        removeFromWishlist(item.product.id);
+
+        toast.success(`Remove Item: ${product.name}`);
+      }
+    } else {
+      addToWishlist({
+        product_id: product.ID,
+
+        product: {
+          id: product.ID,
+          price: product.price,
+          name: product.name,
+          image: product.image_url,
+        },
+      });
+      toast.success(`Wishlist add: ${product.name}`);
+    }
   };
 
   return (

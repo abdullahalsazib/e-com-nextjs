@@ -1,0 +1,112 @@
+"use client";
+import { useRef, useState } from "react";
+import { FaHeart } from "react-icons/fa";
+import { useClickOutside } from "@/hooks/useClickOutSide";
+import { useWishlist } from "../context/WishlistContext";
+import toast from "react-hot-toast";
+import { WishlistItemWithProduct } from "../type/type";
+type WishlistItem = {
+  id: number;
+  name: string;
+  image: string;
+  price: number;
+};
+const WishlistDropdown = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const { wishlist, loading, error } = useWishlist();
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  console.log("dropdown: ", wishlist);
+
+  useClickOutside(dropdownRef, () => setIsOpen(false));
+  const toggleDropdown = () => setIsOpen(!isOpen);
+
+  return (
+    <div className="relative" ref={dropdownRef}>
+      {/* Wishlist Icon Button */}
+      <button
+        onClick={toggleDropdown}
+        className="p-2 relative hover:text-blue-500 transition-colors"
+      >
+        <FaHeart className="text-xl" />
+        {wishlist.length > 0 && (
+          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+            {wishlist.length}
+          </span>
+        )}
+      </button>
+
+      {/* Dropdown Content */}
+      {isOpen && (
+        <div className="absolute top-10 right-0 z-50 w-80 bg-white rounded-md shadow-lg border border-gray-200 flex items-center justify-center flex-col py-3 gap-2">
+          <div className="flex items-center justify-center flex-col w-full">
+            <h1 className="text-xl font-semibold text-black text-center">
+              My Wishlist
+            </h1>
+            <p className="text-xs text-gray-500 capitalize">
+              {wishlist.length} {wishlist.length === 1 ? "item" : "items"} in
+              Wishlist
+            </p>
+          </div>
+
+          <button className="py-2 px-6 text-sm rounded-full border-blue-500 border-2 bg-white text-blue-500 hover:border-blue-400 hover:bg-blue-500 hover:text-white duration-200">
+            View or edit Wishlist
+          </button>
+
+          <div className="py-5 w-full flex items-center justify-center flex-col gap-0 max-h-60 overflow-y-auto">
+            {loading ? (
+              <p>Loading...</p>
+            ) : error ? (
+              <p className="text-red-500">{error}</p>
+            ) : wishlist.length === 0 ? (
+              <p className="text-gray-500">Your wishlist is empty</p>
+            ) : (
+              wishlist.map((item, index) => (
+                <WishlistItem key={index} item={item} />
+              ))
+            )}
+          </div>
+
+          <div className="px-5 w-full flex items-center justify-center gap-2 flex-col">
+            <button className="w-full py-3 px-6 rounded-full text-sm bg-blue-500 text-white hover:bg-blue-600 duration-200 capitalize font-bold">
+              View Full Wishlist
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+const WishlistItem = ({ item }: { item: WishlistItemWithProduct }) => {
+  const { removeFromWishlist } = useWishlist();
+
+  return (
+    <div className="w-full px-4 py-2 flex items-center justify-between border-b border-gray-100">
+      <div className="flex items-center gap-3">
+        {item.product.image && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={item.product.image}
+            alt={item.product.name}
+            className="w-12 h-12 object-cover rounded"
+          />
+        )}
+        <div>
+          <h3 className="font-medium text-sm">{item.product.name}</h3>
+          <p className="text-gray-500 text-sm">${item.product.price}</p>
+        </div>
+      </div>
+      <button
+        onClick={() => {
+          removeFromWishlist(item.product.id);
+          toast.success(`Remove item: ${item.product.name}`);
+        }}
+        className="text-red-500 hover:text-red-700"
+      >
+        Remove
+      </button>
+    </div>
+  );
+};
+
+export default WishlistDropdown;

@@ -16,6 +16,7 @@ import {
 import { Item, NestedItem, SubItem } from "../type/type";
 import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
+import WishlistDropdown from "./WishlistDropdown";
 
 export default function Navbar() {
   const router = useRouter();
@@ -293,57 +294,16 @@ export default function Navbar() {
           </div>
 
           {/* Desktop right section */}
-          <div className="hidden lg:flex items-center justify-center gap-6 relative pr-0 md:px-10">
-            <div>
-              <button
-                className="text-2xl font-bold"
-                onClick={() => setIsDesktopSearch(!isDesktopSearch)}
-              >
-                {!isDesktopSearch ? <BiSearch /> : <CgClose />}
-              </button>
-            </div>
+          <div className="hidden lg:flex items-center justify-center gap-3 relative pr-0 md:px-10">
+            <button
+              className="text-2xl font-bold"
+              onClick={() => setIsDesktopSearch(!isDesktopSearch)}
+            >
+              {!isDesktopSearch ? <BiSearch /> : <CgClose />}
+            </button>
 
             {/* Cart */}
-            <div className="relative" ref={cartRef}>
-              <button
-                onClick={toggleCart}
-                className={`text-2xl font-bold hover:text-blue-500 duration-200 ${
-                  isCartOpen ? "text-blue-500" : "text-black"
-                }`}
-              >
-                <LuShoppingCart />
-              </button>
-              {isCartOpen && (
-                <div className="absolute top-10 right-0 z-50 w-80 bg-white rounded-md shadow-lg border border-gray-200 flex items-center justify-center flex-col py-3 gap-2">
-                  <div className="flex items-center justify-center flex-col w-full">
-                    <h1 className="text-xl font-semibold text-black text-center">
-                      My cart
-                    </h1>
-                    <p className="text-xs text-gray-500 capitalize">
-                      2 items in Cart
-                    </p>
-                  </div>
-                  <button className="py-2 px-6 text-sm rounded-full border-blue-500 border-2 bg-white text-blue-500 hover:border-blue-400 hover:bg-blue-500 hover:text-white duration-200">
-                    View or edit Cart
-                  </button>
-                  <div className="py-5 w-full flex items-center justify-center flex-col gap-0">
-                    <SmallCart />
-                    <SmallCart />
-                  </div>
-                  <h2 className="text-center text-lg font-bold text-gray-400">
-                    Subtotal: <span className="text-black"> $30000</span>
-                  </h2>
-                  <div className="px-5 w-full flex items-center justify-center gap-2 flex-col">
-                    <button className="w-full py-3 px-6 rounded-full text-sm bg-blue-500 text-white hover:bg-blue-600 duration-200 capitalize font-bold">
-                      Go to checkout
-                    </button>
-                    <button className="w-full py-3 px-6 rounded-full text-sm bg-yellow-500 text-white hover:bg-blue-600 duration-200 capitalize font-bold flex items-center justify-center gap-2">
-                      checkout with <FaCcPaypal className="text-2xl" />
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
+            <WishlistDropdown />
 
             {/* Account */}
             <div className="relative" ref={dropdownRef}>
@@ -371,7 +331,7 @@ export default function Navbar() {
                             </Link>
                           </li>
                         </>
-                      ) : (
+                      ) : user?.role == "user" ? (
                         <>
                           <li>
                             <Link
@@ -381,6 +341,18 @@ export default function Navbar() {
                               My Account
                             </Link>
                           </li>
+
+                          <li>
+                            <Link
+                              className="block hover:text-blue-500 transition-colors"
+                              href={"/shoping-card"}
+                            >
+                              My Wish List {`(0)`}
+                            </Link>
+                          </li>
+                        </>
+                      ) : (
+                        <>
                           <li>
                             <Link
                               className="block hover:text-blue-500 transition-colors"
