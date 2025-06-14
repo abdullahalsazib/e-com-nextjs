@@ -12,8 +12,9 @@ if (!API_BASE_URL) {
 
 axios.defaults.withCredentials = true;
 const apiClient = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: API_BASE_URL || "http://localhost:8080",
   withCredentials: true,
+  timeout: 10000,
 });
 // Request interceptor for adding auth token
 

@@ -64,21 +64,24 @@ export const WishlistProvider = ({ children }: { children: ReactNode }) => {
     setLoading(true);
     try {
       const token = getAuthToken();
+      console.log("🪪 Fetched authToken:", token); // Debugging line
+
       if (!token) throw new Error("Not logged in");
 
-      const response = await apiClient.get("/wishlist", {
+      const response = await apiClient.get("/auth/wishlist", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
       const data = response.data;
+      console.log("data form fetch wishlist: ", data);
 
       if (Array.isArray(data)) {
-        setWishlist(data);
+        setWishlist(data); // ✅ <- THIS was missing
       } else {
-        console.error("Unexpected response from /wishlist:", data);
-        toast.error("Invalid wishlist format from server");
+        console.error("Unexpected wishlist format:", data);
+        toast.error("Invalid wishlist data");
       }
 
       setError(null);
@@ -109,7 +112,7 @@ export const WishlistProvider = ({ children }: { children: ReactNode }) => {
 
       if (token) {
         const { data } = await apiClient.post(
-          "/wishlist/add",
+          "/auth/wishlist/add",
           { product_id: product.product.id },
           {
             headers: {
@@ -145,7 +148,7 @@ export const WishlistProvider = ({ children }: { children: ReactNode }) => {
       const token = getAuthToken();
 
       if (token) {
-        await apiClient.delete(`/wishlist/${productId}`, {
+        await apiClient.delete(`/auth/wishlist/${productId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -177,7 +180,7 @@ export const WishlistProvider = ({ children }: { children: ReactNode }) => {
       const token = getAuthToken();
 
       if (token) {
-        await apiClient.delete("/wishlist/clear", {
+        await apiClient.delete("/auth/wishlist/clear", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -202,7 +205,7 @@ export const WishlistProvider = ({ children }: { children: ReactNode }) => {
       const token = getAuthToken();
       if (!token) throw new Error("Unauthorized");
 
-      const { data } = await apiClient.post("/wishlist/import", items, {
+      const { data } = await apiClient.post("/auth/wishlist/import", items, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

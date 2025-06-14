@@ -27,8 +27,22 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const router = useRouter();
   const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
+
   const isWishlisted = wishlist.some((item) => item.product.id === product.ID);
 
+  const toggleWishlist = async () => {
+    try {
+      if (isWishlisted) {
+        await removeFromWishlist(product.ID);
+        toast.success(`Removed ${product.name} from wishlist`);
+      } else {
+        await addToWishlist(product.ID);
+        toast.success(`Added ${product.name} to wishlist`);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   // Safe destructuring with fallbacks
   const {
     stock = 0,
@@ -68,28 +82,28 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
     }, 1000);
   };
 
-  const toggleWishlist = () => {
-    if (isWishlisted) {
-      const item = wishlist.find((item) => item.product.id === product.ID);
-      if (item) {
-        removeFromWishlist(item.product.id);
+  // const toggleWishlist = () => {
+  //   if (isWishlisted) {
+  //     const item = wishlist.find((item) => item.product.id === product.ID);
+  //     if (item) {
+  //       removeFromWishlist(item.product.id);
 
-        toast.success(`Remove Item: ${product.name}`);
-      }
-    } else {
-      addToWishlist({
-        product_id: product.ID,
+  //       toast.success(`Remove Item: ${product.name}`);
+  //     }
+  //   } else {
+  //     addToWishlist({
+  //       product_id: product.ID,
 
-        product: {
-          id: product.ID,
-          price: product.price,
-          name: product.name,
-          image: product.image_url,
-        },
-      });
-      toast.success(`Wishlist add: ${product.name}`);
-    }
-  };
+  //       product: {
+  //         id: product.ID,
+  //         price: product.price,
+  //         name: product.name,
+  //         image: product.image_url,
+  //       },
+  //     });
+  //     toast.success(`Wishlist add: ${product.name}`);
+  //   }
+  // };
 
   return (
     <div
