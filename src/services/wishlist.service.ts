@@ -21,7 +21,7 @@ export const getWishlist = async (): Promise<WishlistItemWithProduct[]> => {
 };
 
 export const addToWishlistApi = async (
-  productId: number
+  productId: number,
 ): Promise<WishlistItemWithProduct> => {
   const response = await apiClient.post("/wishlist/add", { productId });
   return response.data;
@@ -37,8 +37,9 @@ export const clearWishlist = async (): Promise<void> => {
 };
 
 export const importWishlist = async (
-  items: { product_id: number }[]
+  items: { product_id: number }[],
 ): Promise<void> => {
   const response = await apiClient.post("/wishlist/import", items);
   return response.data;
 };
+// commit add
