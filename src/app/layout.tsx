@@ -30,15 +30,15 @@ export default function RootLayout({
         className={`${geistSans.className}  antialiased`}
       >
         <Suspense fallback={<Loading />}>
-          <AuthProvider>
-            <WishlistProvider>
+          <WishlistProvider>
+            <AuthProvider>
               <NextTopLoader />
               <Toaster position="top-center" />
               {/* <Navber /> */}
               {children}
               {/* <Footer /> */}
-            </WishlistProvider>
-          </AuthProvider>
+            </AuthProvider>
+          </WishlistProvider>
         </Suspense>
       </body>
     </html>

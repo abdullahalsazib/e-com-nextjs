@@ -1,17 +1,17 @@
 "use client";
 import { useRef, useState } from "react";
-import { FaHeart } from "react-icons/fa";
 import { useClickOutside } from "@/hooks/useClickOutSide";
 import { useWishlist } from "../context/WishlistContext";
 import toast from "react-hot-toast";
 import { WishlistItemWithProduct } from "../type/type";
+import { LuShoppingCart } from "react-icons/lu";
 type WishlistItem = {
   id: number;
   name: string;
   image: string;
   price: number;
 };
-const WishlistDropdown = () => {
+const CartListDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { wishlist, loading, error } = useWishlist();
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -27,7 +27,8 @@ const WishlistDropdown = () => {
         onClick={toggleDropdown}
         className="p-2 relative hover:text-blue-500 transition-colors"
       >
-        <FaHeart className="text-xl" />
+        <LuShoppingCart className="text-xl" />
+        {/* <FaHeart /> */}
         {wishlist.length > 0 && (
           <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
             {wishlist.length}
@@ -40,7 +41,7 @@ const WishlistDropdown = () => {
         <div className="absolute top-10 right-0 z-50 w-80 bg-white rounded-md shadow-lg border border-gray-200 flex items-center justify-center flex-col py-3 gap-2">
           <div className="flex items-center justify-center flex-col w-full">
             <h1 className="text-xl font-semibold text-black text-center">
-              My Wishlist
+              My Cart
             </h1>
             <p className="text-xs text-gray-500 capitalize">
               {wishlist.length} {wishlist.length === 1 ? "item" : "items"} in
@@ -110,4 +111,4 @@ const WishlistItem = ({ item }: { item: WishlistItemWithProduct }) => {
   );
 };
 
-export default WishlistDropdown;
+export default CartListDropdown;

@@ -19,12 +19,12 @@ export type Item = {
 
 export interface WishlistItemWithProduct {
   id: number;
-  created_at: string;
+  created_at?: string;
   product: {
     id: number;
     name: string;
     price: number;
-    image: string;
+    // image: string;
   };
 }
 
@@ -32,7 +32,8 @@ export type WishlistContextType = {
   wishlist: WishlistItemWithProduct[];
   loading: boolean;
   error: string | null;
-  addToWishlist: (productId: number) => Promise<void>;
+  importWishlist: any;
+  addToWishlist: (product: WishlistItemWithProduct) => Promise<void>;
   removeFromWishlist: (productId: number) => Promise<void>;
   clearWishlist: () => Promise<void>;
   fetchWishlist: () => Promise<void>;

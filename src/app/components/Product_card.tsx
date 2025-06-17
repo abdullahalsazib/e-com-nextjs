@@ -28,27 +28,39 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
   const router = useRouter();
   const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
 
-  const isWishlisted = wishlist.some((item) => item.product.id === product.ID);
+  // Safely find if current product is in wishlist
+  const wishlistedItem = wishlist.find(
+    (item) => item?.product?.id === product.ID
+  );
+  const isWishlisted = !!wishlistedItem;
 
   const toggleWishlist = async () => {
     try {
       if (isWishlisted) {
-        await removeFromWishlist(product.ID);
-        toast.success(`Removed ${product.name} from wishlist`);
+        if (wishlistedItem?.id) {
+          removeFromWishlist(wishlistedItem.id);
+          toast.success(`Removed ${product.name} from wishlist`);
+        }
       } else {
-        await addToWishlist(product.ID);
+        await addToWishlist({
+          id: product.ID,
+          product: {
+            id: product.ID,
+            name: product.name,
+            price: product.price,
+          },
+        });
         toast.success(`Added ${product.name} to wishlist`);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
-  // Safe destructuring with fallbacks
+
   const {
     stock = 0,
     image_url = "sorce-of-image.jpg",
     name = "Product Name",
-    // description = "Description not available",
     price = 0,
     original_price,
     rating = 0,
@@ -81,29 +93,6 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
       setIsAddingToCart(false);
     }, 1000);
   };
-
-  // const toggleWishlist = () => {
-  //   if (isWishlisted) {
-  //     const item = wishlist.find((item) => item.product.id === product.ID);
-  //     if (item) {
-  //       removeFromWishlist(item.product.id);
-
-  //       toast.success(`Remove Item: ${product.name}`);
-  //     }
-  //   } else {
-  //     addToWishlist({
-  //       product_id: product.ID,
-
-  //       product: {
-  //         id: product.ID,
-  //         price: product.price,
-  //         name: product.name,
-  //         image: product.image_url,
-  //       },
-  //     });
-  //     toast.success(`Wishlist add: ${product.name}`);
-  //   }
-  // };
 
   return (
     <div
@@ -140,20 +129,17 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
 
       {/* Product Info */}
       <div className="flex flex-col w-full space-y-3">
-        {/* Rating */}
-        {rating && (
+        {rating > 0 && (
           <div className="flex items-center">
             <div className="flex">{renderStars()}</div>
             <span className="text-xs text-gray-500 ml-2">({review_count})</span>
           </div>
         )}
 
-        {/* Product Name/Description */}
         <h3 className="text-sm font-medium text-gray-800 line-clamp-2">
           {name}
         </h3>
 
-        {/* Price */}
         <div className="flex flex-col">
           {original_price && (
             <del className="text-xs text-gray-400">
@@ -181,7 +167,7 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
           <span>Add</span>
         </button>
         <button
-          onClick={() => router.push(`/product/${product?.ID}`)}
+          onClick={() => router.push(`/products/${product?.ID}`)}
           className="p-2 rounded-full border border-gray-300 text-gray-700 hover:bg-gray-100"
         >
           <GrMore size={14} />

@@ -11,6 +11,7 @@ import {
 import { motion } from "framer-motion";
 import product1 from "@/../public/product-image/image-1.png";
 import Breadcrumb from "@/app/components/smallComponent/Breadcrumb";
+import { useWishlist } from "@/app/context/WishlistContext";
 
 interface Product {
   id: number;
@@ -18,7 +19,6 @@ interface Product {
   price: number;
   quantity: number;
   image: string | StaticImageData;
-  inWishlist?: boolean;
 }
 
 const ShoppingCart = () => {
@@ -30,22 +30,11 @@ const ShoppingCart = () => {
       price: 4348.0,
       quantity: 3,
       image: product1,
-      inWishlist: false,
-    },
-    {
-      id: 2,
-      name: "MSI MEG Trident X (Intel i7 1070Kx, 2070 SUPER, 32GB RAM, 1TB SSD)",
-      price: 4348.0,
-      quantity: 2,
-      image: product1,
-      inWishlist: true,
     },
   ];
 
   const [cartItems, setCartItems] = useState<Product[]>(initialCartItems);
-  const [wishlistItems, setWishlistItems] = useState<Product[]>(
-    initialCartItems.filter((item) => item.inWishlist)
-  );
+  const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
   const [activeTab, setActiveTab] = useState<"cart" | "wishlist">("cart");
   const [showShipping, setShowShipping] = useState(false);
   const [showDiscount, setShowDiscount] = useState(false);
@@ -54,6 +43,7 @@ const ShoppingCart = () => {
     (sum, item) => sum + item.price * item.quantity,
     0
   );
+  // console.log("wishlist product form page-shoping: ", wishlist);
   const shipping = 12.0;
   const tax = 1.87;
   const gst = 1.81;
@@ -62,7 +52,9 @@ const ShoppingCart = () => {
   const removeItem = (id: number) => {
     setCartItems(cartItems.filter((item) => item.id !== id));
     // Also remove from wishlist if it's there
-    setWishlistItems(wishlistItems.filter((item) => item.id !== id));
+    if (wishlist.some((item) => item.product.id === id)) {
+      removeFromWishlist(id);
+    }
   };
 
   const updateQuantity = (id: number, newQuantity: number) => {
@@ -74,37 +66,33 @@ const ShoppingCart = () => {
     );
   };
 
-  const toggleWishlist = (product: Product) => {
-    const isInWishlist = wishlistItems.some((item) => item.id === product.id);
-
+  const toggleWishlist = async (product: Product) => {
+    const isInWishlist = wishlist.some(
+      (item) => item.product.id === product.id
+    );
     if (isInWishlist) {
-      // Remove from wishlist
-      setWishlistItems(wishlistItems.filter((item) => item.id !== product.id));
-      // Update inWishlist status in cart
-      setCartItems(
-        cartItems.map((item) =>
-          item.id === product.id ? { ...item, inWishlist: false } : item
-        )
-      );
+      await removeFromWishlist(product.id);
     } else {
-      // Add to wishlist
-      setWishlistItems([...wishlistItems, { ...product, inWishlist: true }]);
-      // Update inWishlist status in cart
-      setCartItems(
-        cartItems.map((item) =>
-          item.id === product.id ? { ...item, inWishlist: true } : item
-        )
-      );
+      await addToWishlist({
+        id: product.id,
+        product: {
+          id: product.id,
+          name: product.name,
+          price: product.price,
+        },
+      });
     }
   };
 
-  const moveToCart = (product: Product) => {
-    // Add to cart if not already there
-    if (!cartItems.some((item) => item.id === product.id)) {
-      setCartItems([...cartItems, { ...product, quantity: 1 }]);
-    }
-    // Remove from wishlist
-    setWishlistItems(wishlistItems.filter((item) => item.id !== product.id));
+  // const moveToCart = (product: Product) => {
+  //   // Add to cart if not already there
+  //   if (!cartItems.some((item) => item.id === product.id)) {
+  //     setCartItems([...cartItems, { ...product, quantity: 1 }]);
+  //   }
+  // };
+
+  const isInWishlist = (id: number) => {
+    return wishlist.some((item) => item.product.id === id);
   };
 
   const breadcrumb = [
@@ -147,7 +135,7 @@ const ShoppingCart = () => {
                 : "text-gray-500"
             }`}
           >
-            Wishlist ({wishlistItems.length})
+            Wishlist ({wishlist.length})
           </button>
         </div>
 
@@ -203,7 +191,11 @@ const ShoppingCart = () => {
                                 onClick={() => toggleWishlist(item)}
                                 className="text-red-500 p-1"
                               >
-                                {item.inWishlist ? <FaHeart /> : <FaRegHeart />}
+                                {isInWishlist(item.id) ? (
+                                  <FaHeart />
+                                ) : (
+                                  <FaRegHeart />
+                                )}
                               </button>
                             </div>
                             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-2 gap-2">
@@ -252,66 +244,72 @@ const ShoppingCart = () => {
               ) : (
                 <>
                   <h2 className="text-lg font-semibold mb-4">
-                    Your Wishlist ({wishlistItems.length})
+                    Your Wishlist ({wishlist.length})
                   </h2>
 
-                  {wishlistItems.length === 0 ? (
+                  {wishlist.length === 0 ? (
                     <div className="py-8 text-center">
                       <p className="text-gray-500">Your wishlist is empty</p>
                     </div>
                   ) : (
                     <div className="divide-y">
-                      {wishlistItems.map((item) => (
-                        <motion.div
-                          key={item.id}
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          exit={{ opacity: 0 }}
-                          className="flex flex-col sm:flex-row gap-4 py-4"
-                        >
-                          <div className="sm:w-1/4 flex-shrink-0">
-                            <Image
-                              src={item.image}
-                              alt={item.name}
-                              width={200}
-                              height={200}
-                              className="w-full h-auto rounded-md object-contain aspect-square"
-                            />
-                          </div>
-                          <div className="sm:w-3/4">
-                            <div className="flex justify-between items-start">
-                              <h3 className="font-medium text-sm sm:text-base line-clamp-2">
-                                {item.name}
-                              </h3>
-                              <button
-                                onClick={() => toggleWishlist(item)}
-                                className="text-red-500 p-1"
-                              >
-                                <FaHeart />
-                              </button>
+                      {wishlist.map((wishlistItem) => {
+                        const item = {
+                          wishlistId: wishlistItem.id,
+                          id: wishlistItem.product.id,
+                          name: wishlistItem.product.name,
+                          price: wishlistItem.product.price,
+                          quantity: 1,
+                          // image: product1, // You might want to get the actual image from your product data
+                        };
+                        return (
+                          <motion.div
+                            key={wishlistItem.id}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="flex flex-col sm:flex-row gap-4 py-4"
+                          >
+                            <div className="sm:w-1/4 flex-shrink-0">
+                              {/* <Image
+                                src={item.image}
+                                alt={item.name}
+                                width={200}
+                                height={200}
+                                className="w-full h-auto rounded-md object-contain aspect-square"
+                              /> */}
                             </div>
-                            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-2 gap-2">
-                              <span className="text-lg font-bold">
-                                ${item.price.toFixed(2)}
-                              </span>
-                              <div className="flex items-center gap-4">
+                            <div className="sm:w-3/4">
+                              <div className="flex justify-between items-start">
+                                <h3 className="font-medium text-sm sm:text-base line-clamp-2">
+                                  {item.name}
+                                </h3>
                                 <button
-                                  onClick={() => moveToCart(item)}
-                                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm"
+                                  onClick={() =>
+                                    removeFromWishlist(item.wishlistId)
+                                  }
+                                  className="text-red-500 p-1"
                                 >
-                                  Add to Cart
-                                </button>
-                                <button
-                                  onClick={() => removeItem(item.id)}
-                                  className="text-red-500 hover:text-red-700 p-1"
-                                >
-                                  <FaTrashAlt />
+                                  <FaHeart />
                                 </button>
                               </div>
+                              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-2 gap-2">
+                                <span className="text-lg font-bold">
+                                  ${item.price.toFixed(2)}
+                                </span>
+                                <div className="flex items-center gap-4">
+                                  <button
+                                    // onClick={() => moveToCart(item)}
+                                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm"
+                                  >
+                                    Add to Cart
+                                  </button>
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                        </motion.div>
-                      ))}
+                          </motion.div>
+                        );
+                      })}
                     </div>
                   )}
                 </>

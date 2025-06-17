@@ -11,6 +11,7 @@ import {
 import { getProfile } from "@/services/auth.service";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { useWishlist } from "./WishlistContext";
 
 interface User {
   ID: string;
@@ -29,6 +30,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const { fetchWishlist } = useWishlist();
   const route = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -66,6 +68,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     async (token: string) => {
       localStorage.setItem("authToken", token);
       await fetchUser();
+      fetchWishlist(); // this is add fo auto fetch the wishlist data if the user is loged in :)
 
       switch (user?.role) {
         case "admin":
@@ -79,12 +82,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           break;
       }
     },
-    [fetchUser, route, user?.role]
+    [fetchUser, fetchWishlist, route, user?.role]
   );
 
   const logout = useCallback(() => {
     if (typeof window !== "undefined") {
       localStorage.removeItem("authToken");
+      localStorage.removeItem("wishlist");
     }
     toast.success("Log out Successfully");
     setUser(null);

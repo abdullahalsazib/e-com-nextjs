@@ -25,7 +25,7 @@ export const WishlistProvider = ({ children }: { children: ReactNode }) => {
   const getAuthToken = () =>
     typeof window !== "undefined" ? localStorage.getItem("authToken") : null;
 
-  const isLoggedIn = Boolean(getAuthToken());
+  // const isLoggedIn = Boolean(getAuthToken());
 
   // 🧠 Load wishlist on mount
   useEffect(() => {
@@ -64,7 +64,7 @@ export const WishlistProvider = ({ children }: { children: ReactNode }) => {
     setLoading(true);
     try {
       const token = getAuthToken();
-      console.log("🪪 Fetched authToken:", token); // Debugging line
+      // console.log("🪪 Fetched authToken:", token); // Debugging line
 
       if (!token) throw new Error("Not logged in");
 
@@ -75,12 +75,19 @@ export const WishlistProvider = ({ children }: { children: ReactNode }) => {
       });
 
       const data = response.data;
-      console.log("data form fetch wishlist: ", data);
+      // console.log("data form fetch wishlist: ", data);
+
+      // if (Array.isArray(data)) {
+      //   console.log(data); // ✅ <- THIS was missing
+      // } else {
+      //   console.error("Unexpected wishlist format:", data);
+      //   toast.error("Invalid wishlist data");
+      // }
 
       if (Array.isArray(data)) {
-        setWishlist(data); // ✅ <- THIS was missing
+        setWishlist(data);
       } else {
-        console.error("Unexpected wishlist format:", data);
+        console.warn("Unexpected wishlist format:", data);
         toast.error("Invalid wishlist data");
       }
 
@@ -120,10 +127,22 @@ export const WishlistProvider = ({ children }: { children: ReactNode }) => {
             },
           }
         );
+        toast.success(data.message);
 
-        setWishlist((prev) => [...prev, data]);
+        const uploaded = [...wishlist, product];
+        fetchWishlist();
+
+        // console.log("if token is true: ", product);
+        // console.log(
+        //   "and the wishlist is form the if add the product: ",
+        //   wishlist
+        // );
+        setWishlist(uploaded);
+
+        // setWishlist((prev) => [...prev, data.data]);
       } else {
         const updated = [...wishlist, product];
+        // console.log("updated: addtowishlist: ", updated);
         setWishlist(updated);
         saveLocalWishlist(updated);
       }
@@ -154,13 +173,9 @@ export const WishlistProvider = ({ children }: { children: ReactNode }) => {
           },
         });
 
-        setWishlist((prev) =>
-          prev.filter((item) => item.product.id !== productId)
-        );
+        setWishlist((prev) => prev.filter((item) => item.id !== productId));
       } else {
-        const updated = wishlist.filter(
-          (item) => item.product.id !== productId
-        );
+        const updated = wishlist.filter((item) => item.id !== productId);
         setWishlist(updated);
         saveLocalWishlist(updated);
       }
@@ -225,6 +240,7 @@ export const WishlistProvider = ({ children }: { children: ReactNode }) => {
   return (
     <WishlistContext.Provider
       value={{
+        fetchWishlist,
         wishlist,
         loading,
         error,

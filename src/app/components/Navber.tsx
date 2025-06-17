@@ -3,7 +3,6 @@ import React, { useState, useEffect, useRef } from "react";
 import Topbar from "./Topbar/Topbar";
 import { BsBoxSeamFill } from "react-icons/bs";
 import { BiSearch, BiArrowToTop, BiTrash } from "react-icons/bi";
-import { LuShoppingCart } from "react-icons/lu";
 import { FaUserCircle, FaBars, FaCcPaypal } from "react-icons/fa";
 import { PiX } from "react-icons/pi";
 import { CgClose } from "react-icons/cg";
@@ -17,6 +16,8 @@ import { Item, NestedItem, SubItem } from "../type/type";
 import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
 import WishlistDropdown from "./WishlistDropdown";
+import CartListDropdown from "./CartListDropdown";
+import { useWishlist } from "../context/WishlistContext";
 
 export default function Navbar() {
   const router = useRouter();
@@ -35,6 +36,7 @@ export default function Navbar() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const cartRef = useRef<HTMLDivElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
+  const { wishlist } = useWishlist();
 
   // useAuth
   const { user, isLoading, logout } = useAuth();
@@ -301,9 +303,18 @@ export default function Navbar() {
             >
               {!isDesktopSearch ? <BiSearch /> : <CgClose />}
             </button>
-
-            {/* Cart */}
-            <WishlistDropdown />
+            {/* cart */}
+            {/* wishlist */}
+            {user?.role ? (
+              <>
+                {/* cart  */}
+                <CartListDropdown />
+                {/* wishlist  */}
+                <WishlistDropdown />
+              </>
+            ) : (
+              <WishlistDropdown />
+            )}
 
             {/* Account */}
             <div className="relative" ref={dropdownRef}>
@@ -347,7 +358,7 @@ export default function Navbar() {
                               className="block hover:text-blue-500 transition-colors"
                               href={"/shoping-card"}
                             >
-                              My Wish List {`(0)`}
+                              My Wish List {`(${wishlist.length})`}
                             </Link>
                           </li>
                         </>
@@ -414,9 +425,12 @@ export default function Navbar() {
             >
               {!isDesktopSearch ? <BiSearch /> : <CgClose />}
             </button>
-            <button className="text-xl font-bold" onClick={toggleCart}>
-              <LuShoppingCart />
-            </button>
+            {/* <button className="text-xl font-bold" onClick={toggleCart}> */}
+            {/*   <LuShoppingCart /> */}
+            {/* </button> */}
+
+            <CartListDropdown />
+            <WishlistDropdown />
             <button
               className="lg:hidden ml-4 text-2xl mobile-menu-toggle"
               onClick={toggleMobileMenu}
@@ -444,7 +458,7 @@ export default function Navbar() {
 
         {/* Mobile Cart Drawer */}
         {isCartOpen && isMobile && (
-          <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex justify-end lg:hidden">
+          <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex justify-end">
             <div
               className="w-full max-w-md bg-white h-full overflow-y-auto"
               ref={cartRef}
