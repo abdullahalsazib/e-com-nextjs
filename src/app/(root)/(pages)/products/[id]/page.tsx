@@ -292,7 +292,7 @@ const ProductPage = ({ params }: ProductPageProps) => {
 
         <div className="flex flex-col sm:flex-row items-center justify-end gap-3 w-full lg:w-auto">
           <p className="font-light text-gray-600 whitespace-nowrap">
-            On Sale from{" "} 
+            On Sale from{" "}
             <span className="font-semibold text-gray-800">
               ${product.price.toFixed(2)}
             </span>

@@ -23,6 +23,7 @@ interface User {
 interface AuthContextType {
   user: User | null;
   isLoading: boolean;
+  isAuthenticated: boolean;
   login: (token: string) => Promise<void>;
   logout: () => void;
 }
@@ -30,69 +31,81 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const { fetchWishlist } = useWishlist();
-  const route = useRouter();
+  const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const { fetchWishlist } = useWishlist();
 
   const fetchUser = useCallback(async () => {
     const token = localStorage.getItem("authToken");
     if (!token) {
       setUser(null);
       setIsLoading(false);
-      return;
+      return null;
     }
 
     try {
+      setIsLoading(true);
       const res = await getProfile();
       setUser(res.data.data);
+      return res.data.data; // Return user data
     } catch (err) {
       console.error("getProfile failed:", err);
-      logout();
+      localStorage.removeItem("authToken");
+      setUser(null);
+      throw err;
     } finally {
       setIsLoading(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    const token = localStorage.getItem("authToken");
-    if (token) {
-      fetchUser();
-    } else {
-      setIsLoading(false);
-    }
+    const initializeAuth = async () => {
+      const token = localStorage.getItem("authToken");
+      if (token) {
+        try {
+          await fetchUser();
+        } catch {
+          // Error already handled in fetchUser
+          console.log("error form authcontext");
+        }
+      } else {
+        setIsLoading(false);
+      }
+    };
+    initializeAuth();
   }, [fetchUser]);
 
   const login = useCallback(
     async (token: string) => {
-      localStorage.setItem("authToken", token);
-      await fetchUser();
-      fetchWishlist(); // this is add fo auto fetch the wishlist data if the user is loged in :)
+      try {
+        localStorage.setItem("authToken", token);
 
-      switch (user?.role) {
-        case "admin":
-          route.push("/seller");
-          break;
-        case "superadmin":
-          route.push("/");
-          break;
-        default:
-          route.push("/");
-          break;
+        const userData = await fetchUser();
+
+        const redirectPath = userData?.role === "admin" ? "/seller" : "/";
+        router.push(redirectPath);
+        await fetchWishlist();
+        // setTimeout(() => {
+        //   window.location.reload();
+        // }, 100); // delay ensures router.push completes
+
+        // setTimeout(() => window.location.reload(), 100);
+        toast.success("Login successful");
+      } catch (error) {
+        toast.error("Login failed");
+        throw error;
       }
     },
-    [fetchUser, fetchWishlist, route, user?.role]
+    [fetchUser, router]
   );
 
   const logout = useCallback(() => {
-    if (typeof window !== "undefined") {
-      localStorage.removeItem("authToken");
-      localStorage.removeItem("wishlist");
-    }
-    toast.success("Log out Successfully");
+    localStorage.removeItem("authToken");
     setUser(null);
-  }, []);
+    toast.success("Logged out successfully");
+    router.push("/");
+  }, [router]);
 
   const value = useMemo(
     () => ({

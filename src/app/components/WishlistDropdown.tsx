@@ -5,6 +5,7 @@ import { useClickOutside } from "@/hooks/useClickOutSide";
 import { useWishlist } from "../context/WishlistContext";
 import toast from "react-hot-toast";
 import { WishlistItemWithProduct } from "../type/type";
+import Link from "next/link";
 type WishlistItem = {
   id: number;
   name: string;
@@ -13,7 +14,7 @@ type WishlistItem = {
 };
 const WishlistDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { wishlist, loading, error } = useWishlist();
+  const { wishlist, clearWishlist, loading, error } = useWishlist();
   const dropdownRef = useRef<HTMLDivElement>(null);
   // console.log("dropdown: ", wishlist);
 
@@ -48,9 +49,9 @@ const WishlistDropdown = () => {
             </p>
           </div>
 
-          <button className="py-2 px-6 text-sm rounded-full border-blue-500 border-2 bg-white text-blue-500 hover:border-blue-400 hover:bg-blue-500 hover:text-white duration-200">
-            View or edit Wishlist
-          </button>
+          {/* <button className="py-2 px-6 text-sm rounded-full border-blue-500 border-2 bg-white text-blue-500 hover:border-blue-400 hover:bg-blue-500 hover:text-white duration-200"> */}
+          {/*   View or edit Wishlist */}
+          {/* </button> */}
 
           <div className="py-5 w-full flex items-center justify-center flex-col gap-0 max-h-60 overflow-y-auto">
             {loading ? (
@@ -67,9 +68,18 @@ const WishlistDropdown = () => {
           </div>
 
           <div className="px-5 w-full flex items-center justify-center gap-2 flex-col">
-            <button className="w-full py-3 px-6 rounded-full text-sm bg-blue-500 text-white hover:bg-blue-600 duration-200 capitalize font-bold">
-              View Full Wishlist
+            <button
+              onClick={() => clearWishlist()}
+              className=" py-2 px-4 text-center"
+            >
+              Clear all Items
             </button>
+            <Link
+              href={"/shoping-card"}
+              className="flex items-center justify-center w-full py-3 px-6 rounded-full text-sm bg-blue-500 text-white hover:bg-blue-600 duration-200 capitalize font-bold"
+            >
+              View Full Wishlist
+            </Link>
           </div>
         </div>
       )}

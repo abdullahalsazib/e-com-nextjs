@@ -6,12 +6,12 @@ import { IoCheckmarkCircle } from "react-icons/io5";
 import { FaCartArrowDown, FaRegHeart, FaHeart, FaStar } from "react-icons/fa";
 import { GrMore } from "react-icons/gr";
 import p1 from "@/../public/product-image/image-1.png";
-
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Product2 } from "../data/product";
 import { useWishlist } from "../context/WishlistContext";
 import toast from "react-hot-toast";
+import { useCart } from "../context/CartListContext";
 
 const defaultProduct: Product2 = {
   ID: 0,
@@ -24,9 +24,9 @@ const defaultProduct: Product2 = {
 
 const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const [isAddingToCart, setIsAddingToCart] = useState(false);
   const router = useRouter();
   const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
+  const { addToCart, loading: cartLoading } = useCart();
 
   // Safely find if current product is in wishlist
   const wishlistedItem = wishlist.find(
@@ -38,28 +38,31 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
     try {
       if (isWishlisted) {
         if (wishlistedItem?.id) {
-          removeFromWishlist(wishlistedItem.id);
+          await removeFromWishlist(wishlistedItem.id);
           toast.success(`Removed ${product.name} from wishlist`);
         }
       } else {
         await addToWishlist({
           id: product.ID,
+
           product: {
             id: product.ID,
             name: product.name,
             price: product.price,
+            // image_url: product.image_url,
           },
         });
         toast.success(`Added ${product.name} to wishlist`);
       }
     } catch (error) {
+      toast.error("Failed to update wishlist");
       console.error(error);
     }
   };
 
   const {
     stock = 0,
-    image_url = "sorce-of-image.jpg",
+    image_url = p1.src,
     name = "Product Name",
     price = 0,
     original_price,
@@ -87,11 +90,17 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
     return stars;
   };
 
-  const handleAddToCart = () => {
-    setIsAddingToCart(true);
-    setTimeout(() => {
-      setIsAddingToCart(false);
-    }, 1000);
+  const handleAddToCart = async () => {
+    try {
+      await addToCart({
+        product_id: product.ID,
+        quantity: 1,
+      });
+      toast.success(`${product.name} added to cart`);
+    } catch (error) {
+      toast.error("Failed to add item to cart");
+      console.error(error);
+    }
   };
 
   return (
@@ -115,7 +124,10 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
 
         {/* Wishlist button (mobile) */}
         <button
-          onClick={toggleWishlist}
+          onClick={(e) => {
+            e.stopPropagation();
+            toggleWishlist();
+          }}
           className="md:hidden text-gray-400 hover:text-red-500 transition-colors"
         >
           {isWishlisted ? <FaHeart className="text-red-500" /> : <FaRegHeart />}
@@ -124,7 +136,13 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
 
       {/* Product Image */}
       <div className="w-full h-40 md:h-48 flex items-center justify-center my-4 relative">
-        <img width={160} height={160} src={image_url} alt={name} />
+        <img
+          width={160}
+          height={160}
+          src={image_url}
+          alt={name}
+          className="object-contain"
+        />
       </div>
 
       {/* Product Info */}
@@ -141,7 +159,7 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
         </h3>
 
         <div className="flex flex-col">
-          {original_price && (
+          {original_price && original_price > price && (
             <del className="text-xs text-gray-400">
               ${original_price.toFixed(2)}
             </del>
@@ -155,19 +173,25 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
       {/* Mobile Actions */}
       <div className="w-full flex items-center justify-between gap-2 mt-4 md:hidden">
         <button
-          onClick={handleAddToCart}
-          disabled={isAddingToCart || !inStock}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleAddToCart();
+          }}
+          disabled={cartLoading || !inStock}
           className={`flex-1 py-2 px-3 rounded-full text-xs font-medium flex items-center justify-center gap-1 transition-colors ${
-            isAddingToCart || !inStock
+            cartLoading || !inStock
               ? "bg-gray-300 cursor-not-allowed"
               : "bg-blue-500 hover:bg-blue-600 text-white"
           }`}
         >
           <FaCartArrowDown />
-          <span>Add</span>
+          <span>{cartLoading ? "Adding..." : "Add"}</span>
         </button>
         <button
-          onClick={() => router.push(`/products/${product?.ID}`)}
+          onClick={(e) => {
+            e.stopPropagation();
+            router.push(`/products/${product?.ID}`);
+          }}
           className="p-2 rounded-full border border-gray-300 text-gray-700 hover:bg-gray-100"
         >
           <GrMore size={14} />
@@ -182,7 +206,10 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
       >
         <div className="flex justify-end">
           <button
-            onClick={toggleWishlist}
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleWishlist();
+            }}
             className="text-gray-700 hover:text-red-500 transition-colors"
           >
             {isWishlisted ? (
@@ -195,19 +222,23 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
 
         <div className="flex flex-col justify-center items-center h-full gap-3">
           <button
-            onClick={handleAddToCart}
-            disabled={isAddingToCart || !inStock}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleAddToCart();
+            }}
+            disabled={cartLoading || !inStock}
             className={`w-full py-2 px-4 rounded-full text-sm font-medium flex items-center justify-center gap-2 transition-colors ${
-              isAddingToCart || !inStock
+              cartLoading || !inStock
                 ? "bg-gray-300 cursor-not-allowed"
                 : "bg-blue-500 hover:bg-blue-600 text-white"
             }`}
           >
             <FaCartArrowDown />
-            <span>Add to Cart</span>
+            <span>{cartLoading ? "Adding..." : "Add to Cart"}</span>
           </button>
           <Link
             href={`/products/${product?.ID}`}
+            onClick={(e) => e.stopPropagation()}
             className="w-full py-2 px-4 rounded-full text-sm font-medium flex items-center justify-center gap-2 border border-gray-300 hover:bg-gray-100"
           >
             <GrMore size={14} />

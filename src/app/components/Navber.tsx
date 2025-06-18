@@ -16,8 +16,8 @@ import { Item, NestedItem, SubItem } from "../type/type";
 import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
 import WishlistDropdown from "./WishlistDropdown";
-import CartListDropdown from "./CartListDropdown";
 import { useWishlist } from "../context/WishlistContext";
+import CartListDropdown from "./CartListDropdown";
 
 export default function Navbar() {
   const router = useRouter();
@@ -159,12 +159,6 @@ export default function Navbar() {
 
   const toggleAccountDropdown = () => {
     setIsAccountDropdownOpen(!isAccountDropdownOpen);
-    // if (isAccountDropdownOpen) {
-    //   setIsMobileMenuOpen(false);
-    // } else {
-    //   setIsMobileMenuOpen(true);
-    // }
-    // setIsCartOpen(false);
   };
 
   const toggleMobileMenu = () => {
@@ -369,7 +363,7 @@ export default function Navbar() {
                               className="block hover:text-blue-500 transition-colors"
                               href={"/shoping-card"}
                             >
-                              My Wish List {`(0)`}
+                              My Wish List {`(${wishlist.length})`}
                             </Link>
                           </li>
                         </>

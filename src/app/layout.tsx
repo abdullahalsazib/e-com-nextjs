@@ -7,6 +7,7 @@ import { Toaster } from "react-hot-toast";
 import { Suspense } from "react";
 import Loading from "./components/Loading";
 import { WishlistProvider } from "./context/WishlistContext";
+import { CartProvider } from "./context/CartListContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,11 +33,11 @@ export default function RootLayout({
         <Suspense fallback={<Loading />}>
           <WishlistProvider>
             <AuthProvider>
-              <NextTopLoader />
-              <Toaster position="top-center" />
-              {/* <Navber /> */}
-              {children}
-              {/* <Footer /> */}
+              <CartProvider>
+                <NextTopLoader />
+                <Toaster position="top-center" />
+                {children}
+              </CartProvider>
             </AuthProvider>
           </WishlistProvider>
         </Suspense>

@@ -27,39 +27,6 @@ export const WishlistProvider = ({ children }: { children: ReactNode }) => {
 
   // const isLoggedIn = Boolean(getAuthToken());
 
-  // 🧠 Load wishlist on mount
-  useEffect(() => {
-    const loadWishlist = async () => {
-      const token = getAuthToken();
-
-      if (token) {
-        const localWishlistStr = localStorage.getItem("wishlist");
-        const localWishlist: WishlistItemWithProduct[] = localWishlistStr
-          ? JSON.parse(localWishlistStr)
-          : [];
-
-        if (localWishlist.length > 0) {
-          try {
-            await importWishlist(
-              localWishlist.map((item) => ({ product_id: item.product.id }))
-            );
-            localStorage.removeItem("wishlist");
-          } catch (err) {
-            console.error("❌ Failed to import local wishlist:", err);
-          }
-        }
-
-        await fetchWishlist();
-      } else {
-        const stored = localStorage.getItem("wishlist");
-        const parsed = stored ? JSON.parse(stored) : [];
-        setWishlist(parsed);
-      }
-    };
-
-    loadWishlist();
-  }, []);
-
   const fetchWishlist = async () => {
     setLoading(true);
     try {
@@ -103,6 +70,39 @@ export const WishlistProvider = ({ children }: { children: ReactNode }) => {
   const saveLocalWishlist = (items: WishlistItemWithProduct[]) => {
     localStorage.setItem("wishlist", JSON.stringify(items));
   };
+
+  // 🧠 Load wishlist on mount
+  useEffect(() => {
+    const loadWishlist = async () => {
+      const token = getAuthToken();
+
+      if (token) {
+        const localWishlistStr = localStorage.getItem("wishlist");
+        const localWishlist: WishlistItemWithProduct[] = localWishlistStr
+          ? JSON.parse(localWishlistStr)
+          : [];
+
+        if (localWishlist.length > 0) {
+          try {
+            await importWishlist(
+              localWishlist.map((item) => ({ product_id: item.product.id }))
+            );
+            localStorage.removeItem("wishlist");
+          } catch (err) {
+            console.error("Failed to import local wishlist:", err);
+          }
+        }
+
+        await fetchWishlist();
+      } else {
+        const stored = localStorage.getItem("wishlist");
+        const parsed = stored ? JSON.parse(stored) : [];
+        setWishlist(parsed);
+      }
+    };
+
+    loadWishlist();
+  }, []);
 
   const addToWishlist = async (product: WishlistItemWithProduct) => {
     setLoading(true);
