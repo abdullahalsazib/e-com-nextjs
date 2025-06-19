@@ -145,7 +145,7 @@ export default function Navbar() {
       setActiveNestedDropdowns((prev) => ({
         ...prev,
         [`${parentIndex}`]: (prev[`${parentIndex}`] || []).filter(
-          (i) => i !== childIndex
+          (i) => i !== childIndex,
         ),
       }));
     }
@@ -240,13 +240,13 @@ export default function Navbar() {
                             </a>
                             {subItem.nested &&
                               activeNestedDropdowns[index]?.includes(
-                                subIndex
+                                subIndex,
                               ) && (
                                 <div className="absolute left-full top-0 ml-0 w-56 bg-white shadow-lg rounded-r-md z-50 border-l-2 border-blue-500">
                                   {subItem.nested.map(
                                     (
                                       nestedItem: NestedItem,
-                                      nestedIndex: number
+                                      nestedIndex: number,
                                     ) => (
                                       <a
                                         key={nestedIndex}
@@ -255,7 +255,7 @@ export default function Navbar() {
                                       >
                                         {nestedItem.title}
                                       </a>
-                                    )
+                                    ),
                                   )}
                                 </div>
                               )}
@@ -368,6 +368,7 @@ export default function Navbar() {
                           </li>
                         </>
                       )}
+                      {/* add for commit */}
                       {/* <li> */}
                       {/*   <a */}
                       {/*     href="#" */}
@@ -560,7 +561,7 @@ const MobileNavItem = ({ item, index }: { item: Item; index: number }) => {
                       >
                         {nestedItem.title}
                       </a>
-                    )
+                    ),
                   )}
                 </div>
               )}
