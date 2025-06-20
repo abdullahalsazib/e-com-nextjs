@@ -12,6 +12,7 @@ import { motion } from "framer-motion";
 import product1 from "@/../public/product-image/image-1.png";
 import Breadcrumb from "@/app/components/smallComponent/Breadcrumb";
 import { useWishlist } from "@/app/context/WishlistContext";
+import { useCart } from "@/app/context/CartListContext";
 
 interface Product {
   id: number;
@@ -33,16 +34,23 @@ const ShoppingCart = () => {
     },
   ];
 
+  const { cart } = useCart();
+
   const [cartItems, setCartItems] = useState<Product[]>(initialCartItems);
   const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
   const [activeTab, setActiveTab] = useState<"cart" | "wishlist">("cart");
   const [showShipping, setShowShipping] = useState(false);
   const [showDiscount, setShowDiscount] = useState(false);
 
+  console.log("cartItems: ", cartItems);
+  console.log("hello world: ", cart);
+  // setCartItems();
+
   const subtotal = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
   );
+
   // console.log("wishlist product form page-shoping: ", wishlist);
   const shipping = 12.0;
   const tax = 1.87;

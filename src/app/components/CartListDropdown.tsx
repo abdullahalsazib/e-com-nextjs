@@ -67,7 +67,7 @@ const CartListDropdown = () => {
               </div>
               <div className="flex flex-col gap-2">
                 <Link
-                  href="/cart"
+                  href="/shoping-card"
                   onClick={() => setIsOpen(false)}
                   className="w-full py-2 px-4 rounded-full text-sm text-center bg-blue-500 text-white hover:bg-blue-600 duration-200 font-medium"
                 >
