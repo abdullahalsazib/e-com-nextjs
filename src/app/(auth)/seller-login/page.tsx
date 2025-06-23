@@ -178,16 +178,16 @@ const LoginPage = () => {
               <li>Track orders and more</li>
             </ul>
             <div>
-              <h1>demo account: user</h1>
-              <p>jack@jack.com</p>
-              <p>1234</p>
-
-              <div>
-                {`
-"email": "admin@a.com",
-  "password": "12345",
-`}
-              </div>
+              <table style={{ width: "100%" }} className=" border-2">
+                <tr className="border capitalize">
+                  <td className=" border p-2">email: </td>
+                  <td className=" border p-2">password: </td>
+                </tr>
+                <tr className=" border">
+                  <td className=" border p-2">admin@a.com</td>
+                  <td className=" border p-2">12345</td>
+                </tr>
+              </table>
             </div>
           </div>
 

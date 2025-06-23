@@ -169,6 +169,21 @@ const LoginPage = () => {
               <li>Keep more than one address</li>
               <li>Track orders and more</li>
             </ul>
+            <div>
+              <p>already have a customer account:</p>
+              <div>
+                <table style={{ width: "100%" }} className=" border-2">
+                  <tr className="border capitalize">
+                    <td className=" border p-2">email: </td>
+                    <td className=" border p-2">password: </td>
+                  </tr>
+                  <tr className=" border">
+                    <td className=" border p-2">jack@jack.com</td>
+                    <td className=" border p-2">jack</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
           </div>
 
           <LoginBtn
