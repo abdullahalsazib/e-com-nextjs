@@ -1,8 +1,7 @@
 // src/lib/api-client.ts
 import axios, { AxiosError } from "axios";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
-// || "http://localhost:8080"
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"
 
 if (!API_BASE_URL) {
   throw new Error(

@@ -6,7 +6,7 @@ import { FiMail, FiArrowRight } from "react-icons/fi"
 import { motion } from "framer-motion"
 
 const breadcrumb = [
-  { label: "Home", href: "/" },
+  { label: "Home", link: "/" },
   { label: "Forgot password", active: true },
 ]
 
@@ -69,6 +69,7 @@ const ForgotPage = () => {
                   whileTap={{ scale: 0.98 }}
                 >
                   <LoginBtn
+                    disabled
                     title="Send Reset Link"
                     className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700"
                   />
