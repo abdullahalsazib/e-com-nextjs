@@ -4,15 +4,19 @@
 import React, { useState } from "react";
 import { IoCheckmarkCircle } from "react-icons/io5";
 import { FaCartArrowDown, FaRegHeart, FaHeart, FaStar } from "react-icons/fa";
-import { GrMore } from "react-icons/gr";
 import p1 from "@/../public/product-image/image-1.png";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { Product2 } from "../app/data/product";
 import { useWishlist } from "../app/context/WishlistContext";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { useCart } from "../app/context/CartListContext";
 import { useAuth } from "../app/context/AuthContext";
+import { Button } from "./ui/button";
+import { CiLocationArrow1 } from "react-icons/ci";
+import Image from "next/image";
+import { Badge } from "./ui/badge";
+import { Verified } from "lucide-react";
+import { CustomToolTip } from "./custom_compoent/CustomToolTip";
 
 const defaultProduct: Product2 = {
   ID: 0,
@@ -24,7 +28,6 @@ const defaultProduct: Product2 = {
 };
 
 const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
-  const [isHovered, setIsHovered] = useState(false);
   const router = useRouter();
   const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
   const { addToCart, loading: cartLoading } = useCart();
@@ -104,145 +107,144 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
     }
   };
 
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated } = useAuth();
+  const QuickHandleButton = (e: any, id: number) => {
+    e.stopPropagation();
+    router.push(`/products/${id}`);
+    // /products/${product?.ID}
+  };
   return (
-    <div
-      className={`bg-white px-4 py-4 flex flex-col cursor-pointer transition-all duration-300 border border-gray-200 rounded-lg relative overflow-hidden ${isHovered ? "shadow-lg" : "shadow-sm hover:shadow-md"
-        }`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      {/* Stock Status */}
-      <div className="flex justify-between items-start w-full">
-        <p
-          className={`text-xs flex items-center gap-1 ${inStock ? "text-green-700" : "text-red-600"
-            }`}
-        >
-          <IoCheckmarkCircle />
-          {inStock ? "In stock" : "Out of stock"}
-        </p>
-
-        {/* Wishlist button (mobile) */}
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            toggleWishlist();
-          }}
-          className="md:hidden text-gray-400 hover:text-red-500 transition-colors"
-        >
-          {isWishlisted ? <FaHeart className="text-red-500" /> : <FaRegHeart />}
-        </button>
-      </div>
-
+    <div className="bg-white shadow-lg border-[1.5] border-gray-200 rounded-md">
       {/* Product Image */}
-      <div className="w-full h-40 md:h-48 flex items-center justify-center my-4 relative">
+      <div className="w-full p-1 h-40 md:h-48 ">
         <img
-          width={160}
-          height={160}
           src={image_url}
           alt={name}
-          className="object-contain"
+          className="object-cover w-full rounded-md border-[1.5] border-gray-200"
         />
       </div>
+      <div className=" p-2">
+        {/* Stock Status */}
 
-      {/* Product Info */}
-      <div className="flex flex-col w-full space-y-3">
-        {rating > 0 && (
-          <div className="flex items-center">
-            <div className="flex">{renderStars()}</div>
-            <span className="text-xs text-gray-500 ml-2">({review_count})</span>
+        {/* Product Info */}
+        <div className="flex flex-col w-full space-y-1.5">
+          <div className="flex items-center justify-between gap-2">
+            <CustomToolTip
+              children={
+                <Badge
+                  variant="secondary"
+                  className="bg-blue-500 text-white dark:bg-blue-600 self-start"
+                >
+                  <Verified /> john deo
+                </Badge>
+              }
+              bodyContent="Mr. John Deo"
+            />
+            <div className=" flex gap-2">
+              <CustomToolTip
+                children={
+                  <Badge
+                    variant="secondary"
+                    className="bg-blue-500 text-white dark:bg-blue-600"
+                  >
+                    New
+                  </Badge>
+                }
+                bodyContent="New Uploaded Product"
+              />
+
+              <CustomToolTip
+                children={
+                  <Badge
+                    variant="secondary"
+                    className="bg-green-500 text-white dark:bg-green-500"
+                  >
+                    {product.stock}
+                  </Badge>
+                }
+                bodyContent="Available stock"
+              />
+            </div>
           </div>
-        )}
+          <div className="flex items-center justify-start w-full relative">
+            <div>
+              {rating > 0 && (
+                <div className="flex items-center">
+                  <div className="flex">{renderStars()}</div>
+                  <span className="text-xs text-gray-500 ml-2">
+                    ({review_count})
+                  </span>
+                </div>
+              )}
+            </div>
+            <div className="flex justify-between items-start absolute -top-0 right-0">
+              <p
+                className={`text-xs flex items-center gap-1 ${
+                  inStock ? "text-green-700" : "text-red-600"
+                }`}
+              >
+                <IoCheckmarkCircle />
+                {inStock ? "In stock" : "Out of stock"}
+              </p>{" "}
+            </div>
+          </div>
 
-        <h3 className="text-sm font-medium text-gray-800 line-clamp-2">
-          {name}
-        </h3>
+          <h3 className="text-sm font-bold text-gray-900 ">{name}</h3>
+          <p className=" text-xs text-gray-500 w-full">{product.description}</p>
 
-        <div className="flex flex-col">
-          {original_price && original_price > price && (
-            <del className="text-xs text-gray-400">
-              ${original_price.toFixed(2)}
+          <div className="flex items-center justify-between">
+            {/* {original_price && original_price > price && (
+              <del className="text-xs text-gray-400">
+                ${original_price.toFixed(2)}
+              </del>
+            )} */}
+            <del className="text-sm font-bold text-gray-600">
+              ${price.toFixed(2)}
             </del>
-          )}
-          <span className="text-lg font-bold text-gray-900">
-            ${price.toFixed(2)}
-          </span>
-        </div>
-      </div>
-
-      {/* Mobile Actions */}
-      <div className="w-full flex items-center justify-between gap-2 mt-4 md:hidden">
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            handleAddToCart();
-          }}
-          disabled={cartLoading || !inStock}
-          className={`flex-1 py-2 px-3 rounded-full text-xs font-medium flex items-center justify-center gap-1 transition-colors ${cartLoading || !inStock
-            ? "bg-gray-300 cursor-not-allowed"
-            : "bg-blue-500 hover:bg-blue-600 text-white"
-            }`}
-        >
-          <FaCartArrowDown />
-          <span>{cartLoading ? "Adding..." : "Add"}</span>
-        </button>
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            router.push(`/products/${product?.ID}`);
-          }}
-          className="p-2 rounded-full border border-gray-300 text-gray-700 hover:bg-gray-100"
-        >
-          <GrMore size={14} />
-        </button>
-      </div>
-
-      {/* Desktop Hover Actions */}
-      <div
-        className={`hidden md:flex flex-col gap-2 absolute inset-0 bg-gradient-to-r from-indigo-100 to-blue-200 p-4 duration-300 ${isHovered ? "opacity-100" : "opacity-0 pointer-events-none"
-          }`}
-      >
-        <div className="flex justify-end">
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              toggleWishlist();
-            }}
-            className=" text-xl text-gray-900 hover:text-red-500 transition-colors"
-          >
-            {isWishlisted ? (
-              <FaHeart className="text-red-500" />
-            ) : (
-              <FaRegHeart />
-            )}
-          </button>
-        </div>
-
-        <div className="flex flex-col justify-center items-center h-full gap-3">
-          <button
-
-            onClick={(e) => {
-              e.stopPropagation();
-              handleAddToCart();
-            }}
-            disabled={cartLoading || !inStock || !isAuthenticated}
-
-            className={`w-full py-2 px-4 rounded-full text-sm font-medium flex items-center justify-center gap-2 transition-colors ${cartLoading || !isAuthenticated || !inStock
-              ? "bg-gray-300 cursor-not-allowed"
-              : "bg-blue-500 hover:bg-blue-600 text-white"
-              }`}
-          >
-            <FaCartArrowDown />
-            <span>{cartLoading ? "Adding..." : "Add to Cart"}</span>
-          </button>
-          <Link
-            href={`/products/${product?.ID}`}
-            onClick={(e) => e.stopPropagation()}
-            className="w-full py-2 px-4 rounded-full text-sm font-medium flex items-center justify-center gap-2 border border-gray-100 hover:border-0 hover:bg-gray-900 text-white"
-          >
-            <GrMore size={14} />
-            <span>Quick View</span>
-          </Link>
+            <span className="text-lg font-bold text-gray-900">
+              ${price.toFixed(2)}
+            </span>
+          </div>
+          <div className="flex flex-row justify-between items-center gap-1">
+            <div className=" flex gap-2">
+              <Button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleAddToCart();
+                }}
+                disabled={cartLoading || !inStock || !isAuthenticated}
+                size={"icon"}
+                variant={"secondary"}
+                className=" size-9 "
+              >
+                <FaCartArrowDown />
+              </Button>
+              <Button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleWishlist();
+                }}
+                size={"icon"}
+                variant={"secondary"}
+                className=" size-9"
+              >
+                {isWishlisted ? (
+                  <FaHeart className="text-red-500" />
+                ) : (
+                  <FaRegHeart />
+                )}
+              </Button>
+            </div>
+            <Button
+              onClick={(e: any) => QuickHandleButton(e, product.ID)}
+              size={"lg"}
+              variant={"secondary"}
+              className=" w-ful"
+            >
+              <CiLocationArrow1 />
+              <span>Open</span>
+            </Button>
+          </div>
         </div>
       </div>
     </div>

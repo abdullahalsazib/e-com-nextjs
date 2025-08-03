@@ -6,7 +6,7 @@ import { login as loginUser } from "@/services/auth.service";
 import axios from "axios";
 import Link from "next/link";
 import React, { useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 interface LoginFormType {
   email: string;
@@ -53,16 +53,16 @@ const LoginPage = () => {
         console.log(err);
         setError(
           err.response?.data?.message ||
-          err.response?.data?.error ||
-          err.message ||
-          "Registration failed. Please try again."
+            err.response?.data?.error ||
+            err.message ||
+            "Registration failed. Please try again."
         );
 
         toast.error(
           err.response?.data?.message ||
-          err.response?.data?.error ||
-          err.message ||
-          "Registration failed. Please try again."
+            err.response?.data?.error ||
+            err.message ||
+            "Registration failed. Please try again."
         );
       }
     }

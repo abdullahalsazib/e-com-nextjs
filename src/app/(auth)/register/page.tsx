@@ -5,7 +5,7 @@ import { registerUser } from "@/services/auth.service";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 interface FormDataType {
   name: string;
@@ -56,15 +56,15 @@ const RegisterPage = () => {
       if (axios.isAxiosError(err)) {
         setError(
           err.response?.data?.message ||
-          err.response?.data?.error ||
-          err.message ||
-          "Registration failed. Please try again."
+            err.response?.data?.error ||
+            err.message ||
+            "Registration failed. Please try again."
         );
         toast.error(
           err.response?.data?.message ||
-          err.response?.data?.error ||
-          err.message ||
-          "Registration failed. Please try again."
+            err.response?.data?.error ||
+            err.message ||
+            "Registration failed. Please try again."
         );
       }
     } finally {

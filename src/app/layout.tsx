@@ -3,7 +3,7 @@ import { Geist } from "next/font/google";
 import "./globals.css";
 import NextTopLoader from "nextjs-toploader";
 import { AuthProvider } from "./context/AuthContext";
-import { Toaster } from "react-hot-toast";
+import { Toaster } from "@/components/ui/sonner";
 import { Suspense } from "react";
 import Loading from "../components/Loading";
 import { WishlistProvider } from "./context/WishlistContext";
@@ -35,7 +35,7 @@ export default function RootLayout({
             <AuthProvider>
               <CartProvider>
                 <NextTopLoader />
-                <Toaster position="top-center" />
+                <Toaster position="bottom-right" richColors />
                 {children}
               </CartProvider>
             </AuthProvider>

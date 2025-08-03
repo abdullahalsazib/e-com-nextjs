@@ -4,7 +4,6 @@ import Loading from "@/components/Loading";
 import { Suspense, useState } from "react";
 import Sidebar from "./seller_component/Sidebar";
 import PrivateRoute from "@/components/PrivateRoute";
-import { useAuth } from "@/app/context/AuthContext";
 import Seller_navber from "./seller_component/Seller_navber";
 
 export default function SellerLayout({
@@ -13,14 +12,6 @@ export default function SellerLayout({
   children: React.ReactNode;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [profileOpen, setProfileOpen] = useState(false);
-  const { user, logout } = useAuth();
-  // const handleLogout = () => {
-  //   logout();
-  // };
-  // const toggleProfle = () => {
-  //   setProfileOpen(!profileOpen);
-  // };
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -32,11 +23,12 @@ export default function SellerLayout({
       <main>
         <Suspense fallback={<Loading message="Preparing dashboard" />}>
           <PrivateRoute allowedRoles={["admin"]}>
-            <div className="w-full h-screen bg-white flex overflow-hidden">
+            <div className="w-full h-screen bg-gradient-to-tr from-purple-50 to-zinc-50 flex overflow-hidden">
               {/* Sidebar with toggle animation */}
               <div
-                className={`h-full bg-white transition-all duration-300 ease-in-out ${sidebarOpen ? "w-64" : "w-20"
-                  }`}
+                className={`h-full bg-white transition-all duration-300 ease-in-out ${
+                  sidebarOpen ? "w-64" : "w-20"
+                }`}
               >
                 <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
               </div>

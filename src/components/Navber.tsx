@@ -14,10 +14,15 @@ import {
 } from "../app/data/navegationLinks";
 import { Item, NestedItem, SubItem } from "../app/type/type";
 import { useAuth } from "../app/context/AuthContext";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import WishlistDropdown from "./WishlistDropdown";
 import { useWishlist } from "../app/context/WishlistContext";
 import CartListDropdown from "./CartListDropdown";
+import { Button } from "@/components/ui/button";
+import { Input } from "./ui/input";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { Search } from "lucide-react";
+import { Badge } from "./ui/badge";
 
 export default function Navbar() {
   const router = useRouter();
@@ -32,7 +37,7 @@ export default function Navbar() {
   }>({});
   const [isAccountDropdownOpen, setIsAccountDropdownOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-
+  const [isSearchOpen, setSearchOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const cartRef = useRef<HTMLDivElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
@@ -145,7 +150,7 @@ export default function Navbar() {
       setActiveNestedDropdowns((prev) => ({
         ...prev,
         [`${parentIndex}`]: (prev[`${parentIndex}`] || []).filter(
-          (i) => i !== childIndex,
+          (i) => i !== childIndex
         ),
       }));
     }
@@ -170,14 +175,18 @@ export default function Navbar() {
   return (
     <>
       <div
-        className={`w-full text-black ${isScrolled ? "fixed top-0 left-0 z-50 shadow-md" : ""
-          }`}
+        className={`w-full text-black ${
+          isScrolled ? "fixed top-0 left-0 z-50 shadow-md" : ""
+        }`}
       >
         <Topbar />
         <nav className="border-b border-b-gray-300 bg-white py-5 px-4 lg:px-5 xl:px-[10%] flex items-center justify-between">
           <div className="flex items-center justify-between w-full relative md:gap-10">
             <div className="flex items-center">
-              <Link href="/" className=" flex items-center justify-center gap-2">
+              <Link
+                href="/"
+                className=" flex items-center justify-center gap-2"
+              >
                 <BsBoxSeamFill className="text-2xl md:text-3xl text-blue-600" />
                 <h1 className=" font-bold">E_shop</h1>
               </Link>
@@ -240,13 +249,13 @@ export default function Navbar() {
                             </a>
                             {subItem.nested &&
                               activeNestedDropdowns[index]?.includes(
-                                subIndex,
+                                subIndex
                               ) && (
                                 <div className="absolute left-full top-0 ml-0 w-56 bg-white shadow-lg rounded-r-md z-50 border-l-2 border-blue-500">
                                   {subItem.nested.map(
                                     (
                                       nestedItem: NestedItem,
-                                      nestedIndex: number,
+                                      nestedIndex: number
                                     ) => (
                                       <a
                                         key={nestedIndex}
@@ -255,7 +264,7 @@ export default function Navbar() {
                                       >
                                         {nestedItem.title}
                                       </a>
-                                    ),
+                                    )
                                   )}
                                 </div>
                               )}
@@ -266,23 +275,23 @@ export default function Navbar() {
                   </li>
                 ))}
                 {user?.role !== "admin" && (
-                  <button
+                  <Button
                     onClick={handleRolteSell}
-                    className=" py-2 px-4 rounded-lg text-sm font-semibold capitalize text-white bg-blue-500 hover:bg-blue-600 duration-200"
+                    size="sm"
+                    className=" "
+                    variant="secondary"
+
+                    // className=" py-2 px-4 rounded-lg text-sm font-semibold capitalize text-white bg-blue-500 hover:bg-blue-600 duration-200"
                   >
                     Seller Page
-                  </button>
+                  </Button>
                 )}
               </ul>
             ) : (
               <>
                 <div className="relative w-full self-center px-5">
                   <div className="w-full">
-                    <input
-                      type="text"
-                      placeholder="Search in here.."
-                      className="w-full py-2 px-5 border-2 border-gray-300 rounded-lg focus:outline-1 focus:outline-sky-200 focus:bg-slate-100"
-                    />
+                    <Input placeholder="hey jack search in here..." />
                   </div>
                 </div>
               </>
@@ -291,12 +300,28 @@ export default function Navbar() {
 
           {/* Desktop right section */}
           <div className="hidden lg:flex items-center justify-center gap-3 relative pr-0 md:px-10">
-            <button
-              className="text-2xl font-bold"
-              onClick={() => setIsDesktopSearch(!isDesktopSearch)}
-            >
-              {!isDesktopSearch ? <BiSearch /> : <CgClose />}
-            </button>
+            <Popover>
+              <PopoverTrigger onClick={() => setSearchOpen(!isSearchOpen)}>
+                <>
+                  {!isSearchOpen ? (
+                    <Button size="lg" className=" size-8 " variant="secondary">
+                      <Search />
+                    </Button>
+                  ) : (
+                    <Button size="lg" className=" size-8 " variant="secondary">
+                      <CgClose />
+                    </Button>
+                  )}
+                </>
+              </PopoverTrigger>
+              <PopoverContent align="end" className=" bg-white border-2">
+                <Input
+                  type="search"
+                  placeholder="Search here..."
+                  className=" text-black"
+                />
+              </PopoverContent>
+            </Popover>
             {/* cart */}
             {/* wishlist */}
             {user?.role ? (
@@ -312,14 +337,21 @@ export default function Navbar() {
 
             {/* Account */}
             <div className="relative" ref={dropdownRef}>
-              <button
+              <Button
                 onClick={toggleAccountDropdown}
-                className="text-3xl font-bold hover:text-blue-500 transition-colors"
+                size={"icon"}
+                variant={"secondary"}
+                className="size-9 rounded-full"
+                // className="text-3xl font-bold hover:text-blue-500 transition-colors"
                 aria-label="User account"
                 aria-expanded={isAccountDropdownOpen}
               >
+                <Badge
+                  variant={"default"}
+                  className="absolute p-1.5 animate-pulse rounded-full bg-green-500 text-white -top-1 -right-0"
+                ></Badge>
                 <FaUserCircle />
-              </button>
+              </Button>
 
               {isAccountDropdownOpen && (
                 <div className="absolute top-12 right-0 z-50 w-64 bg-white rounded-md shadow-lg border border-gray-200">
@@ -434,6 +466,7 @@ export default function Navbar() {
             >
               {!isDesktopSearch ? <BiSearch /> : <CgClose />}
             </button>
+
             {/* <button className="text-xl font-bold" onClick={toggleCart}> */}
             {/*   <LuShoppingCart /> */}
             {/* </button> */}
@@ -534,8 +567,9 @@ const MobileNavItem = ({ item, index }: { item: Item; index: number }) => {
         {item.title}
         {item.dropDown && (
           <svg
-            className={`w-4 h-4 transition-transform duration-200 ${isOpen ? "rotate-90" : ""
-              }`}
+            className={`w-4 h-4 transition-transform duration-200 ${
+              isOpen ? "rotate-90" : ""
+            }`}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -574,7 +608,7 @@ const MobileNavItem = ({ item, index }: { item: Item; index: number }) => {
                       >
                         {nestedItem.title}
                       </a>
-                    ),
+                    )
                   )}
                 </div>
               )}

@@ -10,7 +10,7 @@ import {
   deleteProduct,
 } from "@/services/product.service";
 import { useState, useEffect } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 interface Category {
   ID: number;
@@ -179,7 +179,7 @@ const Products = () => {
   };
 
   return (
-    <div className="p-6">
+    <div className="p-6 dark:text-black">
       <h2 className="text-2xl font-bold mb-6">Products</h2>
 
       <form

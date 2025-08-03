@@ -5,7 +5,7 @@ import { registerUser } from "@/services/auth.service";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 interface FormDataType {
   name: string;

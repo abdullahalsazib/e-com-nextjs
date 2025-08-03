@@ -11,7 +11,7 @@ import {
 } from "react";
 import axios from "axios";
 import { useAuth } from "./AuthContext";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import apiClient from "@/lib/api-client";
 
 interface Product {

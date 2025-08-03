@@ -3,9 +3,11 @@ import { useRef, useState } from "react";
 import { FaHeart } from "react-icons/fa";
 import { useClickOutside } from "@/hooks/useClickOutSide";
 import { useWishlist } from "../app/context/WishlistContext";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { WishlistItemWithProduct } from "../app/type/type";
 import Link from "next/link";
+import { Button } from "./ui/button";
+import { Badge } from "./ui/badge";
 type WishlistItem = {
   id: number;
   name: string;
@@ -24,17 +26,24 @@ const WishlistDropdown = () => {
   return (
     <div className="relative" ref={dropdownRef}>
       {/* Wishlist Icon Button */}
-      <button
+      <Button
+        size={"icon"}
+        variant={"secondary"}
+        className="size-8"
         onClick={toggleDropdown}
-        className="p-2 relative hover:text-blue-500 transition-colors"
+        // className="p-2 relative hover:text-blue-500 transition-colors"
       >
-        <FaHeart className="text-xl" />
+        <FaHeart />
         {wishlist.length > 0 && (
-          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+          <Badge
+            variant={"default"}
+            title="counter"
+            className="absolute size-5 bg-red-500 text-white -top-1.5 -right-1.5"
+          >
             {wishlist.length}
-          </span>
+          </Badge>
         )}
-      </button>
+      </Button>
 
       {/* Dropdown Content */}
       {isOpen && (
