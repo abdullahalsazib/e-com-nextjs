@@ -5,7 +5,7 @@ import { useClickOutside } from "@/hooks/useClickOutSide";
 import toast from "react-hot-toast";
 import { LuShoppingCart } from "react-icons/lu";
 import Link from "next/link";
-import { useCart } from "../context/CartListContext";
+import { useCart } from "../app/context/CartListContext";
 
 const CartListDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);

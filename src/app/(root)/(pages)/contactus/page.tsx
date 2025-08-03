@@ -1,4 +1,4 @@
-import Breadcrumb from "@/app/components/smallComponent/Breadcrumb";
+import Breadcrumb from "@/components/smallComponent/Breadcrumb";
 import React from "react";
 import { BsMailbox, BsTelephone } from "react-icons/bs";
 import { CiLocationArrow1 } from "react-icons/ci";
@@ -165,28 +165,28 @@ const LabelInput: React.FC<{
   inputClassName,
   labelClassName,
 }) => {
-  return (
-    <div className="w-full">
-      <label
-        className={`text-sm md:text-base font-bold relative text-black ${labelClassName}`}
-        htmlFor={name}
-      >
-        {labelTitle}{" "}
-        {lableReq && (
-          <span className="text-sm text-red-500 absolute top-0 -right-2">
-            *
-          </span>
-        )}
-      </label>
-      <input
-        type={type}
-        name={name}
-        id={name}
-        placeholder={placeholder}
-        className={`py-2 md:py-3 px-4 md:px-5 border focus:bg-blue-50 border-gray-200 rounded-md focus:outline-blue-400 w-full ${inputClassName}`}
-      />
-    </div>
-  );
-};
+    return (
+      <div className="w-full">
+        <label
+          className={`text-sm md:text-base font-bold relative text-black ${labelClassName}`}
+          htmlFor={name}
+        >
+          {labelTitle}{" "}
+          {lableReq && (
+            <span className="text-sm text-red-500 absolute top-0 -right-2">
+              *
+            </span>
+          )}
+        </label>
+        <input
+          type={type}
+          name={name}
+          id={name}
+          placeholder={placeholder}
+          className={`py-2 md:py-3 px-4 md:px-5 border focus:bg-blue-50 border-gray-200 rounded-md focus:outline-blue-400 w-full ${inputClassName}`}
+        />
+      </div>
+    );
+  };
 
 export default ContactUs;

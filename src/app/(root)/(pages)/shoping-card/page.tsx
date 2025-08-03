@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { FaTrashAlt, FaHeart } from "react-icons/fa";
 import { motion } from "framer-motion";
-import Breadcrumb from "@/app/components/smallComponent/Breadcrumb";
+import Breadcrumb from "@/components/smallComponent/Breadcrumb";
 import { useWishlist } from "@/app/context/WishlistContext";
 import { useCart } from "@/app/context/CartListContext";
 
@@ -71,21 +71,19 @@ const ShoppingCart = () => {
       <div className="flex border-b mb-6">
         <button
           onClick={() => setActiveTab("cart")}
-          className={`px-4 py-2 font-medium ${
-            activeTab === "cart"
+          className={`px-4 py-2 font-medium ${activeTab === "cart"
               ? "text-blue-600 border-b-2 border-blue-600"
               : "text-gray-500"
-          }`}
+            }`}
         >
           Cart ({cartItemCount})
         </button>
         <button
           onClick={() => setActiveTab("wishlist")}
-          className={`px-4 py-2 font-medium ${
-            activeTab === "wishlist"
+          className={`px-4 py-2 font-medium ${activeTab === "wishlist"
               ? "text-blue-600 border-b-2 border-blue-600"
               : "text-gray-500"
-          }`}
+            }`}
         >
           Wishlist ({wishlist.length})
         </button>

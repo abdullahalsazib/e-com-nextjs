@@ -11,12 +11,12 @@ import { useRouter } from "next/navigation";
 import {
   accountNavagationLink,
   NavLink as navLink,
-} from "../data/navegationLinks";
-import { Item, NestedItem, SubItem } from "../type/type";
-import { useAuth } from "../context/AuthContext";
+} from "../app/data/navegationLinks";
+import { Item, NestedItem, SubItem } from "../app/type/type";
+import { useAuth } from "../app/context/AuthContext";
 import toast from "react-hot-toast";
 import WishlistDropdown from "./WishlistDropdown";
-import { useWishlist } from "../context/WishlistContext";
+import { useWishlist } from "../app/context/WishlistContext";
 import CartListDropdown from "./CartListDropdown";
 
 export default function Navbar() {

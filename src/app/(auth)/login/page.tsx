@@ -1,6 +1,6 @@
 "use client";
-import LoginBtn from "@/app/components/buttons/LoginBtn";
-import Breadcrumb from "@/app/components/smallComponent/Breadcrumb";
+import LoginBtn from "@/components/buttons/LoginBtn";
+import Breadcrumb from "@/components/smallComponent/Breadcrumb";
 import { useAuth } from "@/app/context/AuthContext";
 import { login as loginUser } from "@/services/auth.service";
 import axios from "axios";
@@ -87,9 +87,9 @@ const LoginPage = () => {
         </div>
       )}
 
-      <div className="flex flex-col lg:flex-row items-center justify-between gap-6 md:gap-8 lg:gap-10 py-6 md:py-8 lg:py-10">
+      <div className="flex dark:text-black flex-col lg:flex-row items-center justify-between gap-6 md:gap-8 lg:gap-10 py-6 md:py-8 lg:py-10">
         {/* Login Form */}
-        <div className="bg-[#F5F7FF] p-6 sm:p-8 md:p-10 w-full rounded-lg shadow-sm">
+        <div className="bg-[#F5F7FF]  p-6 sm:p-8 md:p-10 w-full rounded-lg shadow-sm">
           <div className="mb-4">
             <h1 className="text-lg md:text-xl font-bold capitalize">
               Registered Customers

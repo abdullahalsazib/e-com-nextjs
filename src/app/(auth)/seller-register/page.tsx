@@ -1,6 +1,6 @@
 "use client";
-import LoginBtn from "@/app/components/buttons/LoginBtn";
-import Breadcrumb from "@/app/components/smallComponent/Breadcrumb";
+import LoginBtn from "@/components/buttons/LoginBtn";
+import Breadcrumb from "@/components/smallComponent/Breadcrumb";
 import { registerUser } from "@/services/auth.service";
 import axios from "axios";
 import { useRouter } from "next/navigation";

@@ -1,6 +1,6 @@
 "use client"
-import LoginBtn from "@/app/components/buttons/LoginBtn"
-import Breadcrumb from "@/app/components/smallComponent/Breadcrumb"
+import LoginBtn from "@/components/buttons/LoginBtn"
+import Breadcrumb from "@/components/smallComponent/Breadcrumb"
 import Link from "next/link"
 import { FiMail, FiArrowRight } from "react-icons/fi"
 import { motion } from "framer-motion"

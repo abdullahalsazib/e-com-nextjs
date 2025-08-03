@@ -5,7 +5,7 @@ import NextTopLoader from "nextjs-toploader";
 import { AuthProvider } from "./context/AuthContext";
 import { Toaster } from "react-hot-toast";
 import { Suspense } from "react";
-import Loading from "./components/Loading";
+import Loading from "../components/Loading";
 import { WishlistProvider } from "./context/WishlistContext";
 import { CartProvider } from "./context/CartListContext";
 

@@ -1,6 +1,6 @@
 "use client";
-import LoginBtn from "@/app/components/buttons/LoginBtn";
-import Breadcrumb from "@/app/components/smallComponent/Breadcrumb";
+import LoginBtn from "@/components/buttons/LoginBtn";
+import Breadcrumb from "@/components/smallComponent/Breadcrumb";
 import { registerUser } from "@/services/auth.service";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -56,15 +56,15 @@ const RegisterPage = () => {
       if (axios.isAxiosError(err)) {
         setError(
           err.response?.data?.message ||
-            err.response?.data?.error ||
-            err.message ||
-            "Registration failed. Please try again."
+          err.response?.data?.error ||
+          err.message ||
+          "Registration failed. Please try again."
         );
         toast.error(
           err.response?.data?.message ||
-            err.response?.data?.error ||
-            err.message ||
-            "Registration failed. Please try again."
+          err.response?.data?.error ||
+          err.message ||
+          "Registration failed. Please try again."
         );
       }
     } finally {

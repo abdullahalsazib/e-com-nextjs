@@ -12,15 +12,15 @@ import brand4 from "@/../public/Logos/thermaltake.png";
 import brand5 from "@/../public/Logos/adata.png";
 import brand6 from "@/../public/Logos/hp.png";
 import brand7 from "@/../public/Logos/gigabyte.png";
-import News_card from "@/app/components/News_card";
-import Carousel from "@/app/components/Slider";
+import News_card from "@/components/News_card";
+import Carousel from "@/components/Slider";
 import Carsol1 from "@/../public/images/cursol1.png";
-import TestimonialSection from "@/app/components/Testimonials";
+import TestimonialSection from "@/components/Testimonials";
 
 import { useEffect, useState } from "react";
 import apiClient from "@/lib/api-client";
 import { Product2 } from "@/app/data/product";
-import ProductCard from "@/app/components/Product_card";
+import ProductCard from "@/components/Product_card";
 
 const brandLogo = [
   { imgUrl: brand1, alr: "brand1" },

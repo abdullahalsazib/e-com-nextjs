@@ -8,11 +8,11 @@ import { GrMore } from "react-icons/gr";
 import p1 from "@/../public/product-image/image-1.png";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Product2 } from "../data/product";
-import { useWishlist } from "../context/WishlistContext";
+import { Product2 } from "../app/data/product";
+import { useWishlist } from "../app/context/WishlistContext";
 import toast from "react-hot-toast";
-import { useCart } from "../context/CartListContext";
-import { useAuth } from "../context/AuthContext";
+import { useCart } from "../app/context/CartListContext";
+import { useAuth } from "../app/context/AuthContext";
 
 const defaultProduct: Product2 = {
   ID: 0,

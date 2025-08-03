@@ -1,6 +1,6 @@
 "use client";
 import React, { JSX, useState } from "react";
-import Breadcrumb from "@/app/components/smallComponent/Breadcrumb";
+import Breadcrumb from "@/components/smallComponent/Breadcrumb";
 import {
   FiUser,
   FiMapPin,
@@ -14,7 +14,7 @@ import {
   FiHome,
 } from "react-icons/fi";
 import { useAuth } from "@/app/context/AuthContext";
-import PrivateRoute from "@/app/components/PrivateRoute";
+import PrivateRoute from "@/components/PrivateRoute";
 type SectionKey =
   | "dashboard"
   | "account"
@@ -131,18 +131,16 @@ const User_account = () => {
                       <li key={item.label}>
                         <button
                           onClick={() => setActiveSection(item.section!)}
-                          className={`w-full px-4 py-3 text-left flex items-center gap-3 transition-colors ${
-                            activeSection === item.section
+                          className={`w-full px-4 py-3 text-left flex items-center gap-3 transition-colors ${activeSection === item.section
                               ? "bg-blue-50 text-blue-600"
                               : "hover:bg-gray-50 text-gray-700"
-                          }`}
+                            }`}
                         >
                           <span
-                            className={`text-lg ${
-                              activeSection === item.section
+                            className={`text-lg ${activeSection === item.section
                                 ? "text-blue-500"
                                 : "text-gray-400"
-                            }`}
+                              }`}
                           >
                             {item.icon}
                           </span>

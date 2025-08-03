@@ -2,9 +2,9 @@
 import { useRef, useState } from "react";
 import { FaHeart } from "react-icons/fa";
 import { useClickOutside } from "@/hooks/useClickOutSide";
-import { useWishlist } from "../context/WishlistContext";
+import { useWishlist } from "../app/context/WishlistContext";
 import toast from "react-hot-toast";
-import { WishlistItemWithProduct } from "../type/type";
+import { WishlistItemWithProduct } from "../app/type/type";
 import Link from "next/link";
 type WishlistItem = {
   id: number;

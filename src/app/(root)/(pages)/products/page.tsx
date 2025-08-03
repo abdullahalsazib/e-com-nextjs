@@ -1,4 +1,4 @@
-import Breadcrumb from "@/app/components/smallComponent/Breadcrumb";
+import Breadcrumb from "@/components/smallComponent/Breadcrumb";
 
 const breadcrumbItems = [
   { label: "Home", link: "/" },

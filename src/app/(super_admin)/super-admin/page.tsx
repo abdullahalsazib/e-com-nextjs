@@ -1,4 +1,4 @@
-import ProtectedRoute from "@/app/components/PrivateRoute";
+import ProtectedRoute from "@/components/PrivateRoute";
 
 export default function SuperAdminPage() {
   return (

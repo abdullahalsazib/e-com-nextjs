@@ -1,11 +1,11 @@
 "use client";
 
-import Loading from "@/app/components/Loading";
+import Loading from "@/components/Loading";
 import { Suspense, useState } from "react";
 import Sidebar from "./seller_component/Sidebar";
-import PrivateRoute from "@/app/components/PrivateRoute";
-import { BsPersonFillX } from "react-icons/bs";
+import PrivateRoute from "@/components/PrivateRoute";
 import { useAuth } from "@/app/context/AuthContext";
+import Seller_navber from "./seller_component/Seller_navber";
 
 export default function SellerLayout({
   children,
@@ -15,12 +15,12 @@ export default function SellerLayout({
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [profileOpen, setProfileOpen] = useState(false);
   const { user, logout } = useAuth();
-  const handleLogout = () => {
-    logout();
-  };
-  const toggleProfle = () => {
-    setProfileOpen(!profileOpen);
-  };
+  // const handleLogout = () => {
+  //   logout();
+  // };
+  // const toggleProfle = () => {
+  //   setProfileOpen(!profileOpen);
+  // };
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -35,9 +35,8 @@ export default function SellerLayout({
             <div className="w-full h-screen bg-white flex overflow-hidden">
               {/* Sidebar with toggle animation */}
               <div
-                className={`h-full bg-white transition-all duration-300 ease-in-out ${
-                  sidebarOpen ? "w-64" : "w-20"
-                }`}
+                className={`h-full bg-white transition-all duration-300 ease-in-out ${sidebarOpen ? "w-64" : "w-20"
+                  }`}
               >
                 <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
               </div>
@@ -45,7 +44,7 @@ export default function SellerLayout({
               {/* Main content area */}
               <div className="flex-1 flex flex-col overflow-hidden">
                 {/* Top header/search bar */}
-                <div className="bg-green-100 py-4 px-6 flex items-center justify-between border-b border-gray-300">
+                {/* <div className="bg-white py-4 px-6 flex items-center justify-between border-b border-gray-300">
                   <div className="flex items-center space-x-4">
                     <button
                       onClick={toggleSidebar}
@@ -113,22 +112,9 @@ export default function SellerLayout({
                   </div>
 
                   <div className="flex items-center space-x-4">
-                    <button className="p-2 rounded-full bg-gray-200 text-gray-600 hover:bg-gray-300">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-                        />
-                      </svg>
-                    </button>
+                    <div>
+                      <BiBell />
+                    </div>
                     <button onClick={toggleProfle} className=" relative">
                       <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white font-semibold">
                         {!profileOpen ? (
@@ -138,11 +124,10 @@ export default function SellerLayout({
                         )}
                       </div>
                       <div
-                        className={` absolute top-10 right-0 w-50 h-auto bg-white border border-gray-300 shadow-lg rounded-lg ${
-                          profileOpen
-                            ? "translate-y-0 opacity-90 duration-150"
-                            : " opacity-0 -translate-y-10 duration-200"
-                        } `}
+                        className={` absolute top-10 right-0 w-50 h-auto bg-white border border-gray-300 shadow-lg rounded-lg ${profileOpen
+                          ? "translate-y-0 opacity-90 duration-150"
+                          : " opacity-0 -translate-y-10 duration-200"
+                          } `}
                       >
                         <ul className=" p-2">
                           <li
@@ -155,9 +140,10 @@ export default function SellerLayout({
                       </div>
                     </button>
                   </div>
-                </div>
-                {/* Main content */}
+                </div> */}
+                <Seller_navber isOpen={sidebarOpen} setOpen={toggleSidebar} />
 
+                {/* Main content */}
                 <div className=" overflow-y-scroll">{children}</div>
                 {/* <Seller_dashboard /> */}
               </div>
