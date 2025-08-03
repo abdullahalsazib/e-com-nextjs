@@ -53,16 +53,16 @@ const LoginPage = () => {
         console.log(err);
         setError(
           err.response?.data?.message ||
-            err.response?.data?.error ||
-            err.message ||
-            "Registration failed. Please try again."
+          err.response?.data?.error ||
+          err.message ||
+          "Registration failed. Please try again."
         );
 
         toast.error(
           err.response?.data?.message ||
-            err.response?.data?.error ||
-            err.message ||
-            "Registration failed. Please try again."
+          err.response?.data?.error ||
+          err.message ||
+          "Registration failed. Please try again."
         );
       }
     }

@@ -26,6 +26,7 @@ import Tabs from "@/app/components/smallComponent/Tab";
 import Breadcrumb from "@/app/components/smallComponent/Breadcrumb";
 import { getProductById } from "@/services/product.service";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
+import { useAuth } from "@/app/context/AuthContext";
 
 // Types
 interface Product {
@@ -189,9 +190,8 @@ const SpecTable = () => (
     {specs2.map((item, index) => (
       <div
         key={index}
-        className={`flex justify-between px-4 py-3 ${
-          index % 2 === 1 ? "bg-blue-50" : "bg-white"
-        }`}
+        className={`flex justify-between px-4 py-3 ${index % 2 === 1 ? "bg-blue-50" : "bg-white"
+          }`}
       >
         <span className="font-medium text-black">{item.key}</span>
         <span className="text-gray-500">{item.value}</span>
@@ -208,6 +208,7 @@ interface ProductPageProps {
 }
 
 const ProductPage = ({ params }: ProductPageProps) => {
+  const { isAuthenticated } = useAuth()
   const [activeIndex, setActiveIndex] = useState(0);
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
@@ -254,6 +255,7 @@ const ProductPage = ({ params }: ProductPageProps) => {
 
   const handleAddToCart = () => {
     // Implement cart functionality here
+    alert("hello")
     console.log(`Added ${quantity} of ${product?.name} to cart`);
   };
 
@@ -310,8 +312,9 @@ const ProductPage = ({ params }: ProductPageProps) => {
 
             <button
               onClick={handleAddToCart}
-              className="py-2 px-4 sm:px-6 rounded-full bg-blue-500 hover:bg-blue-600 duration-200 cursor-pointer font-semibold text-white capitalize whitespace-nowrap"
-              disabled={product.stock <= 0}
+              className={`py-2 px-4 sm:px-6 rounded-full  duration-200 cursor-pointer font-semibold text-white capitalize whitespace-nowrap ${!isAuthenticated ? "bg-gray-500 hover:bg-gray-600 duration-150" : "bg-blue-500 hover:bg-blue-600"}`}
+              disabled={product.stock <= 0 || !isAuthenticated}
+
             >
               {product.stock > 0 ? "Add to Cart" : "Out of Stock"}
             </button>

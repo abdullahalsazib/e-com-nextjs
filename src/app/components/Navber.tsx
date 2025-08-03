@@ -170,16 +170,16 @@ export default function Navbar() {
   return (
     <>
       <div
-        className={`w-full text-black ${
-          isScrolled ? "fixed top-0 left-0 z-50 shadow-md" : ""
-        }`}
+        className={`w-full text-black ${isScrolled ? "fixed top-0 left-0 z-50 shadow-md" : ""
+          }`}
       >
         <Topbar />
         <nav className="border-b border-b-gray-300 bg-white py-5 px-4 lg:px-5 xl:px-[10%] flex items-center justify-between">
           <div className="flex items-center justify-between w-full relative md:gap-10">
             <div className="flex items-center">
-              <Link href="/">
-                <BsBoxSeamFill className="text-3xl md:text-5xl text-blue-600" />
+              <Link href="/" className=" flex items-center justify-center gap-2">
+                <BsBoxSeamFill className="text-2xl md:text-3xl text-blue-600" />
+                <h1 className=" font-bold">E_shop</h1>
               </Link>
             </div>
 
@@ -534,9 +534,8 @@ const MobileNavItem = ({ item, index }: { item: Item; index: number }) => {
         {item.title}
         {item.dropDown && (
           <svg
-            className={`w-4 h-4 transition-transform duration-200 ${
-              isOpen ? "rotate-90" : ""
-            }`}
+            className={`w-4 h-4 transition-transform duration-200 ${isOpen ? "rotate-90" : ""
+              }`}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
