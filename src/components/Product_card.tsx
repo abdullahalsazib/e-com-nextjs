@@ -114,7 +114,7 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
     // /products/${product?.ID}
   };
   return (
-    <div className="bg-white shadow-lg border-[1.5] border-gray-200 rounded-md">
+    <div className="bg-white shadow-lg border-[1.5] border-gray-200 rounded-md flex items-center justify-between flex-col">
       {/* Product Image */}
       <div className="w-full p-1 h-40 md:h-48 ">
         <img
@@ -123,11 +123,10 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
           className="object-cover w-full rounded-md border-[1.5] border-gray-200"
         />
       </div>
-      <div className=" p-2">
-        {/* Stock Status */}
 
-        {/* Product Info */}
-        <div className="flex flex-col w-full space-y-1.5">
+      {/* Product Info */}
+      <div className="flex flex-col w-full p-2 space-y-2">
+        <div className=" ">
           <div className="flex items-center justify-between gap-2">
             <CustomToolTip
               children={
@@ -189,8 +188,12 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
             </div>
           </div>
 
-          <h3 className="text-sm font-bold text-gray-900 ">{name}</h3>
-          <p className=" text-xs text-gray-500 w-full">{product.description}</p>
+          <h3 className="text-sm font-bold text-gray-900 line-clamp-2 ">
+            {name}
+          </h3>
+          <p className=" text-xs text-gray-500 w-full line-clamp-2">
+            {product.description}
+          </p>
 
           <div className="flex items-center justify-between">
             {/* {original_price && original_price > price && (
@@ -205,46 +208,46 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
               ${price.toFixed(2)}
             </span>
           </div>
-          <div className="flex flex-row justify-between items-center gap-1">
-            <div className=" flex gap-2">
-              <Button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleAddToCart();
-                }}
-                disabled={cartLoading || !inStock || !isAuthenticated}
-                size={"icon"}
-                variant={"secondary"}
-                className=" size-9 "
-              >
-                <FaCartArrowDown />
-              </Button>
-              <Button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleWishlist();
-                }}
-                size={"icon"}
-                variant={"secondary"}
-                className=" size-9"
-              >
-                {isWishlisted ? (
-                  <FaHeart className="text-red-500" />
-                ) : (
-                  <FaRegHeart />
-                )}
-              </Button>
-            </div>
+        </div>
+        <div className=" flex flex-row justify-between items-center gap-1">
+          <div className=" flex gap-2">
             <Button
-              onClick={(e: any) => QuickHandleButton(e, product.ID)}
-              size={"lg"}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleAddToCart();
+              }}
+              disabled={cartLoading || !inStock || !isAuthenticated}
+              size={"icon"}
               variant={"secondary"}
-              className=" w-ful"
+              className=" size-9 "
             >
-              <CiLocationArrow1 />
-              <span>Open</span>
+              <FaCartArrowDown />
+            </Button>
+            <Button
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleWishlist();
+              }}
+              size={"icon"}
+              variant={"secondary"}
+              className=" size-9"
+            >
+              {isWishlisted ? (
+                <FaHeart className="text-red-500" />
+              ) : (
+                <FaRegHeart />
+              )}
             </Button>
           </div>
+          <Button
+            onClick={(e: any) => QuickHandleButton(e, product.ID)}
+            size={"lg"}
+            variant={"secondary"}
+            className=" w-ful"
+          >
+            <CiLocationArrow1 />
+            <span>Open</span>
+          </Button>
         </div>
       </div>
     </div>

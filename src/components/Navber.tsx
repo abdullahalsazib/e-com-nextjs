@@ -3,7 +3,13 @@ import React, { useState, useEffect, useRef } from "react";
 import Topbar from "./Topbar/Topbar";
 import { BsBoxSeamFill } from "react-icons/bs";
 import { BiSearch, BiArrowToTop, BiTrash } from "react-icons/bi";
-import { FaUserCircle, FaBars, FaCcPaypal } from "react-icons/fa";
+import {
+  FaUserCircle,
+  FaBars,
+  FaCcPaypal,
+  FaCashRegister,
+  FaSignInAlt,
+} from "react-icons/fa";
 import { PiX } from "react-icons/pi";
 import { CgClose } from "react-icons/cg";
 import Link from "next/link";
@@ -23,6 +29,20 @@ import { Input } from "./ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Search } from "lucide-react";
 import { Badge } from "./ui/badge";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "./ui/dialog";
+import Login_d from "@/app/(auth)/login/components/Login_d";
+import { Label } from "./ui/label";
+import { FaBasketShopping } from "react-icons/fa6";
+import { MdOutlineSell } from "react-icons/md";
 
 export default function Navbar() {
   const router = useRouter();
@@ -79,37 +99,6 @@ export default function Navbar() {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      // Close account dropdown if clicked outside
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setIsAccountDropdownOpen(false);
-      }
-
-      // Close cart if clicked outside
-      if (cartRef.current && !cartRef.current.contains(event.target as Node)) {
-        setIsCartOpen(false);
-      }
-
-      // Close mobile menu if clicked outside
-      if (
-        mobileMenuRef.current &&
-        !mobileMenuRef.current.contains(event.target as Node) &&
-        !(event.target as HTMLElement).closest(".mobile-menu-toggle")
-      ) {
-        setIsMobileMenuOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
   }, []);
 
   const scrollToTop = () => {
@@ -180,7 +169,7 @@ export default function Navbar() {
         }`}
       >
         <Topbar />
-        <nav className="border-b border-b-gray-300 bg-white py-5 px-4 lg:px-5 xl:px-[10%] flex items-center justify-between">
+        <nav className=" dark:bg-gray-100  bg-white py-5 px-4 lg:px-5 xl:px-[10%] flex items-center justify-between">
           <div className="flex items-center justify-between w-full relative md:gap-10">
             <div className="flex items-center">
               <Link
@@ -283,7 +272,7 @@ export default function Navbar() {
 
                     // className=" py-2 px-4 rounded-lg text-sm font-semibold capitalize text-white bg-blue-500 hover:bg-blue-600 duration-200"
                   >
-                    Seller Page
+                    Seller Page <MdOutlineSell />
                   </Button>
                 )}
               </ul>
@@ -336,125 +325,121 @@ export default function Navbar() {
             )}
 
             {/* Account */}
-            <div className="relative" ref={dropdownRef}>
-              <Button
-                onClick={toggleAccountDropdown}
-                size={"icon"}
-                variant={"secondary"}
-                className="size-9 rounded-full"
-                // className="text-3xl font-bold hover:text-blue-500 transition-colors"
-                aria-label="User account"
-                aria-expanded={isAccountDropdownOpen}
-              >
-                <Badge
-                  variant={"default"}
-                  className="absolute p-1.5 animate-pulse rounded-full bg-green-500 text-white -top-1 -right-0"
-                ></Badge>
-                <FaUserCircle />
-              </Button>
+            <div>
+              <Popover>
+                <PopoverTrigger>
+                  <>
+                    <Button
+                      size={"icon"}
+                      variant={"secondary"}
+                      className="size-9 rounded-full"
+                      // className="text-3xl font-bold hover:text-blue-500 transition-colors"
+                      aria-label="User account"
+                    >
+                      {/* <Badge
+                        variant={"default"}
+                        className="absolute p-1.5 animate-pulse rounded-full bg-green-500 text-white -top-1 -right-0"
+                      ></Badge> */}
+                      <FaUserCircle />
+                    </Button>
+                  </>
+                </PopoverTrigger>
+                <PopoverContent align="end" className="  border-2">
+                  <>
+                    {/* <div className="absolute top-12 right-0 z-50 w-64 bg-white rounded-md shadow-lg border border-gray-200"> */}
+                    <div>
+                      <ul className="space-y-3 text-sm ">
+                        {user?.role == "admin" ? (
+                          <>
+                            <li>
+                              <Link
+                                href={"/seller"}
+                                className="block hover:text-blue-500 transition-colors"
+                              >
+                                Seller Dashboard
+                              </Link>
+                            </li>
+                          </>
+                        ) : user?.role == "user" ? (
+                          <>
+                            <li>
+                              <Link
+                                href="/user-account"
+                                className="block hover:text-blue-500 transition-colors"
+                              >
+                                My Account
+                              </Link>
+                            </li>
 
-              {isAccountDropdownOpen && (
-                <div className="absolute top-12 right-0 z-50 w-64 bg-white rounded-md shadow-lg border border-gray-200">
-                  <div className="p-4">
-                    <ul className="space-y-3 text-sm text-gray-700">
-                      {user?.role == "admin" ? (
-                        <>
-                          <li>
-                            <Link
-                              href={"/seller"}
-                              className="block hover:text-blue-500 transition-colors"
-                            >
-                              Seller Dashboard
-                            </Link>
-                          </li>
-                        </>
-                      ) : user?.role == "user" ? (
-                        <>
-                          <li>
-                            <Link
-                              href="/user-account"
-                              className="block hover:text-blue-500 transition-colors"
-                            >
-                              My Account
-                            </Link>
-                          </li>
+                            <li>
+                              <Link
+                                className="block hover:text-blue-500 transition-colors"
+                                href={"/shoping-card"}
+                              >
+                                My Wish List {`(${wishlist.length})`}
+                              </Link>
+                            </li>
+                          </>
+                        ) : (
+                          <>
+                            <li>
+                              <Link
+                                className="block hover:text-blue-500 transition-colors"
+                                href={"/shoping-card"}
+                              >
+                                <Button variant="default" className=" w-full">
+                                  <FaBasketShopping />
+                                  My Wish List {`(${wishlist.length})`}
+                                </Button>
+                              </Link>
+                            </li>
+                          </>
+                        )}
 
-                          <li>
-                            <Link
-                              className="block hover:text-blue-500 transition-colors"
-                              href={"/shoping-card"}
-                            >
-                              My Wish List {`(${wishlist.length})`}
-                            </Link>
-                          </li>
-                        </>
-                      ) : (
-                        <>
-                          <li>
-                            <Link
-                              className="block hover:text-blue-500 transition-colors"
-                              href={"/shoping-card"}
-                            >
-                              My Wish List {`(${wishlist.length})`}
-                            </Link>
-                          </li>
-                        </>
-                      )}
-                      {/*Exam - Time*/}
-                      {/*Exam - Time*/}
-                      {/*Exam - Time*/}
-                      {/*Exam - Time*/}
-                      {/*Exam - Time*/}
+                        {isLoading && <h1>Loading data...</h1>}
+                        {!user ? (
+                          <>
+                            {" "}
+                            <li className="border-t border-gray-200 pt-3">
+                              <Link
+                                href="/register"
+                                className="block hover:text-blue-500 transition-colors"
+                              >
+                                <Button variant="outline" className=" w-full">
+                                  <FaCashRegister />
+                                  Create an Account
+                                </Button>
+                              </Link>
+                            </li>
+                            <li>
+                              <Dialog>
+                                {/* Trigger should be outside the form */}
+                                <DialogTrigger asChild>
+                                  <Button variant="outline" className=" w-full">
+                                    <FaSignInAlt />
+                                    Sign In
+                                  </Button>
+                                </DialogTrigger>
 
-                      {/* add for commit */}
-                      {/* add for commit */}
-                      {/* add for commit */}
-                      {/* add for commit */}
-                      {/* add for commit */}
-                      {/* add for commit */}
-                      {/* add for commit */}
-                      {/* add for commit */}
-                      {/* add for commit */}
-                      {/* <li> */}
-                      {/*   <a */}
-                      {/*     href="#" */}
-                      {/*     className="block hover:text-blue-500 transition-colors" */}
-                      {/*   > */}
-                      {/*     Compare {`(0)`}{" "} */}
-                      {/*   </a> */}
-                      {/* </li> */}
-                      {isLoading && <h1>Loading data...</h1>}
-                      {!user ? (
-                        <>
-                          {" "}
-                          <li className="border-t border-gray-200 pt-3">
-                            <Link
-                              href="/register"
-                              className="block hover:text-blue-500 transition-colors"
-                            >
-                              Create an Account
-                            </Link>
+                                {/* Form starts inside DialogContent */}
+                                <DialogContent className="sm:max-w-[425px]">
+                                  <Login_d />
+                                </DialogContent>
+                              </Dialog>
+                            </li>
+                          </>
+                        ) : (
+                          <li onClick={handleLogout}>
+                            <p className=" cursor-pointer block hover:text-blue-500 transition-colors">
+                              Log out
+                            </p>
                           </li>
-                          <li>
-                            <Link
-                              href="/login"
-                              className="block hover:text-blue-500 transition-colors"
-                            >
-                              Sign In
-                            </Link>
-                          </li>{" "}
-                        </>
-                      ) : (
-                        <li onClick={handleLogout}>
-                          <p className=" cursor-pointer block hover:text-blue-500 transition-colors">
-                            Log out
-                          </p>
-                        </li>
-                      )}
-                    </ul>
-                  </div>
-                </div>
-              )}
+                        )}
+                      </ul>
+                    </div>
+                  </>
+                </PopoverContent>
+              </Popover>
             </div>
           </div>
 

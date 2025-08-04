@@ -35,7 +35,13 @@ export default function RootLayout({
             <AuthProvider>
               <CartProvider>
                 <NextTopLoader />
-                <Toaster position="bottom-right" richColors />
+                <Toaster
+                  position="top-right"
+                  richColors
+                  visibleToasts={5}
+                  swipeDirections={["left", "right", "bottom"]}
+                  closeButton
+                />
                 {children}
               </CartProvider>
             </AuthProvider>
