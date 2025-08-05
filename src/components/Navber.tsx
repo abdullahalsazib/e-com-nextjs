@@ -28,19 +28,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "./ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Search } from "lucide-react";
-import { Badge } from "./ui/badge";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "./ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import Login_d from "@/app/(auth)/login/components/Login_d";
-import { Label } from "./ui/label";
 import { FaBasketShopping } from "react-icons/fa6";
 import { MdOutlineSell } from "react-icons/md";
 
@@ -57,8 +46,7 @@ export default function Navbar() {
   }>({});
   const [isAccountDropdownOpen, setIsAccountDropdownOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [isSearchOpen, setSearchOpen] = useState<boolean>(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [isSearchOpen, setIsSearchOpen] = useState(false); // const dropdownRef = useRef<HTMLDivElement>(null);
   const cartRef = useRef<HTMLDivElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const { wishlist } = useWishlist();
@@ -151,9 +139,9 @@ export default function Navbar() {
     setIsAccountDropdownOpen(false);
   };
 
-  const toggleAccountDropdown = () => {
-    setIsAccountDropdownOpen(!isAccountDropdownOpen);
-  };
+  // const toggleAccountDropdown = () => {
+  //   setIsAccountDropdownOpen(!isAccountDropdownOpen);
+  // };
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -269,8 +257,6 @@ export default function Navbar() {
                     size="sm"
                     className=" "
                     variant="secondary"
-
-                    // className=" py-2 px-4 rounded-lg text-sm font-semibold capitalize text-white bg-blue-500 hover:bg-blue-600 duration-200"
                   >
                     Seller Page <MdOutlineSell />
                   </Button>
@@ -289,28 +275,30 @@ export default function Navbar() {
 
           {/* Desktop right section */}
           <div className="hidden lg:flex items-center justify-center gap-3 relative pr-0 md:px-10">
-            <Popover>
-              <PopoverTrigger onClick={() => setSearchOpen(!isSearchOpen)}>
-                <>
-                  {!isSearchOpen ? (
-                    <Button size="lg" className=" size-8 " variant="secondary">
-                      <Search />
-                    </Button>
+            <Popover
+              open={isSearchOpen}
+              onOpenChange={(open) => setIsSearchOpen(open)}
+            >
+              <PopoverTrigger asChild>
+                <Button
+                  onClick={() => setIsSearchOpen(!isSearchOpen)}
+                  size="icon"
+                  variant="secondary"
+                  className="size-8"
+                >
+                  {isSearchOpen ? (
+                    <CgClose className="size-4" />
                   ) : (
-                    <Button size="lg" className=" size-8 " variant="secondary">
-                      <CgClose />
-                    </Button>
+                    <Search className="size-4" />
                   )}
-                </>
+                </Button>
               </PopoverTrigger>
-              <PopoverContent align="end" className=" bg-white border-2">
-                <Input
-                  type="search"
-                  placeholder="Search here..."
-                  className=" text-black"
-                />
+
+              <PopoverContent align="end" className=" border-2 w-72">
+                <Input type="search" placeholder="Search here..." />
               </PopoverContent>
             </Popover>
+
             {/* cart */}
             {/* wishlist */}
             {user?.role ? (
