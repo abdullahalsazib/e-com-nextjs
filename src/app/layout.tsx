@@ -8,6 +8,7 @@ import { Suspense } from "react";
 import Loading from "../components/Loading";
 import { WishlistProvider } from "./context/WishlistContext";
 import { CartProvider } from "./context/CartListContext";
+import { ThemeProvider } from "@/components/Theme_provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,28 +26,40 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark" style={{ colorScheme: "light" }}>
+    <html
+      lang="en"
+      className="dark"
+      style={{ colorScheme: "light" }}
+      suppressHydrationWarning
+    >
       <body
         cz-shortcut-listen="true"
         className={`${geistSans.className}  antialiased`}
       >
-        <Suspense fallback={<Loading />}>
-          <WishlistProvider>
-            <AuthProvider>
-              <CartProvider>
-                <NextTopLoader />
-                <Toaster
-                  position="top-right"
-                  richColors
-                  visibleToasts={5}
-                  swipeDirections={["left", "right", "bottom"]}
-                  closeButton
-                />
-                {children}
-              </CartProvider>
-            </AuthProvider>
-          </WishlistProvider>
-        </Suspense>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Suspense fallback={<Loading />}>
+            <WishlistProvider>
+              <AuthProvider>
+                <CartProvider>
+                  <NextTopLoader />
+                  <Toaster
+                    position="top-right"
+                    richColors
+                    visibleToasts={5}
+                    swipeDirections={["left", "right", "bottom"]}
+                    closeButton
+                  />
+                  {children}
+                </CartProvider>
+              </AuthProvider>
+            </WishlistProvider>
+          </Suspense>
+        </ThemeProvider>
       </body>
     </html>
   );

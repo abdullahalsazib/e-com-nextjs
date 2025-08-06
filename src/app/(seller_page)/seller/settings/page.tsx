@@ -28,7 +28,7 @@ export default function SettingsPage() {
   });
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value, type } = e.target;
     const checked = (e.target as HTMLInputElement).checked;
@@ -58,55 +58,79 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex flex-col md:flex-row gap-8">
           {/* Sidebar Navigation */}
           <div className="w-full md:w-64 flex-shrink-0">
-            <div className="bg-white rounded-lg shadow-sm p-4">
-              <h2 className="text-lg font-semibold text-gray-900 mb-6 flex items-center gap-2">
+            <div className="dark:bg-gray-900 bg-white rounded-lg shadow-sm p-4">
+              <h2 className="text-lg font-semibold dark:text-white text-gray-900 mb-6 flex items-center gap-2">
                 <FiSettings className="text-blue-500" />
                 Settings
               </h2>
               <nav className="space-y-1">
                 <button
                   onClick={() => setActiveTab("profile")}
-                  className={`w-full flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md ${activeTab === "profile" ? "bg-blue-50 text-blue-700" : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"}`}
+                  className={`w-full flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md ${
+                    activeTab === "profile"
+                      ? "dark:bg-gray-700 bg-blue-50 dark:text-slate-200 text-blue-700"
+                      : "text-gray-600 hover:text-gray-900 dark:hover:bg-gray-900 dark:hover:text-white hover:bg-gray-50"
+                  }`}
                 >
-                  <FiUser className="text-gray-500" />
+                  <FiUser className="dark:text-gray-400 text-gray-500" />
                   Profile
                 </button>
                 <button
                   onClick={() => setActiveTab("security")}
-                  className={`w-full flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md ${activeTab === "security" ? "bg-blue-50 text-blue-700" : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"}`}
+                  className={`w-full flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md ${
+                    activeTab === "security"
+                      ? "dark:bg-gray-700 bg-blue-50 dark:text-slate-200 text-blue-700"
+                      : "text-gray-600 hover:text-gray-900 dark:hover:bg-gray-900 dark:hover:text-white hover:bg-gray-50"
+                  }`}
                 >
                   <FiLock className="text-gray-500" />
                   Security
                 </button>
                 <button
                   onClick={() => setActiveTab("notifications")}
-                  className={`w-full flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md ${activeTab === "notifications" ? "bg-blue-50 text-blue-700" : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"}`}
+                  className={`w-full flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md ${
+                    activeTab === "notifications"
+                      ? "dark:bg-gray-700 bg-blue-50 dark:text-slate-200 text-blue-700"
+                      : "text-gray-600 hover:text-gray-900 dark:hover:bg-gray-900 dark:hover:text-white hover:bg-gray-50"
+                  }`}
                 >
                   <FiBell className="text-gray-500" />
                   Notifications
                 </button>
                 <button
                   onClick={() => setActiveTab("billing")}
-                  className={`w-full flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md ${activeTab === "billing" ? "bg-blue-50 text-blue-700" : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"}`}
+                  className={`w-full flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md ${
+                    activeTab === "billing"
+                      ? "dark:bg-gray-700 bg-blue-50 dark:text-slate-200 text-blue-700"
+                      : "text-gray-600 hover:text-gray-900 dark:hover:bg-gray-900 dark:hover:text-white hover:bg-gray-50"
+                  }`}
                 >
                   <FiCreditCard className="text-gray-500" />
                   Billing
                 </button>
                 <button
                   onClick={() => setActiveTab("privacy")}
-                  className={`w-full flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md ${activeTab === "privacy" ? "bg-blue-50 text-blue-700" : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"}`}
+                  className={`w-full flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md ${
+                    activeTab === "privacy"
+                      ? "dark:bg-gray-700 bg-blue-50 dark:text-slate-200 text-blue-700"
+                      : "text-gray-600 hover:text-gray-900 dark:hover:bg-gray-900 dark:hover:text-white hover:bg-gray-50"
+                  }`}
                 >
                   <FiShield className="text-gray-500" />
                   Privacy
                 </button>
                 <button
                   onClick={() => setActiveTab("preferences")}
-                  className={`w-full flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md ${activeTab === "preferences" ? "bg-blue-50 text-blue-700" : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"}`}
+                  className={`w-full flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-md ${
+                    activeTab === "preferences"
+                      ? "dark:bg-gray-700 bg-blue-50 dark:text-slate-200 text-blue-700"
+                      : "text-gray-600 hover:text-gray-900 dark:hover:bg-gray-900 dark:hover:text-white hover:bg-gray-50"
+                  }`}
                 >
                   <FiGlobe className="text-gray-500" />
                   Preferences
@@ -117,11 +141,11 @@ export default function SettingsPage() {
 
           {/* Main Content */}
           <div className="flex-1">
-            <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+            <div className="dark:bg-gray-900 bg-white rounded-lg shadow-sm overflow-hidden">
               {/* Profile Settings */}
               {activeTab === "profile" && (
                 <div className="p-6">
-                  <h3 className="text-lg font-medium text-gray-900 mb-6 flex items-center gap-2">
+                  <h3 className="text-lg font-medium dark:text-gray-300 text-gray-900 mb-6 flex items-center gap-2">
                     <FiUser className="text-blue-500" />
                     Profile Information
                   </h3>
@@ -141,7 +165,7 @@ export default function SettingsPage() {
                             id="name"
                             value={formData.name}
                             onChange={handleInputChange}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                            className="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                           />
                         </div>
                         <div>
@@ -157,7 +181,7 @@ export default function SettingsPage() {
                             id="email"
                             value={formData.email}
                             onChange={handleInputChange}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                            className="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                           />
                         </div>
                       </div>
@@ -175,7 +199,7 @@ export default function SettingsPage() {
                             id="phone"
                             value={formData.phone}
                             onChange={handleInputChange}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                            className="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                           />
                         </div>
                         <div>
@@ -191,7 +215,7 @@ export default function SettingsPage() {
                             id="businessName"
                             value={formData.businessName}
                             onChange={handleInputChange}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                            className="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                           />
                         </div>
                       </div>
@@ -208,7 +232,7 @@ export default function SettingsPage() {
                           id="address"
                           value={formData.address}
                           onChange={handleInputChange}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                          className="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         />
                       </div>
                       <div className="flex justify-end pt-4">
@@ -246,7 +270,7 @@ export default function SettingsPage() {
                       </div>
                     </div>
 
-                    <div className="border border-gray-200 rounded-lg p-4">
+                    <div className="border  rounded-lg p-4">
                       <h4 className="text-md font-medium text-gray-900 mb-4">
                         Change Password
                       </h4>
@@ -261,7 +285,7 @@ export default function SettingsPage() {
                           <input
                             type="password"
                             id="currentPassword"
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                            className="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                           />
                         </div>
                         <div>
@@ -274,7 +298,7 @@ export default function SettingsPage() {
                           <input
                             type="password"
                             id="newPassword"
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                            className="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                           />
                         </div>
                         <div>
@@ -287,7 +311,7 @@ export default function SettingsPage() {
                           <input
                             type="password"
                             id="confirmPassword"
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                            className="w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                           />
                         </div>
                         <div className="flex justify-end pt-2">
@@ -301,7 +325,7 @@ export default function SettingsPage() {
                       </div>
                     </div>
 
-                    <div className="border border-gray-200 rounded-lg p-4">
+                    <div className="border  rounded-lg p-4">
                       <h4 className="text-md font-medium text-gray-900 mb-4">
                         Two-Factor Authentication
                       </h4>
@@ -313,7 +337,7 @@ export default function SettingsPage() {
                         </div>
                         <button
                           type="button"
-                          className="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                          className="inline-flex items-center px-3 py-1.5 border shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                         >
                           Enable 2FA
                         </button>
@@ -332,7 +356,7 @@ export default function SettingsPage() {
                   </h3>
                   <form onSubmit={handleSubmit}>
                     <div className="space-y-6">
-                      <div className="border border-gray-200 rounded-lg p-4">
+                      <div className="border  rounded-lg p-4">
                         <h4 className="text-md font-medium text-gray-900 mb-4">
                           Communication Channels
                         </h4>
@@ -356,7 +380,7 @@ export default function SettingsPage() {
                                 type="checkbox"
                                 checked={formData.notifications.email}
                                 onChange={handleInputChange}
-                                className="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded"
+                                className="focus:ring-blue-500 h-4 w-4 text-blue-600 rounded"
                               />
                             </div>
                           </div>
@@ -379,7 +403,7 @@ export default function SettingsPage() {
                                 type="checkbox"
                                 checked={formData.notifications.sms}
                                 onChange={handleInputChange}
-                                className="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded"
+                                className="focus:ring-blue-500 h-4 w-4 text-blue-600 rounded"
                               />
                             </div>
                           </div>
@@ -402,14 +426,14 @@ export default function SettingsPage() {
                                 type="checkbox"
                                 checked={formData.notifications.push}
                                 onChange={handleInputChange}
-                                className="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded"
+                                className="focus:ring-blue-500 h-4 w-4 text-blue-600 rounded"
                               />
                             </div>
                           </div>
                         </div>
                       </div>
 
-                      <div className="border border-gray-200 rounded-lg p-4">
+                      <div className="border  rounded-lg p-4">
                         <h4 className="text-md font-medium text-gray-900 mb-4">
                           Notification Types
                         </h4>
@@ -419,7 +443,7 @@ export default function SettingsPage() {
                               Order Notifications
                             </label>
                             <select
-                              className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+                              className="mt-1 block w-full pl-3 pr-10 py-2 text-base focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
                               defaultValue="all"
                             >
                               <option value="all">
@@ -438,7 +462,7 @@ export default function SettingsPage() {
                               Promotional Emails
                             </label>
                             <select
-                              className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+                              className="mt-1 block w-full pl-3 pr-10 py-2 text-base focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
                               defaultValue="weekly"
                             >
                               <option value="weekly">Weekly digest</option>
@@ -472,7 +496,7 @@ export default function SettingsPage() {
                     Billing Information
                   </h3>
                   <div className="space-y-6">
-                    <div className="border border-gray-200 rounded-lg p-4">
+                    <div className="border  rounded-lg p-4">
                       <h4 className="text-md font-medium text-gray-900 mb-4">
                         Current Plan
                       </h4>
@@ -486,7 +510,7 @@ export default function SettingsPage() {
                           </div>
                           <button
                             type="button"
-                            className="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                            className="inline-flex items-center px-3 py-1.5 border shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                           >
                             Change Plan
                           </button>
@@ -494,11 +518,11 @@ export default function SettingsPage() {
                       </div>
                     </div>
 
-                    <div className="border border-gray-200 rounded-lg p-4">
+                    <div className="border  rounded-lg p-4">
                       <h4 className="text-md font-medium text-gray-900 mb-4">
                         Payment Method
                       </h4>
-                      <div className="flex items-center justify-between p-3 border border-gray-200 rounded-md">
+                      <div className="flex items-center justify-between p-3 border  rounded-md">
                         <div className="flex items-center">
                           <div className="bg-gray-100 p-2 rounded-md mr-3">
                             <svg
@@ -525,13 +549,13 @@ export default function SettingsPage() {
                       </div>
                       <button
                         type="button"
-                        className="mt-3 inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                        className="mt-3 inline-flex items-center px-3 py-1.5 border shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                       >
                         Add Payment Method
                       </button>
                     </div>
 
-                    <div className="border border-gray-200 rounded-lg p-4">
+                    <div className="border  rounded-lg p-4">
                       <h4 className="text-md font-medium text-gray-900 mb-4">
                         Billing History
                       </h4>
@@ -611,7 +635,7 @@ export default function SettingsPage() {
                   </h3>
                   <form onSubmit={handleSubmit}>
                     <div className="space-y-6">
-                      <div className="border border-gray-200 rounded-lg p-4">
+                      <div className="border  rounded-lg p-4">
                         <h4 className="text-md font-medium text-gray-900 mb-4">
                           Data Sharing
                         </h4>
@@ -622,7 +646,7 @@ export default function SettingsPage() {
                                 id="analytics"
                                 name="analytics"
                                 type="checkbox"
-                                className="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded"
+                                className="focus:ring-blue-500 h-4 w-4 text-blue-600 rounded"
                               />
                             </div>
                             <div className="ml-3 text-sm">
@@ -645,7 +669,7 @@ export default function SettingsPage() {
                                 id="marketing"
                                 name="marketing"
                                 type="checkbox"
-                                className="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded"
+                                className="focus:ring-blue-500 h-4 w-4 text-blue-600 rounded"
                               />
                             </div>
                             <div className="ml-3 text-sm">
@@ -664,7 +688,7 @@ export default function SettingsPage() {
                         </div>
                       </div>
 
-                      <div className="border border-gray-200 rounded-lg p-4">
+                      <div className="border  rounded-lg p-4">
                         <h4 className="text-md font-medium text-gray-900 mb-4">
                           Data Retention
                         </h4>
@@ -673,7 +697,7 @@ export default function SettingsPage() {
                             Automatically delete old data after
                           </label>
                           <select
-                            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+                            className="mt-1 block w-full pl-3 pr-10 py-2 text-base focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
                             defaultValue="365"
                           >
                             <option value="30">30 days</option>
@@ -691,7 +715,7 @@ export default function SettingsPage() {
                         </div>
                       </div>
 
-                      <div className="border border-gray-200 rounded-lg p-4">
+                      <div className="border  rounded-lg p-4">
                         <h4 className="text-md font-medium text-gray-900 mb-4">
                           Account Deletion
                         </h4>
@@ -742,7 +766,7 @@ export default function SettingsPage() {
                             name="timezone"
                             value={formData.timezone}
                             onChange={handleInputChange}
-                            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+                            className="mt-1 block w-full pl-3 pr-10 py-2 text-base focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
                           >
                             <option value="America/New_York">
                               Eastern Time (ET)
@@ -777,7 +801,7 @@ export default function SettingsPage() {
                             name="currency"
                             value={formData.currency}
                             onChange={handleInputChange}
-                            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+                            className="mt-1 block w-full pl-3 pr-10 py-2 text-base focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
                           >
                             <option value="USD">US Dollar (USD)</option>
                             <option value="EUR">Euro (EUR)</option>
@@ -789,7 +813,7 @@ export default function SettingsPage() {
                         </div>
                       </div>
 
-                      <div className="border border-gray-200 rounded-lg p-4">
+                      <div className="border  rounded-lg p-4">
                         <h4 className="text-md font-medium text-gray-900 mb-4">
                           Dashboard Preferences
                         </h4>
@@ -811,7 +835,7 @@ export default function SettingsPage() {
                                 id="darkMode"
                                 name="darkMode"
                                 type="checkbox"
-                                className="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded"
+                                className="focus:ring-blue-500 h-4 w-4 text-blue-600 rounded"
                               />
                             </div>
                           </div>
@@ -832,7 +856,7 @@ export default function SettingsPage() {
                                 id="compactView"
                                 name="compactView"
                                 type="checkbox"
-                                className="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded"
+                                className="focus:ring-blue-500 h-4 w-4 text-blue-600 rounded"
                               />
                             </div>
                           </div>

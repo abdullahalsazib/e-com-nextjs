@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { IoCheckmarkCircle } from "react-icons/io5";
 import { FaCartArrowDown, FaRegHeart, FaHeart, FaStar } from "react-icons/fa";
 import p1 from "@/../public/product-image/image-1.png";
@@ -13,7 +13,6 @@ import { useCart } from "../app/context/CartListContext";
 import { useAuth } from "../app/context/AuthContext";
 import { Button } from "./ui/button";
 import { CiLocationArrow1 } from "react-icons/ci";
-import Image from "next/image";
 import { Badge } from "./ui/badge";
 import { Verified } from "lucide-react";
 import { CustomToolTip } from "./custom_compoent/CustomToolTip";
@@ -114,13 +113,13 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
     // /products/${product?.ID}
   };
   return (
-    <div className="bg-white shadow-lg border-[1.5] border-gray-200 rounded-md flex items-center justify-between flex-col">
+    <div className="bg-white dark:bg-gray-900 border-[1.5] rounded-md flex items-center justify-between flex-col shadow-sm hover:shadow-xl transition-shadow duration-300 ease-in-out">
       {/* Product Image */}
-      <div className="w-full p-1 h-40 md:h-48 ">
+      <div className="w-full p-1 h-40 md:h-[250px] ">
         <img
           src={image_url}
           alt={name}
-          className="object-cover w-full rounded-md border-[1.5] border-gray-200"
+          className="object-cover w-full rounded-md border-[1.5] "
         />
       </div>
 
@@ -188,10 +187,10 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
             </div>
           </div>
 
-          <h3 className="text-sm font-bold text-gray-900 line-clamp-2 ">
+          <h3 className="text-sm font-bold dark:text-gray-100 text-gray-900 line-clamp-2 ">
             {name}
           </h3>
-          <p className=" text-xs text-gray-500 w-full line-clamp-2">
+          <p className=" text-xs dark:text-gray-300 text-gray-500 w-full line-clamp-2">
             {product.description}
           </p>
 
@@ -201,10 +200,10 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
                 ${original_price.toFixed(2)}
               </del>
             )} */}
-            <del className="text-sm font-bold text-gray-600">
+            <del className="text-sm font-bold dark:text-gray-500 text-gray-600">
               ${price.toFixed(2)}
             </del>
-            <span className="text-lg font-bold text-gray-900">
+            <span className="text-lg font-bold dark:text-gray-300 text-gray-900">
               ${price.toFixed(2)}
             </span>
           </div>

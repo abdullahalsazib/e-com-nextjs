@@ -6,8 +6,17 @@ import { GrMoney } from "react-icons/gr";
 
 // image import
 import rocket_image from "@/../public/rocket-white.png";
-import bg_ivancik from "../../../../../public/ivancik.jpg";
 import { CiLocationArrow1 } from "react-icons/ci";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 const Seller_dashboard = () => {
   return (
@@ -34,13 +43,13 @@ const Seller_dashboard = () => {
             icons={<CgProductHunt />}
           />
 
-          <div className="md:col-span-2 lg:col-span-2 bg-white p-4 lg:p-6 rounded-lg lg:h-[300px] shadow-sm border border-gray-200 flex flex-col sm:flex-row items-start gap-2 lg:gap-7 justify-between">
+          <div className="md:col-span-2 lg:col-span-2 dark:bg-gray-900  bg-white p-4 lg:p-6 rounded-lg lg:h-[300px] shadow-sm border flex flex-col sm:flex-row items-start gap-2 lg:gap-7 justify-between">
             <div className=" flex flex-col justify-between h-full">
               <div className=" md:w-[60%]">
                 <p className=" text-sm text-gray-400 font-semibold capitalize">
                   Built by developers
                 </p>
-                <h3 className=" text-xl text-gray-600 font-semibold capitalize py-2">
+                <h3 className=" text-xl dark:text-gray-200 text-gray-600 font-semibold capitalize py-2">
                   Dashboard
                 </h3>
 
@@ -69,7 +78,7 @@ const Seller_dashboard = () => {
           </div>
 
           <div
-            className={` card_container md:col-span-2 lg:col-span-1 p-4 lg:p-6 rounded-lg lg:h-[300px] shadow-sm border border-gray-200 flex flex-col items-start gap-2 lg:gap-7 justify-between`}
+            className={` card_container md:col-span-2 lg:col-span-1 p-4 lg:p-6 rounded-lg lg:h-[300px] shadow-sm border  flex flex-col items-start gap-2 lg:gap-7 justify-between`}
           >
             <div>
               <p className=" text-sm text-gray-100 font-semibold capitalize">
@@ -96,62 +105,49 @@ const Seller_dashboard = () => {
           </div>
 
           {/* Recent Orders */}
-          <div className="md:col-span-2 lg:col-span-3 bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-gray-800">
-                Recent Orders
-              </h2>
-              <button className="text-sm text-green-600 hover:text-green-800 font-medium">
+          <Card className="md:col-span-2 lg:col-span-3 border">
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle className="text-lg">Recent Orders</CardTitle>
+              <Button
+                variant="link"
+                className="text-green-600 hover:text-green-800 p-0 h-auto"
+              >
                 View All
-              </button>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Order ID
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Customer
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Date
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Amount
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Status
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+              </Button>
+            </CardHeader>
+
+            <CardContent className="overflow-x-auto p-0">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Order ID</TableHead>
+                    <TableHead>Customer</TableHead>
+                    <TableHead>Date</TableHead>
+                    <TableHead>Amount</TableHead>
+                    <TableHead>Status</TableHead>
+                  </TableRow>
+                </TableHeader>
+
+                <TableBody>
                   {[1].map((order) => (
-                    <tr key={order}>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    <TableRow key={order}>
+                      <TableCell className="font-medium">
                         #ORD-{1000 + order}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        Customer {order}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        May {15 + order}, 2023
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        ${(120 + order * 25).toFixed(2)}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                      </TableCell>
+                      <TableCell>Customer {order}</TableCell>
+                      <TableCell>May {15 + order}, 2023</TableCell>
+                      <TableCell>${(120 + order * 25).toFixed(2)}</TableCell>
+                      <TableCell>
+                        <span className="px-2 inline-flex text-xs font-semibold rounded-full bg-green-100 text-green-800">
                           Completed
                         </span>
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </>
@@ -174,15 +170,19 @@ const Stats_Cards = ({
   iconBoxClassName?: string;
 }) => {
   return (
-    <div className=" flex items-center justify-between bg-gradient-to-r from-violet-50 to-gray-100 p-6 rounded-lg shadow-sm border border-gray-200">
+    <div className=" flex items-center justify-between bg-gradient-to-r dark:from-violet-950 from-violet-50 dark:to-gray-900 to-gray-100 p-6 rounded-lg shadow-sm border ">
       <div>
-        <h3 className="text-gray-500 text-sm font-medium">{title}</h3>
-        <p className="text-2xl font-bold text-gray-800 mt-2">${mainNumber}</p>
+        <h3 className="dark:text-gray-400 text-gray-500 text-sm font-medium">
+          {title}
+        </h3>
+        <p className="text-2xl font-bold dark:text-gray-100 text-gray-800 mt-2">
+          ${mainNumber}
+        </p>
         <p className="text-green-500 text-sm mt-1">
           +{subNumber}% from last month
         </p>
       </div>
-      <div className=" text-white p-6 text-3xl rounded-2xl bg-gradient-to-br from-violet-400 via-violet-400 to-indigo-400">
+      <div className=" text-black dark:text-white p-6 text-3xl rounded-2xl dark:shadow-slate-800 shadow-md bg-gradient-to-t dark:from-violet-950 from-violet-200 dark:to-gray-900 to-gray-200">
         {icons}
       </div>
     </div>

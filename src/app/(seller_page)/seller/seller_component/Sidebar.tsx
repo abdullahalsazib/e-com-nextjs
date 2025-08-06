@@ -15,7 +15,6 @@ interface SidebarProps {
 
 const Sidebar = ({ isOpen }: SidebarProps) => {
   const pathname = usePathname();
-  const { user } = useAuth();
 
   const navItems = [
     {
@@ -51,9 +50,9 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
   ];
 
   return (
-    <div className="h-full flex flex-col border-r border-gray-200">
+    <div className="h-full flex flex-col border-r ">
       {/* Logo */}
-      <div className="flex items-center justify-between p-4 border-b border-gray-200">
+      <div className="flex items-center justify-between p-4 border-b ">
         {isOpen ? (
           <h1 className="text-xl font-bold text-green-600">SellerHub</h1>
         ) : (
@@ -70,8 +69,8 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
                 href={item.path}
                 className={`flex items-center  p-3 rounded-lg ${
                   pathname === item.path
-                    ? "bg-green-50 text-green-600"
-                    : "text-gray-600 hover:bg-gray-100"
+                    ? "dark:bg-slate-800 bg-green-50 text-green-600"
+                    : "text-gray-600 dark:hover:bg-gray-800 hover:bg-gray-100"
                 }`}
               >
                 <svg
@@ -98,7 +97,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
       </nav>
 
       {/* User profile */}
-      <div className="p-4 border-t border-gray-200 flex items-center justify-center">
+      <div className="p-4 border-t  flex items-center justify-center">
         {isOpen && (
           <div className=" flex flex-col items-start justify-between rounded-lg w-full h-[200px] bg-gradient-to-tl from-blue-200 to-sky-200 p-4">
             <Button
@@ -112,11 +111,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
             <div className=" space-y-1 w-full">
               <h1 className=" text-lg text-gray-600 font-bold">Need help ?</h1>
               <p className=" text-gray-600 pb-1">Please check our doc</p>
-              <Button
-                size="default"
-                variant="secondary"
-                className=" bg-white text-black hover:bg-blue-300 hover:text-black self-center-safe w-full"
-              >
+              <Button size="default" variant="secondary" className="  w-full">
                 Documentation
               </Button>
             </div>

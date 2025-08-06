@@ -1,6 +1,6 @@
 "use client";
 import { useRef, useState } from "react";
-import { FaHeart } from "react-icons/fa";
+import { FaRegHeart } from "react-icons/fa";
 import { useClickOutside } from "@/hooks/useClickOutSide";
 import { useWishlist } from "../app/context/WishlistContext";
 import { toast } from "sonner";
@@ -33,7 +33,7 @@ const WishlistDropdown = () => {
         onClick={toggleDropdown}
         // className="p-2 relative hover:text-blue-500 transition-colors"
       >
-        <FaHeart />
+        <FaRegHeart />
         {wishlist.length > 0 && (
           <Badge
             variant={"default"}

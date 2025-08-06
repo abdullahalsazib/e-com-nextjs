@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/popover";
 import { useAuth } from "@/app/context/AuthContext";
 import { toast } from "sonner";
+import { ModeToggle } from "@/components/Theme_Button";
 const Seller_navber = ({
   isOpen,
   setOpen,
@@ -51,34 +52,29 @@ const Seller_navber = ({
   };
 
   return (
-    <div className=" w-full bg-white py-5 px-6 flex items-center justify-between border-b-[0.01] border-b-slate-200 shadow-lg shadow-gray-100">
+    <div className=" w-full dark:bg-slate-900 bg-white py-5 px-6 flex items-center justify-between border-b-[0.01] ">
       <div className=" flex items-center justify-start gap-6">
-        <button
-          onClick={toggleSidebar}
-          className=" text-2xl border border-slate-200 rounded-sm cursor-pointer active:bg-slate-100"
-        >
-          {isOpen ? (
-            <FaAngleLeft className=" text-slate-600" />
-          ) : (
-            <FaAngleRight className=" text-slate-600" />
-          )}
-        </button>
+        <Button onClick={toggleSidebar} size={"icon"} variant={"secondary"}>
+          {isOpen ? <FaAngleLeft /> : <FaAngleRight />}
+        </Button>
         <div>
-          <span className=" flex items-center justify-center gap-1">
-            <p className=" text-xs text-gray-500 font-normal capitalize flex">
+          <span className=" flex items-center justify-start gap-1">
+            <p className=" text-xs dark:text-gray-100 text-gray-500 font-normal capitalize flex">
               page {"/"}
             </p>
 
-            <p className=" text-xs text-gray-500 font-semibold capitalize">
+            <p className=" text-xs dark:text-gray-400 text-gray-500 font-semibold capitalize">
               {" "}
               Deahboard
             </p>
           </span>
 
-          <p className=" text-gray-800 font-semibold text-xl">Seller</p>
+          <p className=" dark:text-slate-100 text-gray-800 font-semibold text-xl">
+            Seller Deshboard
+          </p>
         </div>
       </div>
-      <div className=" flex items-center justify-end text-black gap-4">
+      <div className=" flex items-center justify-end gap-4">
         <div>
           <Input
             type="search"
@@ -87,16 +83,13 @@ const Seller_navber = ({
           />
         </div>
         <div className=" flex gap-1">
+          <ModeToggle />
+        </div>
+        <div className=" flex gap-1">
           <Popover>
-            <PopoverTrigger>
-              <Button
-                variant="outline"
-                className="hover:text-violet-400"
-                size="sm"
-              >
-                <span>
-                  <FaUser /> Profile
-                </span>
+            <PopoverTrigger asChild>
+              <Button variant="secondary" className="" size="sm">
+                <FaUser /> Profile
               </Button>
             </PopoverTrigger>
             <PopoverContent className=" text-sm" align="end">
