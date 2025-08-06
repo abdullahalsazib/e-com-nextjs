@@ -5,7 +5,7 @@ import { FaFacebook, FaInstagram } from "react-icons/fa6";
 
 const Topbar = () => {
   return (
-    <div className=" hidden w-full py-3 px-[10%] bg-[#020202] md:flex xl:flex-row flex-col items-center justify-between">
+    <div className=" hidden w-full py-3 px-[10%] bg-gradient-to-br from-black to-slate-950 md:flex xl:flex-row flex-col items-center justify-between">
       <div className="flex items-center justify-start gap-2">
         <p className="text-sm text-gray-400 capitalize">Mon-Thu:</p>
         <p className="text-sm text-white capitalize font-semibold">

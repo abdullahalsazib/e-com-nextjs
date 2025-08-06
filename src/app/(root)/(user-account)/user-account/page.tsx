@@ -1,6 +1,6 @@
 "use client";
 import React, { JSX, useState } from "react";
-import Breadcrumb from "@/app/components/smallComponent/Breadcrumb";
+import Breadcrumb from "@/components/smallComponent/Breadcrumb";
 import {
   FiUser,
   FiMapPin,
@@ -14,7 +14,7 @@ import {
   FiHome,
 } from "react-icons/fi";
 import { useAuth } from "@/app/context/AuthContext";
-import PrivateRoute from "@/app/components/PrivateRoute";
+import PrivateRoute from "@/components/PrivateRoute";
 type SectionKey =
   | "dashboard"
   | "account"
@@ -108,33 +108,30 @@ const User_account = () => {
 
   return (
     <PrivateRoute allowedRoles={["user"]}>
-      <div className="bg-gray-50 min-h-screen">
+      <div className="dark:bg-gray-950 bg-blue-50 min-h-screen">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Breadcrumb items={breadcrumb} />
 
-          <h1 className="text-3xl font-bold text-gray-900 mt-6 mb-8">
+          <h1 className="text-3xl font-bold dark:text-gray-100 text-gray-900 mt-6 mb-8">
             My Dashboard
           </h1>
 
           <div className="flex flex-col lg:flex-row gap-8">
             {/* Sidebar Navigation */}
             <div className="w-full lg:w-1/4 space-y-6">
-              <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-                <ul className="divide-y divide-gray-100">
+              <div className="dark:bg-gray-900 bg-white rounded-xl shadow-sm overflow-hidden">
+                <ul className="divide-y dark:divide-gray-800 divide-gray-100">
                   {menuItems.map((item, index) =>
                     item.divider ? (
-                      <div
-                        key={`divider-${index}`}
-                        className="border-t border-gray-100 my-1"
-                      />
+                      <div key={`divider-${index}`} className="my-1" />
                     ) : (
                       <li key={item.label}>
                         <button
                           onClick={() => setActiveSection(item.section!)}
                           className={`w-full px-4 py-3 text-left flex items-center gap-3 transition-colors ${
                             activeSection === item.section
-                              ? "bg-blue-50 text-blue-600"
-                              : "hover:bg-gray-50 text-gray-700"
+                              ? "dark:bg-gray-800 bg-blue-50 dark:text-slate-300 text-blue-600"
+                              : "dark:hover:bg-gray-800 dark:text-gray-500 hover:bg-gray-50 text-gray-700"
                           }`}
                         >
                           <span
@@ -182,15 +179,17 @@ const DashboardSection: React.FC<Props> = ({ user }) => {
   if (!user) return <div>user loged out</div>;
   return (
     <>
-      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-        <div className="border-b border-gray-100 px-6 py-4">
-          <h2 className="text-xl font-semibold text-gray-900">
+      <div className="dark:bg-gray-900 bg-white rounded-xl shadow-sm overflow-hidden">
+        <div className="border-b  px-6 py-4">
+          <h2 className="text-xl font-semibold  dark:text-gray-100 text-gray-900">
             Account Dashboard
           </h2>
         </div>
         <div className="p-6">
-          <p className="text-gray-600 mb-4">Hello, {user.name}</p>
-          <p className="text-gray-600">
+          <p className="dark:text-white text-gray-600 mb-4">
+            Hello, {user.name}
+          </p>
+          <p className="dark:text-white text-gray-600">
             From your account dashboard you can view your recent orders, manage
             your shipping and billing addresses, and edit your password and
             account details.
@@ -203,16 +202,16 @@ const DashboardSection: React.FC<Props> = ({ user }) => {
 const AccountInfoSection: React.FC<Props> = ({ user }) => {
   if (!user) return <div>User Loged Out</div>;
   return (
-    <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-      <div className="border-b border-gray-100 px-6 py-4">
-        <h2 className="text-xl font-semibold text-gray-900">
+    <div className="bg-white dark:bg-gray-900 dark:text-white rounded-xl shadow-sm overflow-hidden">
+      <div className="border-b  px-6 py-4">
+        <h2 className="text-xl font-semibold dark:text-gray-100 text-gray-900">
           Account Information
         </h2>
       </div>
       <div className="p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <h3 className="text-lg font-medium text-gray-900 mb-4">
+            <h3 className="text-lg font-medium dark:text-gray-100 text-gray-900 mb-4">
               Contact Information
             </h3>
             <p className="text-gray-600">{user?.name}</p>
@@ -227,7 +226,7 @@ const AccountInfoSection: React.FC<Props> = ({ user }) => {
             </div>
           </div>
           <div>
-            <h3 className="text-lg font-medium text-gray-900 mb-4">
+            <h3 className="text-lg font-medium dark:text-gray-100 text-gray-900 mb-4">
               Newsletters
             </h3>
             <p className="text-gray-600">
@@ -244,14 +243,16 @@ const AccountInfoSection: React.FC<Props> = ({ user }) => {
 };
 
 const AddressBookSection = () => (
-  <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-    <div className="border-b border-gray-100 px-6 py-4">
-      <h2 className="text-xl font-semibold text-gray-900">Address Book</h2>
+  <div className="bg-white dark:bg-gray-900 dark:text-white rounded-xl shadow-sm overflow-hidden">
+    <div className="border-b  px-6 py-4">
+      <h2 className="text-xl font-semibold dark:text-gray-100 text-gray-900">
+        Address Book
+      </h2>
     </div>
     <div className="p-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="border border-gray-200 rounded-lg p-4">
-          <h4 className="font-medium text-gray-900 mb-2">
+        <div className="border  rounded-lg p-4">
+          <h4 className="font-medium dark:text-gray-100 text-gray-900 mb-2">
             Default Billing Address
           </h4>
           <p className="text-gray-600 text-sm">
@@ -261,8 +262,8 @@ const AddressBookSection = () => (
             Edit Address
           </button>
         </div>
-        <div className="border border-gray-200 rounded-lg p-4">
-          <h4 className="font-medium text-gray-900 mb-2">
+        <div className="border  rounded-lg p-4">
+          <h4 className="font-medium dark:text-gray-100 text-gray-900 mb-2">
             Default Shipping Address
           </h4>
           <p className="text-gray-600 text-sm">
@@ -281,9 +282,11 @@ const AddressBookSection = () => (
 );
 
 const OrdersSection = () => (
-  <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-    <div className="border-b border-gray-100 px-6 py-4">
-      <h2 className="text-xl font-semibold text-gray-900">My Orders</h2>
+  <div className="bg-white dark:bg-gray-900 dark:text-white rounded-xl shadow-sm overflow-hidden">
+    <div className="border-b  px-6 py-4">
+      <h2 className="text-xl font-semibold dark:text-gray-100 text-gray-900">
+        My Orders
+      </h2>
     </div>
     <div className="p-6">
       <div className="overflow-x-auto">
@@ -310,7 +313,7 @@ const OrdersSection = () => (
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody className="bg-white dark:bg-gray-900 dark:text-white divide-y divide-gray-200">
             <tr>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                 100000001
@@ -344,9 +347,9 @@ const OrdersSection = () => (
 );
 
 const DownloadsSection = () => (
-  <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-    <div className="border-b border-gray-100 px-6 py-4">
-      <h2 className="text-xl font-semibold text-gray-900">
+  <div className="bg-white dark:bg-gray-900 dark:text-white rounded-xl shadow-sm overflow-hidden">
+    <div className="border-b  px-6 py-4">
+      <h2 className="text-xl font-semibold dark:text-gray-100 text-gray-900">
         My Downloadable Products
       </h2>
     </div>
@@ -359,9 +362,9 @@ const DownloadsSection = () => (
 );
 
 const PaymentsSection = () => (
-  <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-    <div className="border-b border-gray-100 px-6 py-4">
-      <h2 className="text-xl font-semibold text-gray-900">
+  <div className="bg-white dark:bg-gray-900 dark:text-white rounded-xl shadow-sm overflow-hidden">
+    <div className="border-b  px-6 py-4">
+      <h2 className="text-xl font-semibold dark:text-gray-100 text-gray-900">
         Stored Payment Methods
       </h2>
     </div>
@@ -375,9 +378,9 @@ const PaymentsSection = () => (
 );
 
 const BillingSection = () => (
-  <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-    <div className="border-b border-gray-100 px-6 py-4">
-      <h2 className="text-xl font-semibold text-gray-900">
+  <div className="bg-white dark:bg-gray-900 dark:text-white rounded-xl shadow-sm overflow-hidden">
+    <div className="border-b  px-6 py-4">
+      <h2 className="text-xl font-semibold dark:text-gray-100 text-gray-900">
         Billing Agreements
       </h2>
     </div>
@@ -388,9 +391,11 @@ const BillingSection = () => (
 );
 
 const WishlistSection = () => (
-  <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-    <div className="border-b border-gray-100 px-6 py-4">
-      <h2 className="text-xl font-semibold text-gray-900">My Wish List</h2>
+  <div className="bg-white dark:bg-gray-900 dark:text-white rounded-xl shadow-sm overflow-hidden">
+    <div className="border-b  px-6 py-4">
+      <h2 className="text-xl font-semibold dark:text-gray-100 text-gray-900">
+        My Wish List
+      </h2>
     </div>
     <div className="p-6 text-center">
       <p className="text-gray-600">You have no items in your wish list.</p>
@@ -402,9 +407,9 @@ const WishlistSection = () => (
 );
 
 const ReviewsSection = () => (
-  <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-    <div className="border-b border-gray-100 px-6 py-4">
-      <h2 className="text-xl font-semibold text-gray-900">
+  <div className="bg-white dark:bg-gray-900 dark:text-white rounded-xl shadow-sm overflow-hidden">
+    <div className="border-b  px-6 py-4">
+      <h2 className="text-xl font-semibold dark:text-gray-100 text-gray-900">
         My Product Reviews
       </h2>
     </div>
@@ -415,9 +420,9 @@ const ReviewsSection = () => (
 );
 
 const NewslettersSection = () => (
-  <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-    <div className="border-b border-gray-100 px-6 py-4">
-      <h2 className="text-xl font-semibold text-gray-900">
+  <div className="bg-white dark:bg-gray-900 dark:text-white rounded-xl shadow-sm overflow-hidden">
+    <div className="border-b  px-6 py-4">
+      <h2 className="text-xl font-semibold dark:text-gray-100 text-gray-900">
         Newsletter Subscriptions
       </h2>
     </div>
@@ -444,7 +449,7 @@ const NewslettersSection = () => (
 
 // Widget components
 const CompareProductsWidget = () => (
-  <div className="bg-white rounded-xl shadow-sm p-4">
+  <div className="bg-white dark:bg-gray-900 dark:text-white rounded-xl shadow-sm p-4">
     <h3 className="font-bold text-lg text-center mb-3">Compare Products</h3>
     <p className="text-gray-500 text-center text-sm">
       You have no items to compare
@@ -456,7 +461,7 @@ const CompareProductsWidget = () => (
 );
 
 const WishlistWidget = () => (
-  <div className="bg-white rounded-xl shadow-sm p-4">
+  <div className="bg-white dark:bg-gray-900 dark:text-white rounded-xl shadow-sm p-4">
     <h3 className="font-bold text-lg text-center mb-3">My Wish List</h3>
     <p className="text-gray-500 text-center text-sm">
       You have no items in your wish list

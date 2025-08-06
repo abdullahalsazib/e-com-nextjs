@@ -1,200 +1,199 @@
 "use client";
-import LoginBtn from "@/app/components/buttons/LoginBtn";
-import Breadcrumb from "@/app/components/smallComponent/Breadcrumb";
-import { useAuth } from "@/app/context/AuthContext";
-import { login as loginUser } from "@/services/auth.service";
-import axios from "axios";
-import Link from "next/link";
-import React, { useState } from "react";
-import toast from "react-hot-toast";
 
-interface LoginFormType {
-  email: string;
-  password: string;
-}
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
+
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+
+import React from "react";
+import CustomBreadcrumb from "@/components/smallComponent/Breadcrumb";
+import { BsBoxSeamFill } from "react-icons/bs";
+import Link from "next/link";
+import { login as loginUser } from "@/services/auth.service";
+import { useRouter } from "next/navigation";
+import axios from "axios";
+
+import animateBackgorund from "@/../public/register.svg";
+import Image from "next/image";
+import { useAuth } from "@/app/context/AuthContext";
 
 const breadcrumbItems = [
   { label: "Home", link: "/" },
   { label: "Login", active: true },
 ];
-const LoginPage = () => {
-  // const route = useRouter();
-  const { login, isLoading } = useAuth();
-  const [formData, setFormData] = useState<LoginFormType>({
-    email: "",
-    password: "",
+
+const FormSchema = z.object({
+  email: z.email(),
+  password: z.string().min(4, {
+    // 6 or 8
+    message: "Password must be at least 6 characters.",
+  }),
+});
+
+function LoginPage() {
+  const navigate = useRouter();
+  const { login } = useAuth();
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   });
-
-  const [error, setError] = useState("");
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-
+  const onSubmit = async (data_z: z.infer<typeof FormSchema>) => {
     try {
       const { data } = await loginUser({
-        email: formData.email,
-        password: formData.password,
+        email: data_z.email,
+        password: data_z.password,
       });
-      console.log("login response data: ", data);
+
       if (data.access_token) {
         toast.success(data.message);
         await login(data.access_token);
         localStorage.setItem("authToken", data.access_token);
-        // route.push("/");
       } else {
-        toast.error("No access token found");
+        // toast.error("No access token found");
         throw new Error("No access token found");
       }
-
-      // window.location.reload();
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
         console.log(err);
-        setError(
-          err.response?.data?.message ||
-          err.response?.data?.error ||
-          err.message ||
-          "Registration failed. Please try again."
-        );
-
         toast.error(
-          err.response?.data?.message ||
-          err.response?.data?.error ||
-          err.message ||
-          "Registration failed. Please try again."
+          err.response?.data?.message || err.message || "Something went wrong"
         );
       }
     }
   };
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-2">
-      <div className="mt-5">
-        <Breadcrumb items={breadcrumbItems} />
-        <h1 className="text-xl sm:text-2xl md:text-3xl font-semibold capitalize py-3">
-          Customer Login
-        </h1>
-      </div>
-      {isLoading && (
-        <div className="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded mb-4">
-          Loading....
+    <>
+      <div className=" w-full h-screen grid lg:grid-cols-2 grid-cols-1">
+        <div className=" w-full h-screen hidden lg:block relative">
+          <Image
+            src={animateBackgorund}
+            alt="img"
+            className=" h-screen w-full"
+          />
+          <div className=" w-full h-full absolute dark:bg-[#121728d2] bg-[#0f1130d8] top-0 left-0"></div>
         </div>
-      )}
-      {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-          {error}
-        </div>
-      )}
-
-      <div className="flex flex-col lg:flex-row items-center justify-between gap-6 md:gap-8 lg:gap-10 py-6 md:py-8 lg:py-10">
-        {/* Login Form */}
-        <div className="bg-[#F5F7FF] p-6 sm:p-8 md:p-10 w-full rounded-lg shadow-sm">
-          <div className="mb-4">
-            <h1 className="text-lg md:text-xl font-bold capitalize">
-              Registered Customers
-            </h1>
-            <p className="text-sm md:text-base font-light text-gray-600 mt-2">
-              If you have an account, sign in with your email address.
-            </p>
-          </div>
-
-          <form className="space-y-6" onSubmit={handleSubmit}>
-            <div className="space-y-2">
-              <label
-                htmlFor="email"
-                className="block text-sm md:text-base font-medium"
-              >
-                Email
-              </label>
-              <input
-                id="email"
-                type="email"
-                value={formData.email}
-                onChange={(e) =>
-                  setFormData({ ...formData, email: e.target.value })
-                }
-                placeholder="Your email"
-                className="mt-1 py-2 sm:py-3 px-4 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <label
-                htmlFor="password"
-                className="block text-sm md:text-base font-medium"
-              >
-                Password
-              </label>
-              <input
-                id="password"
-                value={formData.password}
-                onChange={(e) =>
-                  setFormData({ ...formData, password: e.target.value })
-                }
-                type="password"
-                placeholder="Your password"
-                className="mt-1 py-2 sm:py-3 px-4 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
-              />
-            </div>
-
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-              <LoginBtn
-                type="submit"
-                title="Sign in"
-                className="w-full sm:w-auto"
-              />
+        <div className=" w-full h-screen dark:bg-gray-900  px-2 lg:px-5 xl:px-10 py-2 lg:py-3 xl:py-10 relative">
+          <div className=" absolute w-full top-0 left-0 py-7 lg:px-10">
+            <div className="flex item-center justify-between w-full px-5">
+              <CustomBreadcrumb items={breadcrumbItems} />
               <Link
-                href="/forgot"
-                className="text-sm md:text-base font-semibold text-indigo-500 hover:text-indigo-600 duration-200 capitalize text-center sm:text-left"
+                href={"/"}
+                className=" flex items-center justify-between gap-1"
               >
-                Forgot your password?
+                <BsBoxSeamFill className=" text-xl lg:text-3xl " />{" "}
+                <p className=" lg:text-2xl font-bold"> E_com</p>
               </Link>
             </div>
-          </form>
-        </div>
-
-        {/* New Customer Section */}
-        <div className="bg-[#F5F7FF] p-6 sm:p-8 md:p-10 w-full rounded-lg shadow-sm flex flex-col items-start gap-6 md:gap-8">
-          <h1 className="text-xl md:text-2xl font-semibold capitalize">
-            New Customer?
-          </h1>
-
-          <div className="space-y-2">
-            <p className="text-sm md:text-base font-light">
-              Creating an account has many benefits:
-            </p>
-            <ul className="list-disc pl-5 space-y-1 text-sm md:text-base">
-              <li>Check out faster</li>
-              <li>Keep more than one address</li>
-              <li>Track orders and more</li>
-            </ul>
-            <div>
-              <p>already have a customer account:</p>
-              <div>
-                <table style={{ width: "100%" }} className=" border-2">
-                  <tr className="border capitalize">
-                    <td className=" border p-2">email: </td>
-                    <td className=" border p-2">password: </td>
-                  </tr>
-                  <tr className=" border">
-                    <td className=" border p-2">jack@jack.com</td>
-                    <td className=" border p-2">jack</td>
-                  </tr>
-                </table>
-              </div>
-            </div>
           </div>
+          {/* form start*/}
+          <div className=" w-full flex items-center justify-center h-full">
+            <Form {...form}>
+              <form
+                className=" lg:w-full xl:w-[450px] space-y-6 p-5"
+                onSubmit={form.handleSubmit(onSubmit)}
+              >
+                <div className=" flex flex-col items-center justify-center text-center">
+                  <h1 className=" py-2 text-3xl font-semibold tracking-wider mt-4">
+                    Welcome Back.
+                  </h1>
+                  <p className=" text-lg text-gray-500">
+                    Welcome to E_com - Let's Log in our web
+                  </p>
+                </div>
 
-          <LoginBtn
-            href="/register"
-            title="Create an account"
-            className="w-full md:w-auto"
-          />
+                <div className=" grid gap-3">
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Email</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="email"
+                            placeholder="johnDoe@mail.com"
+                            // value={field.value as string}
+                            {...field}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className=" grid gap-3">
+                  <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem>
+                        <div className=" w-full flex items-center justify-between ">
+                          <FormLabel>Password</FormLabel>
+                          <span
+                            className=" text-xs underline underline-offset-1 text-blue-500 cursor-pointer"
+                            onClick={() =>
+                              toast.info("this page is under-construction!")
+                            }
+                          >
+                            Forgot Password
+                          </span>
+                        </div>
+                        <FormControl>
+                          <Input
+                            type="password"
+                            placeholder="password"
+                            // value={field.value as string}
+                            {...field}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <div className=" space-y-3">
+                  <Button type="submit" className=" w-full">
+                    {/* <Loader2Icon className="animate-spin" /> */}
+                    Log in
+                  </Button>
+
+                  <div className=" text-center">
+                    <h4 className=" w-full text-gray-400 text-sm">
+                      Create a Account ?{" "}
+                      <Button
+                        type="button"
+                        variant={"link"}
+                        size={"icon"}
+                        className=" size-8 pl-4 text-blue-500 capitalize"
+                        onClick={() => navigate.push("/register")}
+                      >
+                        {" "}
+                        sign up
+                      </Button>
+                    </h4>
+                  </div>
+                </div>
+              </form>
+            </Form>
+          </div>
+          {/* form end */}
         </div>
       </div>
-    </div>
+    </>
   );
-};
+}
 
 export default LoginPage;

@@ -1,7 +1,9 @@
 // src/lib/api-client.ts
 import axios, { AxiosError } from "axios";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL
+// https://e-com-backend-next-js.onrender.com
+// http://localhost:8080
 
 if (!API_BASE_URL) {
   throw new Error(
@@ -11,7 +13,7 @@ if (!API_BASE_URL) {
 
 axios.defaults.withCredentials = true;
 const apiClient = axios.create({
-  baseURL: API_BASE_URL || "http://localhost:8080",
+  baseURL: API_BASE_URL,
   withCredentials: true,
   timeout: 10000,
 });

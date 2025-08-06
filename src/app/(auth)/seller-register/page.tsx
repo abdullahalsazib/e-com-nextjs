@@ -1,11 +1,11 @@
 "use client";
-import LoginBtn from "@/app/components/buttons/LoginBtn";
-import Breadcrumb from "@/app/components/smallComponent/Breadcrumb";
+import LoginBtn from "@/components/buttons/LoginBtn";
+import Breadcrumb from "@/components/smallComponent/Breadcrumb";
 import { registerUser } from "@/services/auth.service";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 interface FormDataType {
   name: string;
@@ -61,7 +61,7 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-2">
+    <div className="container text-black mx-auto px-4 sm:px-6 lg:px-8 py-2">
       <div className="mt-5">
         <Breadcrumb items={breadcrumb} />
 

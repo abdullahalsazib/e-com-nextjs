@@ -1,254 +1,304 @@
 "use client";
-import LoginBtn from "@/app/components/buttons/LoginBtn";
-import Breadcrumb from "@/app/components/smallComponent/Breadcrumb";
-import { registerUser } from "@/services/auth.service";
-import axios from "axios";
-import { useRouter } from "next/navigation";
-import React, { useState } from "react";
-import toast from "react-hot-toast";
 
-interface FormDataType {
-  name: string;
-  email: string;
-  password: string;
-  role: string;
-}
-const breadcrumb = [
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
+
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+
+import React, { useState } from "react";
+import CustomBreadcrumb from "@/components/smallComponent/Breadcrumb";
+import {
+  BsBoxSeamFill,
+  BsFacebook,
+  BsGoogle,
+  BsTwitterX,
+} from "react-icons/bs";
+import Link from "next/link";
+import { registerUser } from "@/services/auth.service";
+import { useRouter } from "next/navigation";
+import axios from "axios";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+
+import animateBackgorund from "@/../public/register.svg";
+import Image from "next/image";
+const breadcrumbItems = [
   { label: "Home", link: "/" },
   { label: "Register", active: true },
 ];
 
-const RegisterPage = () => {
-  const route = useRouter();
-  const [Loading, setIsLoading] = useState<boolean>(false);
-  const [formData, setFormData] = useState<FormDataType>({
-    name: "",
-    email: "",
-    password: "",
-    role: "user",
+const FormSchema = z.object({
+  name: z.string().min(3, {
+    message: "Enter valid name.",
+  }),
+  email: z.email(),
+  password: z.string().min(6, {
+    message: "Password must be at least 6 characters.",
+  }),
+});
+
+function InputForm() {
+  const [selectedRole, setSelectedRole] = useState<"user" | "admin">("user");
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+    },
   });
-  const [error, setError] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-    setIsLoading(true);
-
+  const route = useRouter();
+  const handleSubmit = async (data_z: z.infer<typeof FormSchema>) => {
     try {
-      // Add client-side validation
-      // if (formData.password.length < 6) {
-      //   setError("Password must be at least 6 characters");
-      //   return;
-      // }
-
       const { data } = await registerUser({
-        name: formData.name,
-        email: formData.email,
-        password: formData.password,
-        role: formData.role,
+        name: data_z.name,
+        email: data_z.email,
+        password: data_z.password,
+        role: selectedRole, // pass the role
       });
-
-      // console.log("Registration successful:", data.message);
-
       toast.success(data.message);
-      route.push("/login");
+      route.push("/");
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
-        setError(
-          err.response?.data?.message ||
-            err.response?.data?.error ||
-            err.message ||
-            "Registration failed. Please try again."
-        );
+        console.log(err);
         toast.error(
-          err.response?.data?.message ||
-            err.response?.data?.error ||
-            err.message ||
-            "Registration failed. Please try again."
+          err.response?.data?.message || err.message || "Something went wrong"
         );
       }
-    } finally {
-      setIsLoading(false);
     }
   };
 
+  const navigate = useRouter();
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-2">
-      <div className="mt-5">
-        <Breadcrumb items={breadcrumb} />
-
-        <h1 className="text-2xl sm:text-3xl font-semibold capitalize py-3">
-          Create an Customer Account
-        </h1>
-      </div>
-
-      {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-          {error}
-        </div>
-      )}
-      <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12 py-8">
-        {/* Registration Form */}
-        <div className="bg-[#F5F7FF] p-6 sm:p-8 md:p-10 w-full rounded-lg shadow-sm">
-          <h1 className="text-lg md:text-xl font-bold capitalize pb-5">
-            Personal Information
-          </h1>
-          <form className="space-y-6" onSubmit={handleSubmit}>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-              <div className="space-y-2">
-                <label
-                  htmlFor="firstName"
-                  className="block text-sm font-medium"
-                >
-                  First Name
-                </label>
-                <input
-                  id="firstName"
-                  type="text"
-                  placeholder="Your first name"
-                  disabled
-                  className="cursor-not-allowed mt-1 py-2 sm:py-3 px-4 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
-                />
+    <>
+      <div className=" w-full h-screen grid lg:grid-cols-2 grid-cols-1">
+        <div className=" w-full h-screen dark:bg-gray-900  px-2 lg:px-5 xl:px-10 py-2 lg:py-3 xl:py-10 relative">
+          <div className=" absolute w-full top-0 left-0 py-7 lg:px-10">
+            <div className="flex item-center justify-between w-full px-5">
+              <CustomBreadcrumb items={breadcrumbItems} />
+              <Link
+                href={"/"}
+                className=" flex items-center justify-between gap-1"
+              >
+                <BsBoxSeamFill className=" text-xl lg:text-3xl " />{" "}
+                <p className=" lg:text-2xl font-bold"> E_com</p>
+              </Link>
+            </div>
+            {/* <div className=" px-5 lg:px-20 pt-5 ">
+              <div className=" hidden lg:block">
+                <h1 className=" lg:text-3xl font-semibold tracking-wider mt-4">
+                  Get Started
+                </h1>
+                <p className=" text-lg text-gray-500">
+                  Welcome to E_com - Let's create your account
+                </p>
               </div>
-              <div className="space-y-2">
-                <label htmlFor="lastName" className="block text-sm font-medium">
-                  Last Name
-                </label>
-                <input
-                  id="lastName"
-                  type="text"
-                  placeholder="Your last name"
-                  disabled
-                  className=" cursor-not-allowed  mt-1 py-2 sm:py-3 px-4 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
-                />
-              </div>{" "}
-            </div>
-            <div className=" w-full">
-              <label htmlFor="name" className="block text-sm font-medium">
-                Name
-              </label>
-              <input
-                id="name"
-                type="text"
-                value={formData.name}
-                onChange={(e) =>
-                  setFormData({ ...formData, name: e.target.value })
-                }
-                required
-                placeholder="Your name"
-                className="   mt-1 py-2 sm:py-3 px-4 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <label htmlFor="email" className="block text-sm font-medium">
-                Email
-              </label>
-              <input
-                id="email"
-                type="email"
-                value={formData.email}
-                onChange={(e) =>
-                  setFormData({ ...formData, email: e.target.value })
-                }
-                required
-                placeholder="Your email"
-                className="mt-1 py-2 sm:py-3 px-4 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
-              />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-              <div className="space-y-2">
-                <label htmlFor="password" className="block text-sm font-medium">
-                  Password
-                </label>
-                <input
-                  id="password"
-                  type="password"
-                  value={formData.password}
-                  onChange={(e) =>
-                    setFormData({ ...formData, password: e.target.value })
-                  }
-                  required
-                  placeholder="Your password"
-                  className="mt-1 py-2 sm:py-3 px-4 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
-                />
-              </div>
-
-              {/* <div className="space-y-2">
-                <label
-                  htmlFor="confirmPassword"
-                  className="block text-sm font-medium"
-                >
-                  Confirm Password
-                </label>
-                <input
-                  id="confirmPassword"
-                  type="password"
-                  placeholder="Confirm password"
-                  value={formData.confirmPassword}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      confirmPassword: e.target.value,
-                    })
-                  }
-                  required
-                  className="mt-1 py-2 sm:py-3 px-4 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
-                />
-              </div> */}
-            </div>
-
-            {/* <div className="space-y-2">
-              <label htmlFor="phone" className="block text-sm font-medium">
-                Phone Number (Optional)
-              </label>
-              <input
-                id="phone"
-                type="tel"
-                placeholder="Your phone number"
-                className="mt-1 py-2 sm:py-3 px-4 border-2 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
-              />
             </div> */}
-
-            <div className="pt-4">
-              <LoginBtn
-                type="submit"
-                title={Loading ? "Creating Account..." : "Create Account"}
-                className="w-full md:w-auto"
-                disabled={Loading}
-              />
-            </div>
-          </form>
-        </div>
-
-        {/* Login Panel */}
-        <div className="bg-[#F5F7FF] p-6 sm:p-8 md:p-10 w-full rounded-lg shadow-sm flex flex-col items-start gap-6 lg:gap-8">
-          <h1 className="text-xl sm:text-2xl font-semibold capitalize">
-            Already have an account?
-          </h1>
-
-          <div className="space-y-2">
-            <p className="text-sm sm:text-base font-light">
-              Sign in to access your account and enjoy these benefits:
-            </p>
-            <ul className="list-disc pl-5 space-y-1 sm:space-y-2 text-sm sm:text-base">
-              <li>Faster checkout</li>
-              <li>Order history</li>
-              <li>Saved addresses</li>
-              <li>Wishlist items</li>
-            </ul>
           </div>
+          {/* form start*/}
+          <div className=" w-full flex items-center justify-center h-full">
+            <Form {...form}>
+              <form
+                className=" lg:w-full xl:w-[450px] space-y-6 p-5"
+                onSubmit={form.handleSubmit(handleSubmit)}
+              >
+                <div className=" flex flex-col items-center justify-center text-center">
+                  <h1 className=" py-2 text-3xl font-semibold tracking-wider mt-4">
+                    Get Started
+                  </h1>
+                  <p className=" text-lg text-gray-500">
+                    Welcome to E_com - Let's create your account
+                  </p>
+                </div>
+                <div className=" grid gap-3">
+                  <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Full Name</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="text"
+                            placeholder="Mr John doe"
+                            // value={field.value as string}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormDescription>
+                          Please enter a vaid name
+                        </FormDescription>
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className=" grid gap-3">
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Email</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="email"
+                            placeholder="johnDoe@mail.com"
+                            // value={field.value as string}
+                            {...field}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className=" grid gap-3">
+                  <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem>
+                        <div className=" w-full flex items-center justify-between ">
+                          <FormLabel>Password</FormLabel>
+                          <span
+                            className=" text-xs underline underline-offset-1 text-blue-500 cursor-pointer"
+                            onClick={() =>
+                              toast.info("this page is under-construction!")
+                            }
+                          >
+                            Forgot Password
+                          </span>
+                        </div>
+                        <FormControl>
+                          <Input
+                            type="password"
+                            placeholder="password"
+                            // value={field.value as string}
+                            {...field}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                {/* select role  */}
+                <RadioGroup
+                  value={selectedRole}
+                  onValueChange={(value: "user" | "admin") =>
+                    setSelectedRole(value)
+                  }
+                  className="grid grid-cols-2 gap-2"
+                >
+                  {/* Normal Account */}
+                  <div className="flex items-center space-x-2 border p-3 rounded-md">
+                    <RadioGroupItem
+                      value="user"
+                      id="r-user"
+                      className="border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white"
+                    />
+                    <Label htmlFor="r-user" className="cursor-pointer">
+                      Normal Account
+                    </Label>
+                  </div>
 
-          <LoginBtn
-            href="/login"
-            title="Sign in"
-            className="w-full md:w-auto"
+                  {/* Business Account */}
+                  <div className="flex items-center space-x-2 border p-3 rounded-md">
+                    <RadioGroupItem
+                      value="admin"
+                      id="r-admin"
+                      className="border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white"
+                    />
+                    <Label htmlFor="r-admin" className="cursor-pointer">
+                      Business Account
+                    </Label>
+                  </div>
+                </RadioGroup>
+
+                <div className=" space-y-3">
+                  <Button type="submit" className=" w-full">
+                    {/* <Loader2Icon className="animate-spin" /> */}
+                    Sign Up
+                  </Button>
+                  <div className=" w-full py-2 relative">
+                    <hr className="" />
+                    <p className=" uppercase dark:bg-transparent bg-white text-sm text-gray-600 absolute top-0 right-1/2">
+                      or
+                    </p>
+                  </div>
+                  <div className="grid grid-cols-1 gap-2 ">
+                    <Button
+                      disabled
+                      type="button"
+                      variant={"outline"}
+                      className=" w-full"
+                      size={"icon"}
+                    >
+                      <BsGoogle /> Continue with Google
+                    </Button>
+                    <div className=" grid grid-cols-2 gap-2">
+                      <Button
+                        disabled
+                        type="button"
+                        variant={"outline"}
+                        className=" w-full"
+                        size={"icon"}
+                      >
+                        <BsFacebook /> with Facebook
+                      </Button>
+                      <Button
+                        disabled
+                        type="button"
+                        variant={"outline"}
+                        className=" w-full"
+                        size={"icon"}
+                      >
+                        <BsTwitterX /> with Twitter
+                      </Button>
+                    </div>
+                  </div>
+                  <div className=" text-center">
+                    <h4 className=" w-full text-gray-400 text-sm">
+                      Already have a Account ?{" "}
+                      <Button
+                        type="button"
+                        variant={"link"}
+                        size={"icon"}
+                        className=" size-8 pl-4 text-blue-500 capitalize"
+                        onClick={() => navigate.push("/login")}
+                      >
+                        {" "}
+                        sign in
+                      </Button>
+                    </h4>
+                  </div>
+                </div>
+              </form>
+            </Form>
+          </div>
+          {/* form end */}
+        </div>
+        <div className=" w-full h-screen hidden lg:block relative">
+          <Image
+            src={animateBackgorund}
+            alt="img"
+            className=" h-screen w-full"
           />
+          <div className=" w-full h-full absolute dark:bg-[#121728d2] bg-[#0f1130d8] top-0 left-0"></div>
         </div>
       </div>
-    </div>
+    </>
   );
-};
+}
 
-export default RegisterPage;
+export default InputForm;

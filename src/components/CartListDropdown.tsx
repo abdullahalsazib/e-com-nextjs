@@ -2,10 +2,12 @@
 "use client";
 import { useRef, useState } from "react";
 import { useClickOutside } from "@/hooks/useClickOutSide";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { LuShoppingCart } from "react-icons/lu";
 import Link from "next/link";
-import { useCart } from "../context/CartListContext";
+import { useCart } from "../app/context/CartListContext";
+import { Button } from "./ui/button";
+import { Badge } from "./ui/badge";
 
 const CartListDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,18 +22,25 @@ const CartListDropdown = () => {
   return (
     <div className="relative" ref={dropdownRef}>
       {/* Cart Icon Button */}
-      <button
+      <Button
         onClick={toggleDropdown}
-        className="p-2 relative hover:text-blue-500 transition-colors"
-        aria-label="Cart"
+        size="lg"
+        className=" size-8 "
+        variant="secondary"
       >
         <LuShoppingCart className="text-xl" />
         {cartItemCount > 0 && (
-          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-            {cartItemCount}
-          </span>
+          <>
+            <Badge
+              variant={"default"}
+              title="counter"
+              className="absolute size-5 bg-red-500 text-white -top-1.5 -right-1.5"
+            >
+              {cartItemCount}
+            </Badge>
+          </>
         )}
-      </button>
+      </Button>
 
       {/* Dropdown Content */}
       {isOpen && (

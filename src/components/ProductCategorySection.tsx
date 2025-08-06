@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Product2 } from "../data/product";
+import { Product2 } from "../app/data/product";
 import apiClient from "@/lib/api-client";
 import ProductCard from "./Product_card";
 
@@ -54,11 +54,10 @@ const ProductCategorySection = () => {
               <li
                 key={category.id}
                 onClick={() => handleCategoryChange(category.id)}
-                className={`text-sm md:text-base font-semibold cursor-pointer transition-colors duration-200 ${
-                  activeCategory === category.id
+                className={`text-sm md:text-base font-semibold cursor-pointer transition-colors duration-200 ${activeCategory === category.id
                     ? "text-gray-900 underline underline-offset-4"
                     : "text-slate-500 hover:text-gray-700 hover:underline underline-offset-4"
-                }`}
+                  }`}
               >
                 {category.name}
               </li>

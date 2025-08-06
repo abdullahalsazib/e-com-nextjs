@@ -22,8 +22,8 @@ import f3 from "@/../public/fetuer/gen3.png";
 import f4 from "@/../public/fetuer/ddr4.png";
 
 // Components
-import Tabs from "@/app/components/smallComponent/Tab";
-import Breadcrumb from "@/app/components/smallComponent/Breadcrumb";
+import Tabs from "@/components/smallComponent/Tab";
+import Breadcrumb from "@/components/smallComponent/Breadcrumb";
 import { getProductById } from "@/services/product.service";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 import { useAuth } from "@/app/context/AuthContext";

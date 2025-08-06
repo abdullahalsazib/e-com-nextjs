@@ -9,7 +9,7 @@ import {
   useCallback,
 } from "react";
 import { getProfile } from "@/services/auth.service";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useWishlist } from "./WishlistContext";
 

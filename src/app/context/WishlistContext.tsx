@@ -11,7 +11,7 @@ import {
 } from "react";
 import apiClient from "@/lib/api-client";
 import { WishlistContextType, WishlistItemWithProduct } from "../type/type";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 const WishlistContext = createContext<WishlistContextType | undefined>(
   undefined

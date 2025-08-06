@@ -12,15 +12,15 @@ import brand4 from "@/../public/Logos/thermaltake.png";
 import brand5 from "@/../public/Logos/adata.png";
 import brand6 from "@/../public/Logos/hp.png";
 import brand7 from "@/../public/Logos/gigabyte.png";
-import News_card from "@/app/components/News_card";
-import Carousel from "@/app/components/Slider";
+import News_card from "@/components/News_card";
+import Carousel from "@/components/Slider";
 import Carsol1 from "@/../public/images/cursol1.png";
-import TestimonialSection from "@/app/components/Testimonials";
+import TestimonialSection from "@/components/Testimonials";
 
 import { useEffect, useState } from "react";
 import apiClient from "@/lib/api-client";
 import { Product2 } from "@/app/data/product";
-import ProductCard from "@/app/components/Product_card";
+import ProductCard from "@/components/Product_card";
 
 const brandLogo = [
   { imgUrl: brand1, alr: "brand1" },
@@ -71,13 +71,13 @@ export default function HomePage() {
   };
   return (
     <>
-      <div className="w-full">
+      <div className="w-full bg-white dark:bg-gray-800">
         <Carousel images={carouselImages} />
       </div>
-      <div className={`px-[10%] `}>
+      <div className={`px-[10%] bg-white dark:bg-gray-950 `}>
         {/* Products sections  */}
-        <div className=" mt-7">
-          <div className=" flex items-center justify-between w-full">
+        <div className=" pt-7">
+          <div className="  flex items-center justify-between w-full">
             <h1 className="text-2xl font-semibold capitalize">New Products</h1>
             <a
               href="#"
@@ -87,7 +87,7 @@ export default function HomePage() {
             </a>
           </div>
           {/* in hear some product card's */}
-          <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-1 pt-3 mb-10">
+          <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-2.5 pt-3 mb-10">
             {loading && <h1>Product is Loading...</h1>}
             {error && <h1>{error}</h1>}
             {products.map((product) => (
@@ -97,10 +97,10 @@ export default function HomePage() {
               />
             ))}{" "}
           </div>
-          <div className=" bg-[#F5F7FF] w-full py-5 px-0 flex items-center justify-center">
+          <div className=" dark:bg-[#e7e7e7] bg-[#F5F7FF] w-full py-5 mb-7 px-0 flex items-center justify-center">
             <div className="flex items-center justify-center gap-3 ">
               <Image src={zipLogo} alt="ziplogo" /> |{" "}
-              <span className=" text-[#272560] font-light">
+              <span className="  text-[#272560] font-light">
                 <span className="font-bold text-lg">own </span>it now, up to 6
                 months interest free{" "}
                 <a href="#" className=" text-xs underline underline-offset-2">
@@ -110,7 +110,7 @@ export default function HomePage() {
             </div>
           </div>
           {/* product with ad banner */}
-          <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-1 pt-3 mb-10">
+          <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-2.5 pt-3 mb-10">
             <div
               className={` w-full bg-red-400 h-[100%] ${styles.adBanner} flex items-center justify-evenly py-10 flex-col gap-10`}
             >
@@ -156,7 +156,7 @@ export default function HomePage() {
               </a>
             </div>
             {/* in hear some product card's */}
-            <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-1 pt-3 mb-10">
+            <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-2.5 pt-3 mb-10">
               <div
                 className={` w-full bg-red-400 h-[100%] ${styles.adBanner2} flex items-center justify-evenly py-10 flex-col gap-10`}
               >
@@ -182,7 +182,7 @@ export default function HomePage() {
           <div className=" py-4">
             {/* <ProductCategorySection /> */}
             {/* in hear some product card's */}
-            <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-1 pt-3 mb-10">
+            <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-2.5 pt-3 mb-10">
               <div
                 className={` w-full bg-red-400 h-[100%] ${styles.adBanner3} flex items-center justify-evenly py-10 flex-col gap-10`}
               >
@@ -203,7 +203,7 @@ export default function HomePage() {
                 />
               ))}{" "}
             </div>
-            <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-1 pt-3 mb-10">
+            <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-2.5 pt-3 mb-10">
               <div
                 className={` w-full bg-red-400 h-[100%] ${styles.adBanner4} flex items-center justify-evenly py-10 flex-col gap-10`}
               >
@@ -248,7 +248,7 @@ export default function HomePage() {
           <h1 className="text-2xl font-semibold capitalize mb-5">
             follow us on instagram for news, offers & more
           </h1>
-          <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-1 pt-3 mb-10">
+          <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-2.5 pt-3 mb-10">
             <News_card />
             <News_card />
             <News_card />

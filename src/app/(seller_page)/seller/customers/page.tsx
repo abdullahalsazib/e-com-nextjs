@@ -55,7 +55,7 @@ export default function CustomersPage() {
     (customer) =>
       customer.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       customer.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      customer.location.toLowerCase().includes(searchQuery.toLowerCase()),
+      customer.location.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   // Pagination logic
@@ -63,17 +63,17 @@ export default function CustomersPage() {
   const indexOfFirstCustomer = indexOfLastCustomer - customersPerPage;
   const currentCustomers = filteredCustomers.slice(
     indexOfFirstCustomer,
-    indexOfLastCustomer,
+    indexOfLastCustomer
   );
   const totalPages = Math.ceil(filteredCustomers.length / customersPerPage);
 
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
+    <div className="p-6  min-h-screen">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-800">Customers</h1>
+            <h1 className="text-2xl font-bold dark:text-gray-200 text-gray-800">Customers</h1>
             <p className="text-gray-600">
               Manage your customers and view their details
             </p>
@@ -188,7 +188,11 @@ export default function CustomersPage() {
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span
                           className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                          ${customer.status === "active" ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"}`}
+                          ${
+                            customer.status === "active"
+                              ? "bg-green-100 text-green-800"
+                              : "bg-gray-100 text-gray-800"
+                          }`}
                         >
                           {customer.status.charAt(0).toUpperCase() +
                             customer.status.slice(1)}
@@ -274,11 +278,15 @@ export default function CustomersPage() {
                       key={page}
                       onClick={() => setCurrentPage(page)}
                       className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium
-                      ${currentPage === page ? "z-10 bg-blue-50 border-blue-500 text-blue-600" : "bg-white border-gray-300 text-gray-500 hover:bg-gray-50"}`}
+                      ${
+                        currentPage === page
+                          ? "z-10 bg-blue-50 border-blue-500 text-blue-600"
+                          : "bg-white border-gray-300 text-gray-500 hover:bg-gray-50"
+                      }`}
                     >
                       {page}
                     </button>
-                  ),
+                  )
                 )}
                 <button
                   onClick={() =>

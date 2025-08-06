@@ -1,28 +1,74 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { useAuth } from "@/app/context/AuthContext";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
+
+import { useEffect, useState } from "react";
 import { getCategorys } from "@/services/category.service";
 import {
   createProduct,
-  getProducts,
   updateProduct,
+  getProducts,
   deleteProduct,
 } from "@/services/product.service";
-import { useState, useEffect } from "react";
-import toast from "react-hot-toast";
+import { useAuth } from "@/app/context/AuthContext";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Skeleton } from "@/components/ui/skeleton";
+
+const formSchema = z.object({
+  product_name: z.string().min(1, "Product name is required"),
+  description: z.string().optional(),
+  price: z.string().refine((val) => !isNaN(Number(val)), {
+    message: "Price must be a number",
+  }),
+  stock: z.string().refine((val) => !isNaN(Number(val)), {
+    message: "Stock must be a number",
+  }),
+  image_url: z.string().optional(),
+  category_id: z.string().min(1, "Category is required"),
+});
+
+type FormSchema = z.infer<typeof formSchema>;
 
 interface Category {
   ID: number;
   Name: string;
 }
+
 interface Product {
   ID: number;
   product_name: string;
-  description: string;
+  description?: string;
   price: number;
   stock: number;
-  image_url: string;
+  image_url?: string;
   category_id: number;
   Category: {
     Name: string;
@@ -30,39 +76,34 @@ interface Product {
   user_id?: number;
 }
 
-interface ProductFormData {
-  product_name: string;
-  description: string;
-  price: number | string;
-  stock: number | string;
-  image_url: string;
-  category_id: number;
-}
-
-const Products = () => {
+const ProductForm = () => {
   const [categories, setCategories] = useState<Category[]>([]);
-  const [products, setProducts] = useState<Product[]>([]);
-  const [formData, setFormData] = useState<ProductFormData>({
-    product_name: "",
-    description: "",
-    price: "",
-    stock: "",
-    image_url: "",
-    category_id: 0,
-  });
-  const [isLoading, setIsLoading] = useState(false);
-  const [isFetching, setIsFetching] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isFetching, setIsFetching] = useState(false);
+
   const { user } = useAuth();
+
+  const form = useForm<FormSchema>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      product_name: "",
+      description: "",
+      price: "",
+      stock: "",
+      image_url: "",
+      category_id: "",
+    },
+  });
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await getCategorys();
-        setCategories(response.data.categories);
+        const res = await getCategorys();
+        setCategories(res.data.categories);
       } catch (err) {
-        console.error("Error fetching categories:", err);
+        console.error(err);
         toast.error("Failed to load categories");
       }
     };
@@ -72,13 +113,17 @@ const Products = () => {
   const fetchProducts = async () => {
     setIsFetching(true);
     try {
-      const response = await getProducts();
-      const filtered = response.data.filter(
-        (p: Product) => p.user_id === user?.ID
-      );
+      const res = await getProducts();
+      const filtered = res.data
+        .filter((p: Product) => p.user_id === user?.ID)
+        .map((p: any) => ({
+          ...p,
+          product_name: p.name, // ✅ map `name` to `product_name`
+        }));
+
       setProducts(filtered);
     } catch (err) {
-      console.error("Error fetching products:", err);
+      console.error(err);
       toast.error("Failed to load products");
     } finally {
       setIsFetching(false);
@@ -89,79 +134,43 @@ const Products = () => {
     if (user?.ID) fetchProducts();
   }, [user?.ID]);
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: name === "category_id" ? Number(value) : value,
-    }));
-  };
-
-  const resetForm = () => {
-    setFormData({
-      product_name: "",
-      description: "",
-      price: "",
-      stock: "",
-      image_url: "",
-      category_id: 0,
-    });
-    setIsEditing(false);
-    setEditingId(null);
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-
-    if (
-      !formData.product_name ||
-      !formData.price ||
-      !formData.stock ||
-      !formData.category_id
-    ) {
-      toast.error("Please fill in all required fields");
-      setIsLoading(false);
-      return;
-    }
-
+  const onSubmit = async (data: FormSchema) => {
     try {
-      const productPayload = {
-        ...formData,
-        price: Number(formData.price),
-        stock: Number(formData.stock),
-        category_id: Number(formData.category_id),
+      const payload = {
+        ...data,
+        price: Number(data.price),
+        stock: Number(data.stock),
+        category_id: Number(data.category_id),
+        description: data.description ?? "", // ensure string
+        image_url: data.image_url ?? "", // ensure string
       };
 
       if (isEditing && editingId) {
-        await updateProduct(editingId, productPayload);
-        toast.success("Product updated successfully!");
+        await updateProduct(editingId, payload);
+        toast.success("Product updated!");
       } else {
-        await createProduct({ ...productPayload });
-        toast.success("Product created successfully!");
+        await createProduct(payload);
+        toast.success("Product created!");
       }
 
       fetchProducts();
-      resetForm();
-    } catch (error) {
-      console.error("Error saving product:", error);
+      form.reset();
+      setIsEditing(false);
+      setEditingId(null);
+    } catch (err) {
+      console.error(err);
       toast.error("Failed to save product");
-    } finally {
-      setIsLoading(false);
     }
   };
 
   const handleEdit = (product: Product) => {
-    setFormData({
-      product_name: product.product_name || "",
-      description: product.description || "",
-      price: product.price || "",
-      stock: product.stock || "",
-      image_url: product.image_url || "",
-      category_id: product.category_id || 0,
-    });
+    form.setValue("product_name", product.product_name);
+    form.setValue("description", product.description);
+    form.setValue("price", String(product.price));
+    form.setValue("stock", String(product.stock));
+    form.setValue("image_url", product.image_url || "");
+    form.setValue("category_id", String(product.category_id));
+
     setEditingId(product.ID);
     setIsEditing(true);
   };
@@ -173,205 +182,248 @@ const Products = () => {
       toast.success("Product deleted");
       fetchProducts();
     } catch (err) {
-      console.error("Delete failed:", err);
+      console.error(err);
       toast.error("Failed to delete");
     }
   };
 
   return (
-    <div className="p-6">
+    <div className="p-6 dark:text-white text-black">
       <h2 className="text-2xl font-bold mb-6">Products</h2>
 
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white shadow rounded-lg p-6 space-y-4"
-      >
-        <h1 className="text-lg font-bold">
-          {isEditing ? "Edit Product" : "Create New Product"}
-        </h1>
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-4 dark:bg-slate-900 bg-white p-6 rounded-lg shadow"
+        >
+          <h1 className="text-lg font-bold">
+            {isEditing ? "Edit Product" : "Create New Product"}
+          </h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              Product Name *
-            </label>
-            <input
-              type="text"
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FormField
+              control={form.control}
               name="product_name"
-              value={formData.product_name}
-              onChange={handleInputChange}
-              className="w-full px-4 py-2 border rounded-md"
-              required
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Product Name *</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Product name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
 
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              Description
-            </label>
-            <input
-              type="text"
+            <FormField
+              control={form.control}
               name="description"
-              value={formData.description}
-              onChange={handleInputChange}
-              className="w-full px-4 py-2 border rounded-md"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Short description" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
 
-          <div>
-            <label className="block text-sm font-medium mb-1">Price *</label>
-            <input
-              type="number"
+            <FormField
+              control={form.control}
               name="price"
-              value={formData.price}
-              onChange={handleInputChange}
-              className="w-full px-4 py-2 border rounded-md"
-              required
-              min="0"
-              step="0.01"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Price *</FormLabel>
+                  <FormControl>
+                    <Input type="number" min="0" step="0.01" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
 
-          <div>
-            <label className="block text-sm font-medium mb-1">Stock *</label>
-            <input
-              type="number"
+            <FormField
+              control={form.control}
               name="stock"
-              value={formData.stock}
-              onChange={handleInputChange}
-              className="w-full px-4 py-2 border rounded-md"
-              required
-              min="0"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Stock *</FormLabel>
+                  <FormControl>
+                    <Input type="number" min="0" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
 
-          <div>
-            <label className="block text-sm font-medium mb-1">Image URL</label>
-            <input
-              type="text"
+            <FormField
+              control={form.control}
               name="image_url"
-              value={formData.image_url}
-              onChange={handleInputChange}
-              className="w-full px-4 py-2 border rounded-md"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Image URL</FormLabel>
+                  <FormControl>
+                    <Input placeholder="https://image.url" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="category_id"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Category *</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a category" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {categories.map((cat) => (
+                        <SelectItem key={cat.ID} value={String(cat.ID)}>
+                          {cat.Name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium mb-1">Category *</label>
-            <select
-              name="category_id"
-              value={formData.category_id}
-              onChange={handleInputChange}
-              className="w-full px-4 py-2 border rounded-md"
-              required
-            >
-              <option value={0} disabled>
-                -- Select a category --
-              </option>
-              {categories.map((cat) => (
-                <option key={cat.ID} value={cat.ID}>
-                  {cat.Name}
-                </option>
-              ))}
-            </select>
+          <div className="flex justify-between items-center pt-2">
+            <Button type="submit" disabled={form.formState.isSubmitting}>
+              {isEditing ? "Update Product" : "Add Product"}
+            </Button>
+            {isEditing && (
+              <Button
+                type="button"
+                variant="ghost"
+                className="text-red-500"
+                onClick={() => {
+                  form.reset();
+                  setIsEditing(false);
+                  setEditingId(null);
+                }}
+              >
+                Cancel
+              </Button>
+            )}
           </div>
-        </div>
+        </form>
+      </Form>
 
-        <div className="flex justify-between items-center">
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="bg-blue-600 text-white px-4 py-2 rounded-md disabled:opacity-50"
+      {/* You can keep your table rendering part as it is */}
+      <div className="flex justify-between items-center mt-6">
+        <Button type="submit" disabled={form.formState.isSubmitting}>
+          {form.formState.isSubmitting
+            ? "Saving..."
+            : isEditing
+            ? "Update Product"
+            : "Add Product"}
+        </Button>
+        {isEditing && (
+          <Button
+            type="button"
+            variant="ghost"
+            className="text-red-500"
+            onClick={() => {
+              form.reset();
+              setIsEditing(false);
+              setEditingId(null);
+            }}
           >
-            {isLoading
-              ? "Saving..."
-              : isEditing
-              ? "Update Product"
-              : "Add Product"}
-          </button>
-          {isEditing && (
-            <button
-              type="button"
-              onClick={resetForm}
-              className="text-red-500 underline"
-            >
-              Cancel
-            </button>
-          )}
-        </div>
-      </form>
+            Cancel
+          </Button>
+        )}
+      </div>
 
-      <div className="bg-white shadow rounded-lg overflow-hidden mt-8">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              {["Product", "Price", "Stock", "Actions"].map((h) => (
-                <th
-                  key={h}
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
-                >
-                  {h}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+      {/* Table Section */}
+      <div className="mt-8 rounded-lg border">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="text-left">Product</TableHead>
+              <TableHead className="text-left">Price</TableHead>
+              <TableHead className="text-left">Stock</TableHead>
+              <TableHead className="text-left">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {isFetching ? (
-              <tr>
-                <td colSpan={4} className="text-center py-6">
-                  Loading...
-                </td>
-              </tr>
+              [...Array(3)].map((_, i) => (
+                <TableRow key={i}>
+                  <TableCell colSpan={4}>
+                    <Skeleton className="h-8 w-full" />
+                  </TableCell>
+                </TableRow>
+              ))
             ) : products.length === 0 ? (
-              <tr>
-                <td colSpan={4} className="text-center py-6">
+              <TableRow>
+                <TableCell
+                  colSpan={4}
+                  className="text-center py-6 text-gray-500"
+                >
                   No products available
-                </td>
-              </tr>
+                </TableCell>
+              </TableRow>
             ) : (
               products.map((p) => (
-                <tr key={p.ID} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 flex items-center gap-4">
-                    {p.image_url && (
-                      <img
-                        src={p.image_url}
-                        alt={p.product_name}
-                        className="h-10 w-10 rounded object-cover"
-                      />
-                    )}
-                    <div>
-                      <div className="font-medium text-gray-900">
-                        {p.product_name}
-                      </div>
-                      <div className="text-sm text-gray-500 line-clamp-1">
-                        {p.description}
+                <TableRow key={p.ID} className="hover:bg-muted/30">
+                  <TableCell>
+                    <div className="flex items-center gap-4">
+                      {p.image_url && (
+                        <img
+                          src={p.image_url}
+                          alt={p.product_name}
+                          className="h-10 w-10 rounded object-cover"
+                        />
+                      )}
+                      <div>
+                        <div className="font-medium">{p.product_name}</div>
+                        {/* <div className="text-sm text-muted-foreground line-clamp-1 ">
+                          {p.description}
+                        </div> */}
                       </div>
                     </div>
-                  </td>
-                  <td className="px-6 py-4">${p.price.toFixed(2)}</td>
-                  <td className="px-6 py-4">{p.stock} in stock</td>
-                  <td className="px-6 py-4">
-                    <button
-                      className="text-indigo-600 hover:underline mr-4"
-                      onClick={() => handleEdit(p)}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="text-red-600 hover:underline"
-                      onClick={() => handleDelete(p.ID)}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
+                  </TableCell>
+                  <TableCell>${p.price.toFixed(2)}</TableCell>
+                  <TableCell>{p.stock} in stock</TableCell>
+                  <TableCell>
+                    <div className="flex gap-2">
+                      <Button
+                        variant="link"
+                        className="text-indigo-600 px-0"
+                        onClick={() => handleEdit(p)}
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        variant="link"
+                        className="text-red-600 px-0"
+                        onClick={() => handleDelete(p.ID)}
+                      >
+                        Delete
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
               ))
             )}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
     </div>
   );
 };
 
-export default Products;
+export default ProductForm;

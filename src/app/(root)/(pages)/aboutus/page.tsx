@@ -1,4 +1,4 @@
-import Breadcrumb from "@/app/components/smallComponent/Breadcrumb";
+import Breadcrumb from "@/components/smallComponent/Breadcrumb";
 import React from "react";
 import about from "@/../public/about.png";
 import about2 from "@/../public/about2.png";
@@ -25,22 +25,19 @@ const AboutSection: React.FC<{
   return (
     <div className={`py-10 md:py-20 ${bgColor}`}>
       <div
-        className={`container mx-auto px-4 md:px-10 flex flex-col ${
-          reverse ? "md:flex-row-reverse" : "md:flex-row"
-        } items-center justify-evenly gap-8 md:gap-10`}
+        className={`container mx-auto px-4 md:px-10 flex flex-col ${reverse ? "md:flex-row-reverse" : "md:flex-row"
+          } items-center justify-evenly gap-8 md:gap-10`}
       >
         <div className="w-full md:w-1/2 lg:w-[500px] flex flex-col gap-6 md:gap-10">
           <h1
-            className={`text-3xl md:text-4xl lg:text-5xl font-bold ${
-              bgColor === "bg-black" ? "text-white" : "text-black"
-            }`}
+            className={`text-3xl md:text-4xl lg:text-5xl font-bold ${bgColor === "bg-black" ? "text-white" : "text-black"
+              }`}
           >
             {title}
           </h1>
           <p
-            className={`text-base md:text-lg ${
-              bgColor === "bg-black" ? "text-white" : "text-black"
-            } font-normal`}
+            className={`text-base md:text-lg ${bgColor === "bg-black" ? "text-white" : "text-black"
+              } font-normal`}
           >
             {content}
           </p>

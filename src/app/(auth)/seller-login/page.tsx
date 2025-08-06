@@ -1,12 +1,12 @@
 "use client";
-import LoginBtn from "@/app/components/buttons/LoginBtn";
-import Breadcrumb from "@/app/components/smallComponent/Breadcrumb";
+import LoginBtn from "@/components/buttons/LoginBtn";
+import Breadcrumb from "@/components/smallComponent/Breadcrumb";
 import { useAuth } from "@/app/context/AuthContext";
 import { login as loginUser } from "@/services/auth.service";
 import axios from "axios";
 import Link from "next/link";
 import React, { useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 interface LoginFormType {
   email: string;
@@ -77,7 +77,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-2">
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-2 dark:text-black">
       <div className="mt-5">
         <Breadcrumb items={breadcrumbItems} />
         <h1 className="text-xl sm:text-2xl md:text-3xl font-semibold capitalize py-3">
