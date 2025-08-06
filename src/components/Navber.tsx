@@ -328,7 +328,9 @@ export default function Navbar() {
                         variant={"default"}
                         className="absolute p-1.5 animate-pulse rounded-full bg-green-500 text-white -top-1 -right-0"
                       ></Badge> */}
-                      <FaUserCircle />
+                      <span>
+                        <FaUserCircle />
+                      </span>
                     </Button>
                   </>
                 </PopoverTrigger>

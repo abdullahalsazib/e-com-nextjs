@@ -2,6 +2,7 @@
 import axios, { AxiosError } from "axios";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"
+// https://e-com-backend-next-js.onrender.com
 
 if (!API_BASE_URL) {
   throw new Error(

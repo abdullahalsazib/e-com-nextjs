@@ -94,7 +94,9 @@ const Seller_navber = ({
                 className="hover:text-violet-400"
                 size="sm"
               >
-                <FaUser /> Profile
+                <span>
+                  <FaUser /> Profile
+                </span>
               </Button>
             </PopoverTrigger>
             <PopoverContent className=" text-sm" align="end">
