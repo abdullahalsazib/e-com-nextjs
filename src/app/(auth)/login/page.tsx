@@ -111,7 +111,7 @@ function LoginPage() {
                     Welcome Back.
                   </h1>
                   <p className=" text-lg text-gray-500">
-                    Welcome to E_com - Let's Log in our web
+                    Welcome to E_com - Let&apos;s Log in our web
                   </p>
                 </div>
 

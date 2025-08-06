@@ -100,6 +100,7 @@ const Seller_navber = ({
           </Popover>
 
           <CustomToolTip
+            // eslint-disable-next-line react/no-children-prop
             children={
               <Button variant="secondary" size="sm" onClick={handleLogout}>
                 <span className="flex items-center gap-2">

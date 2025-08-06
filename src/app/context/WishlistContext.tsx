@@ -102,6 +102,7 @@ export const WishlistProvider = ({ children }: { children: ReactNode }) => {
     };
 
     loadWishlist();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const addToWishlist = async (product: WishlistItemWithProduct) => {

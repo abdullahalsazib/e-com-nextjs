@@ -1,3 +1,5 @@
+/* eslint-disable react/no-children-prop */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
@@ -68,7 +70,6 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
     image_url = p1.src,
     name = "Product Name",
     price = 0,
-    original_price,
     rating = 0,
     review_count = 0,
   } = product || {};

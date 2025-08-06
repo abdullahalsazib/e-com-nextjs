@@ -2,11 +2,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import Topbar from "./Topbar/Topbar";
 import { BsBoxSeamFill } from "react-icons/bs";
-import { BiSearch, BiArrowToTop, BiTrash } from "react-icons/bi";
+import { BiArrowToTop } from "react-icons/bi";
 import {
-  FaUserCircle,
   FaBars,
-  FaCcPaypal,
   FaCashRegister,
   FaSignInAlt,
   FaRegUserCircle,
@@ -32,24 +30,20 @@ import { Search } from "lucide-react";
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import Login_d from "@/app/(auth)/login/components/Login_d";
 import { FaBasketShopping } from "react-icons/fa6";
-import { MdOutlineSell } from "react-icons/md";
 import { ModeToggle } from "./Theme_Button";
 
 export default function Navbar() {
   const router = useRouter();
-  const [isDesktopSearch, setIsDesktopSearch] = useState<boolean>(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
   const [showScrollButton, setShowScrollButton] = useState<boolean>(false);
-  const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
   const [activeDropdowns, setActiveDropdowns] = useState<number[]>([]);
   const [activeNestedDropdowns, setActiveNestedDropdowns] = useState<{
     [key: string]: number[];
   }>({});
-  const [isAccountDropdownOpen, setIsAccountDropdownOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false); // const dropdownRef = useRef<HTMLDivElement>(null);
-  const cartRef = useRef<HTMLDivElement>(null);
+
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const { wishlist } = useWishlist();
 
@@ -148,20 +142,12 @@ export default function Navbar() {
     }
   };
 
-  const toggleCart = () => {
-    setIsCartOpen(!isCartOpen);
-    setIsMobileMenuOpen(false);
-    setIsAccountDropdownOpen(false);
-  };
-
   // const toggleAccountDropdown = () => {
   //   setIsAccountDropdownOpen(!isAccountDropdownOpen);
   // };
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
-    setIsAccountDropdownOpen(false);
-    setIsCartOpen(false);
   };
 
   return (
