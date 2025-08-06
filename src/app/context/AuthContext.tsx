@@ -97,6 +97,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         throw error;
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [fetchUser, router]
   );
 

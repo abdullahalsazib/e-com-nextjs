@@ -3,16 +3,12 @@ import { useAuth } from "@/app/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
-  DialogClose,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
+  DialogDescription,  DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -24,6 +20,7 @@ import { login as loginUser } from "@/services/auth.service";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { BsBoxSeamFill } from "react-icons/bs";
@@ -72,6 +69,7 @@ const Login_d = () => {
     }
   };
 
+  const navigate = useRouter();
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -159,7 +157,7 @@ const Login_d = () => {
             Submit
           </Button>
           <Button
-            onClick={() => toast.info("Working this Register page")}
+            onClick={() => navigate.push("/register")}
             className="mt-5"
             variant={"outline"}
             type="button"

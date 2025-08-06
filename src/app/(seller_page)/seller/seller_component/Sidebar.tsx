@@ -1,11 +1,8 @@
 "use client";
 
-import { useAuth } from "@/app/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BsDiamond } from "react-icons/bs";
-import { CgProfile } from "react-icons/cg";
 import { IoDiamondOutline } from "react-icons/io5";
 
 interface SidebarProps {

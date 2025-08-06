@@ -102,7 +102,7 @@ function InputForm() {
                   Get Started
                 </h1>
                 <p className=" text-lg text-gray-500">
-                  Welcome to E_com - Let's create your account
+                  Welcome to E_com - Let&apos;s create your account
                 </p>
               </div>
             </div> */}
@@ -119,7 +119,7 @@ function InputForm() {
                     Get Started
                   </h1>
                   <p className=" text-lg text-gray-500">
-                    Welcome to E_com - Let's create your account
+                    Welcome to E_com - Let&apos;s create your account
                   </p>
                 </div>
                 <div className=" grid gap-3">

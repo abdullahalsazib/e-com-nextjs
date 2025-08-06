@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import {
@@ -116,6 +117,7 @@ const ProductForm = () => {
       const res = await getProducts();
       const filtered = res.data
         .filter((p: Product) => p.user_id === user?.ID)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         .map((p: any) => ({
           ...p,
           product_name: p.name, // ✅ map `name` to `product_name`

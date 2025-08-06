@@ -161,7 +161,7 @@ const Stats_Cards = ({
   mainNumber,
   subNumber,
   icons,
-  iconBoxClassName,
+  // iconBoxClassName,
 }: {
   title: string;
   mainNumber: string;
