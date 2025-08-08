@@ -21,6 +21,7 @@ import { useEffect, useState } from "react";
 import apiClient from "@/lib/api-client";
 import { Product2 } from "@/app/data/product";
 import ProductCard from "@/components/Product_card";
+import Hero_section from "@/components/Hero_section";
 
 const brandLogo = [
   { imgUrl: brand1, alr: "brand1" },
@@ -71,9 +72,13 @@ export default function HomePage() {
   };
   return (
     <>
-      <div className="w-full bg-white dark:bg-gray-800">
+      {/* <div className="w-full bg-white dark:bg-gray-800">
         <Carousel images={carouselImages} />
-      </div>
+      </div> */}
+
+      {/* hero section */}
+      <Hero_section />
+
       <div className={`px-[10%] bg-white dark:bg-gray-950 `}>
         {/* Products sections  */}
         <div className=" pt-7">

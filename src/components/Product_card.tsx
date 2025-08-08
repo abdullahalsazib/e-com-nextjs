@@ -116,7 +116,7 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
   return (
     <div className="bg-white dark:bg-gray-900 border-[1.5] rounded-md flex items-center justify-between flex-col shadow-sm hover:shadow-xl transition-shadow duration-300 ease-in-out">
       {/* Product Image */}
-      <div className="w-full p-1 h-40 md:h-[250px] ">
+      <div className="w-full p-1 h-auto  ">
         <img
           src={image_url}
           alt={name}
