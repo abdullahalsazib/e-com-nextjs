@@ -56,13 +56,13 @@ const ShoppingCart = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 bg-white dark:bg-black">
       <Breadcrumb items={breadcrumb} />
 
       <motion.h1
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-2xl md:text-3xl font-bold mb-6"
+        className="text-2xl py-2 text-black dark:text-gray-100 md:text-3xl font-bold mb-6"
       >
         {activeTab === "cart" ? "Shopping Cart" : "Your Wishlist"}
       </motion.h1>
@@ -71,19 +71,21 @@ const ShoppingCart = () => {
       <div className="flex border-b mb-6">
         <button
           onClick={() => setActiveTab("cart")}
-          className={`px-4 py-2 font-medium ${activeTab === "cart"
+          className={`px-4 py-2 font-medium ${
+            activeTab === "cart"
               ? "text-blue-600 border-b-2 border-blue-600"
               : "text-gray-500"
-            }`}
+          }`}
         >
           Cart ({cartItemCount})
         </button>
         <button
           onClick={() => setActiveTab("wishlist")}
-          className={`px-4 py-2 font-medium ${activeTab === "wishlist"
+          className={`px-4 py-2 font-medium ${
+            activeTab === "wishlist"
               ? "text-blue-600 border-b-2 border-blue-600"
               : "text-gray-500"
-            }`}
+          }`}
         >
           Wishlist ({wishlist.length})
         </button>
@@ -95,7 +97,7 @@ const ShoppingCart = () => {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="bg-white rounded-lg shadow-md p-4 sm:p-6 mb-4"
+            className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 sm:p-6 mb-4"
           >
             {activeTab === "cart" ? (
               <>
@@ -231,7 +233,7 @@ const ShoppingCart = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="bg-white rounded-lg shadow-md p-4 sm:p-6 sticky top-4"
+              className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 sm:p-6 sticky top-4"
             >
               <h2 className="text-lg font-semibold mb-4">Order Summary</h2>
 

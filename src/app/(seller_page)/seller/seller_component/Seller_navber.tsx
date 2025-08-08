@@ -1,7 +1,7 @@
 "use client";
 import { CustomToolTip } from "@/components/custom_compoent/CustomToolTip";
 import { Input } from "@/components/ui/input";
-import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
+import { FaAngleLeft, FaAngleRight, FaLink } from "react-icons/fa";
 import { FaUser } from "react-icons/fa6";
 import { MdOutlineOutput } from "react-icons/md";
 import { Button } from "@/components/ui/button";
@@ -12,8 +12,20 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useAuth } from "@/app/context/AuthContext";
-import { toast } from "sonner";
 import { ModeToggle } from "@/components/Theme_Button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { BiBell } from "react-icons/bi";
+import { useRouter } from "next/navigation";
 const Seller_navber = ({
   isOpen,
   setOpen,
@@ -26,31 +38,7 @@ const Seller_navber = ({
     console.log(isOpen);
   };
   const { user, logout } = useAuth();
-
-  let logoutTimeout: ReturnType<typeof setTimeout> | null = null;
-
-  const handleLogout = () => {
-    // Show toast with Undo action
-    toast("Logging out...", {
-      action: {
-        label: "Undo",
-        onClick: () => {
-          if (logoutTimeout) {
-            clearTimeout(logoutTimeout);
-            logoutTimeout = null;
-            toast.info("Logout cancelled.");
-          }
-        },
-      },
-    });
-
-    // Set 2 second delay for logout
-    logoutTimeout = setTimeout(() => {
-      logout();
-      toast.success("You are logged out.");
-    }, 5000);
-  };
-
+  const navigate = useRouter();
   return (
     <div className=" w-full dark:bg-slate-900 bg-white py-5 px-6 flex items-center justify-between border-b-[0.01] ">
       <div className=" flex items-center justify-start gap-6">
@@ -74,7 +62,7 @@ const Seller_navber = ({
           </p>
         </div>
       </div>
-      <div className=" flex items-center justify-end gap-4">
+      <div className=" flex items-center justify-end gap-3">
         <div>
           <Input
             type="search"
@@ -82,8 +70,35 @@ const Seller_navber = ({
             className=" dark:text-slate-600 "
           />
         </div>
+        <div>
+          <CustomToolTip
+            // eslint-disable-next-line react/no-children-prop
+            children={
+              <Button
+                variant={"secondary"}
+                size={"sm"}
+                onClick={() => navigate.push("/")}
+              >
+                <FaLink />
+              </Button>
+            }
+            bodyContent="Back to the web-site"
+          />
+        </div>
         <div className=" flex gap-1">
           <ModeToggle />
+        </div>
+        <div className=" flex gap-1">
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button variant="secondary" className="" size="sm">
+                <BiBell />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className=" text-sm" align="end">
+              notification content - comming soon
+            </PopoverContent>
+          </Popover>
         </div>
         <div className=" flex gap-1">
           <Popover>
@@ -99,18 +114,33 @@ const Seller_navber = ({
             </PopoverContent>
           </Popover>
 
-          <CustomToolTip
-            // eslint-disable-next-line react/no-children-prop
-            children={
-              <Button variant="secondary" size="sm" onClick={handleLogout}>
-                <span className="flex items-center gap-2">
-                  <MdOutlineOutput />
-                  Log out
-                </span>
-              </Button>
-            }
-            bodyContent="log out"
-          />
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <CustomToolTip
+                // eslint-disable-next-line react/no-children-prop
+                children={
+                  <Button variant={"secondary"} size={"sm"}>
+                    <MdOutlineOutput /> log out
+                  </Button>
+                }
+                bodyContent="log out"
+              />
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will log out your system .
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={() => logout()}>
+                  Continue
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       </div>
     </div>

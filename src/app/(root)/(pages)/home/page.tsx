@@ -74,6 +74,10 @@ export default function HomePage() {
       <div className="w-full bg-white dark:bg-gray-800">
         <Carousel images={carouselImages} />
       </div>
+
+      {/* hero section */}
+      {/* <Hero_section /> */}
+
       <div className={`px-[10%] bg-white dark:bg-gray-950 `}>
         {/* Products sections  */}
         <div className=" pt-7">
@@ -227,8 +231,8 @@ export default function HomePage() {
           </div>
         </div>
         {/* brand logo's */}
-        <div className=" py-5">
-          <div className="flex items-center justify-between gap-7">
+        <div className=" py-5 bg-blue-50">
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 justify-center items-center gap-7">
             {brandLogo.map((item, index) => (
               <div key={index} className=" p-2">
                 <a href="#">

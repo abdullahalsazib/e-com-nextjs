@@ -6,6 +6,8 @@ import { FaFacebookF, FaInstagram } from "react-icons/fa6";
 import { IoPricetags } from "react-icons/io5";
 import { RiCustomerServiceFill } from "react-icons/ri";
 import payment from "@/../public/payment.svg";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
 const footerLinks = [
   {
     title: "information",
@@ -75,10 +77,10 @@ const Footer = () => {
   return (
     <>
       <div>
-        <div className=" px-10 md:px-[10%]">
+        <div className=" px-10 md:px-[10%] bg-white dark:bg-black">
           <FooterTopCard />
         </div>
-        <div className="pt-15 w-full flex items-start justify-between flex-col gap-2 bg-black text-white px-[10%]">
+        <div className="pt-15 w-full flex items-start justify-between flex-col gap-2 dark:bg-black dark:text-white bg-blue-50 text-black border-t px-[10%]">
           <div className=" flex items-center justify-center text-center md:text-left md:justify-between flex-col md:flex-row w-full">
             <div className=" w-full">
               <h1 className=" text-xl md:text-4xl font-bold capitalize ">
@@ -89,14 +91,12 @@ const Footer = () => {
               </p>
             </div>
             <div className=" flex items-center justify-center flex-col py-4 md:py-0  md:flex-row gap-4 w-full md:w-1/2">
-              <input
-                type="text"
-                placeholder="your email"
-                className=" w-full py-3 px-5 border-2 border-gray-300 focus:border-white focus:outline-none rounded-sm"
-              />
-              <button className=" py-3 px-7 font-semibold text-sm capitalize rounded-full bg-blue-500 text-white hover:bg-white hover:text-blue-500 duration-200 transition-colors">
-                Subscribe
-              </button>
+              <div className="flex w-full max-w-sm items-center gap-2">
+                <Input type="email" placeholder="Email" />
+                <Button type="submit" variant="outline">
+                  Subscribe
+                </Button>
+              </div>
             </div>
           </div>
           <div className=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 w-full text-center lg:text-left pt-0 md:pt-5">
@@ -149,7 +149,7 @@ export default Footer;
 const FooterTopCard = () => {
   return (
     <>
-      <div className=" grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 w-full py-5 text-center">
+      <div className=" bg-white dark:bg-black grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 w-full py-5 text-center">
         <FooterServicesCard
           icon={<RiCustomerServiceFill />}
           title="product support"
@@ -176,14 +176,16 @@ const FooterServicesCard: React.FC<{
 }> = ({ icon, title, des }) => {
   return (
     <>
-      <div className="flex  items-center justify-center flex-col shadow-lg inset-shadow-sm py-10 px-3 md:px-5 gap-3">
+      <div className="flex bg-white rounded-md dark:bg-gradient-to-bl dark:hover:bg-gradient-to-br duration-500 from-slate-950 to-black border items-center justify-center flex-col shadow-lg inset-shadow-sm py-10 px-3 md:px-5 gap-3">
         <div className=" bg-blue-500 rounded-full text-lg md:text-2xl text-white p-5">
           {icon}
         </div>
-        <h2 className="text-black text-sm md:text-lg font-bold capitalize">
+        <h2 className="text-black dark:text-white text-sm md:text-lg font-bold capitalize">
           {title}
         </h2>
-        <p className="text-gray-600 text-sm font-light">{des}</p>
+        <p className="text-gray-600 dark:text-gray-400 text-sm font-light">
+          {des}
+        </p>
       </div>
     </>
   );

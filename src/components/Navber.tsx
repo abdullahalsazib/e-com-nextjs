@@ -19,7 +19,6 @@ import {
 } from "../app/data/navegationLinks";
 import { Item, NestedItem, SubItem } from "../app/type/type";
 import { useAuth } from "../app/context/AuthContext";
-import { toast } from "sonner";
 import WishlistDropdown from "./WishlistDropdown";
 import { useWishlist } from "../app/context/WishlistContext";
 import CartListDropdown from "./CartListDropdown";
@@ -31,6 +30,17 @@ import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import Login_d from "@/app/(auth)/login/components/Login_d";
 import { FaBasketShopping } from "react-icons/fa6";
 import { ModeToggle } from "./Theme_Button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "./ui/alert-dialog";
 
 export default function Navbar() {
   const router = useRouter();
@@ -49,31 +59,6 @@ export default function Navbar() {
 
   // useAuth
   const { user, isLoading, logout } = useAuth();
-  // console.log(user);
-  let logoutTimeout: ReturnType<typeof setTimeout> | null = null;
-
-  const handleLogout = () => {
-    // Show toast with Undo action
-    toast("Logging out...", {
-      action: {
-        label: "Undo",
-        onClick: () => {
-          if (logoutTimeout) {
-            clearTimeout(logoutTimeout);
-            logoutTimeout = null;
-            toast.info("Logout cancelled.");
-          }
-        },
-      },
-    });
-
-    // Set 2 second delay for logout
-    logoutTimeout = setTimeout(() => {
-      logout();
-      toast.success("You are logged out.");
-    }, 5000);
-  };
-
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 1024);
@@ -318,7 +303,13 @@ export default function Navbar() {
                                 href={"/seller"}
                                 className="block hover:text-blue-500 transition-colors"
                               >
-                                Seller Dashboard
+                                <Button
+                                  variant={"secondary"}
+                                  className=" w-full"
+                                  size={"sm"}
+                                >
+                                  Seller Dashboard
+                                </Button>
                               </Link>
                             </li>
                           </>
@@ -329,7 +320,13 @@ export default function Navbar() {
                                 href="/user-account"
                                 className="block hover:text-blue-500 transition-colors"
                               >
-                                My Account
+                                <Button
+                                  variant={"secondary"}
+                                  className=" w-full"
+                                  size={"sm"}
+                                >
+                                  My Account
+                                </Button>
                               </Link>
                             </li>
 
@@ -338,7 +335,13 @@ export default function Navbar() {
                                 className="block hover:text-blue-500 transition-colors"
                                 href={"/shoping-card"}
                               >
-                                My Wish List {`(${wishlist.length})`}
+                                <Button
+                                  variant={"secondary"}
+                                  className=" w-full"
+                                  size={"sm"}
+                                >
+                                  My Wish List {`(${wishlist.length})`}
+                                </Button>
                               </Link>
                             </li>
                           </>
@@ -391,11 +394,36 @@ export default function Navbar() {
                             </li>
                           </>
                         ) : (
-                          <li onClick={handleLogout}>
-                            <p className=" cursor-pointer block hover:text-blue-500 transition-colors">
-                              Log out
-                            </p>
-                          </li>
+                          <>
+                            <AlertDialog>
+                              <AlertDialogTrigger asChild>
+                                <Button
+                                  variant={"secondary"}
+                                  size={"default"}
+                                  className="size-8 w-full"
+                                >
+                                  log out
+                                </Button>
+                              </AlertDialogTrigger>
+                              <AlertDialogContent>
+                                <AlertDialogHeader>
+                                  <AlertDialogTitle>
+                                    Are you absolutely sure?
+                                  </AlertDialogTitle>
+                                  <AlertDialogDescription>
+                                    This action cannot be undone. This will log
+                                    out your system .
+                                  </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                  <AlertDialogAction onClick={() => logout()}>
+                                    Continue
+                                  </AlertDialogAction>
+                                </AlertDialogFooter>
+                              </AlertDialogContent>
+                            </AlertDialog>
+                          </>
                         )}
                       </ul>
                     </div>
@@ -427,11 +455,10 @@ export default function Navbar() {
                       {user?.role == "admin" ? (
                         <>
                           <li>
-                            <Link
-                              href={"/seller"}
-                              className="block hover:text-blue-500 transition-colors"
-                            >
-                              Seller Dashboard
+                            <Link href={"/seller"}>
+                              <Button variant={"secondary"} className=" w-full">
+                                Seller Dashboard
+                              </Button>
                             </Link>
                           </li>
                         </>
@@ -442,7 +469,13 @@ export default function Navbar() {
                               href="/user-account"
                               className="block hover:text-blue-500 transition-colors"
                             >
-                              My Account
+                              <Button
+                                variant={"secondary"}
+                                className=" w-full"
+                                size={"sm"}
+                              >
+                                My Account
+                              </Button>
                             </Link>
                           </li>
 
@@ -451,7 +484,13 @@ export default function Navbar() {
                               className="block hover:text-blue-500 transition-colors"
                               href={"/shoping-card"}
                             >
-                              My Wish List {`(${wishlist.length})`}
+                              <Button
+                                variant={"secondary"}
+                                className=" w-full"
+                                size={"sm"}
+                              >
+                                My Wish List {`(${wishlist.length})`}
+                              </Button>
                             </Link>
                           </li>
                         </>
@@ -504,11 +543,36 @@ export default function Navbar() {
                           </li>
                         </>
                       ) : (
-                        <li onClick={handleLogout}>
-                          <p className=" cursor-pointer block hover:text-blue-500 transition-colors">
-                            Log out
-                          </p>
-                        </li>
+                        <>
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button
+                                variant={"secondary"}
+                                size={"default"}
+                                className="size-8 w-full"
+                              >
+                                log out
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>
+                                  Are you absolutely sure?
+                                </AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  This action cannot be undone. This will log
+                                  out your system .
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction onClick={() => logout()}>
+                                  Continue
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                        </>
                       )}
                     </ul>
                   </div>
