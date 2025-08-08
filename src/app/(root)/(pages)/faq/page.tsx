@@ -1,18 +1,35 @@
 "use client";
-import React, { useState } from "react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 const FAQ = () => {
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  return (
+    <div className="max-w-4xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+      <div className="text-center mb-10">
+        <h1 className="text-3xl font-bold dark:text-gray-50 text-gray-900 sm:text-4xl mb-2">
+          Shop Terms & Conditions
+        </h1>
+        <p className="text-lg dark:text-gray-200 text-gray-600">
+          GENERAL TERMS AND CONDITIONS FOR SALE OF PRODUCTS AND SERVICES
+        </p>
+      </div>
+      <MyAccordion />
+    </div>
+  );
+};
 
-  const toggleAccordion = (index: number) => {
-    setActiveIndex(activeIndex === index ? null : index);
-  };
+export default FAQ;
 
+const MyAccordion = () => {
   const faqItems = [
     {
       question: "Definitions & Interpretation",
       answer: (
-        <div className="text-gray-700">
+        <div className="text-gray-700 dark:text-gray-400">
           <p className="mb-2">
             In the following Terms and Conditions of sale, unless the context
             requires otherwise:
@@ -20,12 +37,12 @@ const FAQ = () => {
           <ul className="list-disc pl-5 space-y-1">
             <li>`&quot;`Shop`&quot;` means Shop Pty Ltd ABN 11 222 333 444;</li>
             <li>
-              &quot;Customer&quot; means the person or corporation placing an order for
-              the purchase of goods or services from Shop;
+              &quot;Customer&quot; means the person or corporation placing an
+              order for the purchase of goods or services from Shop;
             </li>
             <li>
-              &quot;Products&quot; means any goods, materials, equipment or services
-              provided to the Customer by Shop;
+              &quot;Products&quot; means any goods, materials, equipment or
+              services provided to the Customer by Shop;
             </li>
             <li>
               if the Customer comprises more than one person, each of those
@@ -49,7 +66,7 @@ const FAQ = () => {
     {
       question: "General Terms",
       answer: (
-        <div className="text-gray-700 space-y-2">
+        <div className="text-gray-700 dark:text-gray-400 space-y-2">
           <p>
             By ordering the Products and/or accepting delivery of the Products
             from Shop, the Customer agrees that it is bound by these Terms and
@@ -57,10 +74,10 @@ const FAQ = () => {
             internet, are subject to acceptance by Shop.
           </p>
           <p>
-            The acceptance of the Customer&apos;s order by Shop is expressly made
-            conditional upon the Customer&apos;s assent to these Terms and Conditions
-            which will prevail notwithstanding anything that may be stated to
-            the contrary on the Customer&apos;s order.
+            The acceptance of the Customer&apos;s order by Shop is expressly
+            made conditional upon the Customer&apos;s assent to these Terms and
+            Conditions which will prevail notwithstanding anything that may be
+            stated to the contrary on the Customer&apos;s order.
           </p>
           <p>
             Shop reserves the right to vary any of these terms at any time and
@@ -73,7 +90,7 @@ const FAQ = () => {
     {
       question: "Quotations",
       answer: (
-        <p className="text-gray-700">
+        <p className="text-gray-700 dark:text-gray-400">
           Any quotation by Shop to the Customer will be open for acceptance by
           the Customer within the period stated in the quotation or, where no
           period is stated, within seven (7) days from the date of the
@@ -85,7 +102,7 @@ const FAQ = () => {
     {
       question: "Prices / Taxes",
       answer: (
-        <div className="text-gray-700 space-y-2">
+        <div className="text-gray-700 dark:text-gray-400 space-y-2">
           <p>
             The prices charged by and payable to Shop will be the ruling prices
             applicable at the time of order placement, provided that the
@@ -115,7 +132,7 @@ const FAQ = () => {
     {
       question: "Terms of Payment",
       answer: (
-        <div className="text-gray-700 space-y-3">
+        <div className="text-gray-700 dark:text-gray-400 space-y-3">
           <p>
             Credit Card Payments may attract a surcharge, and Shop will inform
             the Customer if this is to be the case before processing the
@@ -150,19 +167,20 @@ const FAQ = () => {
     {
       question: "Credit Accounts",
       answer: (
-        <p className="text-gray-700">
+        <p className="text-gray-700 dark:text-gray-400">
           Any commercial credit arrangements that are provided to the Customer
           by Shop will continue until terminated by Shop at it sole discretion.
-          In the event that Shop terminates the Customer&apos;s commercial credit
-          arrangement, the Customer will be notified in writing and termination
-          will take effect upon receipt of that notification by the Customer.
+          In the event that Shop terminates the Customer&apos;s commercial
+          credit arrangement, the Customer will be notified in writing and
+          termination will take effect upon receipt of that notification by the
+          Customer.
         </p>
       ),
     },
     {
       question: "Change of Ownership",
       answer: (
-        <div className="text-gray-700 space-y-3">
+        <div className="text-gray-700 dark:text-gray-400 space-y-3">
           <p>
             Trading accounts are approved by Shop based on the information
             supplied and the representations made by the Customer. In the event
@@ -178,9 +196,10 @@ const FAQ = () => {
             fees and expenses incurred or suffered by Shop in trading with any
             person, company (including the same company but with a different
             shareholder or shareholders) or other entity (including a trust)
-            which may have purchased the Customer&apos;s business or any interest in
-            the Customer&apos;s business or any of the shares in the Customer and
-            used the Customer&apos;s previously approved account for trading.
+            which may have purchased the Customer&apos;s business or any
+            interest in the Customer&apos;s business or any of the shares in the
+            Customer and used the Customer&apos;s previously approved account
+            for trading.
           </p>
           <p>
             Where a Customer has been authorised by Shop to make payments
@@ -196,7 +215,7 @@ const FAQ = () => {
     {
       question: "Information on the Products supplied",
       answer: (
-        <p className="text-gray-700">
+        <p className="text-gray-700 dark:text-gray-400">
           All descriptive specifications, illustrations, drawings, data,
           dimensions and weights furnished by Shop or otherwise contained in
           catalogues or other advertising material are approximate only and are
@@ -211,11 +230,11 @@ const FAQ = () => {
     {
       question: "Delivery",
       answer: (
-        <div className="text-gray-700 space-y-2">
+        <div className="text-gray-700 dark:text-gray-400 space-y-2">
           <p>
             The means of delivering the Products to the Customer will be at
-            Shop&apos; discretion. Shop reserves the right to deliver Products in
-            part deliveries.
+            Shop&apos; discretion. Shop reserves the right to deliver Products
+            in part deliveries.
           </p>
           <p>
             In the event that Shop incurs additional costs for meeting special
@@ -235,63 +254,22 @@ const FAQ = () => {
       ),
     },
   ];
-
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
-      <div className="text-center mb-10">
-        <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl mb-2">
-          Shop Terms & Conditions
-        </h1>
-        <p className="text-lg text-gray-600">
-          GENERAL TERMS AND CONDITIONS FOR SALE OF PRODUCTS AND SERVICES
-        </p>
-      </div>
-
-      <div className="space-y-4">
-        {faqItems.map((item, index) => (
-          <div
-            key={index}
-            className="border border-gray-200 rounded-lg overflow-hidden"
-          >
-            <button
-              className="w-full px-6 py-4 text-left focus:outline-none"
-              onClick={() => toggleAccordion(index)}
-              aria-expanded={activeIndex === index}
-              aria-controls={`faq-content-${index}`}
-            >
-              <div className="flex items-center justify-between">
-                <h2 className="text-lg font-medium text-gray-900">
-                  {item.question}
-                </h2>
-                <svg
-                  className={`w-5 h-5 text-gray-500 transition-transform duration-200 ${activeIndex === index ? "transform rotate-180" : ""
-                    }`}
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </div>
-            </button>
-            <div
-              id={`faq-content-${index}`}
-              className={`px-6 pb-4 ${activeIndex === index ? "block" : "hidden"
-                }`}
-              aria-hidden={activeIndex !== index}
-            >
-              {item.answer}
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
+    <>
+      {faqItems.map((item, index) => (
+        <>
+          <Accordion key={index} type="single" collapsible>
+            <AccordionItem value="item-1">
+              <AccordionTrigger className="text-2xl">
+                {item.question}
+              </AccordionTrigger>
+              <AccordionContent className=" text-lg">
+                {item.answer}
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </>
+      ))}
+    </>
   );
 };
-
-export default FAQ;

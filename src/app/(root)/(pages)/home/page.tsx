@@ -21,7 +21,6 @@ import { useEffect, useState } from "react";
 import apiClient from "@/lib/api-client";
 import { Product2 } from "@/app/data/product";
 import ProductCard from "@/components/Product_card";
-import Hero_section from "@/components/Hero_section";
 
 const brandLogo = [
   { imgUrl: brand1, alr: "brand1" },
@@ -72,12 +71,12 @@ export default function HomePage() {
   };
   return (
     <>
-      {/* <div className="w-full bg-white dark:bg-gray-800">
+      <div className="w-full bg-white dark:bg-gray-800">
         <Carousel images={carouselImages} />
-      </div> */}
+      </div>
 
       {/* hero section */}
-      <Hero_section />
+      {/* <Hero_section /> */}
 
       <div className={`px-[10%] bg-white dark:bg-gray-950 `}>
         {/* Products sections  */}
@@ -232,8 +231,8 @@ export default function HomePage() {
           </div>
         </div>
         {/* brand logo's */}
-        <div className=" py-5">
-          <div className="flex items-center justify-between gap-7">
+        <div className=" py-5 bg-blue-50">
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 justify-center items-center gap-7">
             {brandLogo.map((item, index) => (
               <div key={index} className=" p-2">
                 <a href="#">
