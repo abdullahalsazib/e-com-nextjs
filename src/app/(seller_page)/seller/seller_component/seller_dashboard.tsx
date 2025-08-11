@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import { ReactNode } from "react";
 import { CgProductHunt } from "react-icons/cg";
@@ -161,8 +162,8 @@ const Stats_Cards = ({
   mainNumber,
   subNumber,
   icons,
-  // iconBoxClassName,
-}: {
+}: // iconBoxClassName,
+{
   title: string;
   mainNumber: string;
   subNumber: string;

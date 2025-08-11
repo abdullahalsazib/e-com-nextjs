@@ -54,7 +54,7 @@ const Login_d = () => {
       if (data.access_token) {
         toast.success(data.message);
         await login(data.access_token);
-        localStorage.setItem("authToken", data.access_token);
+        // localStorage.setItem("authToken", data.access_token);
       } else {
         // toast.error("No access token found");
         throw new Error("No access token found");

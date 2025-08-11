@@ -43,8 +43,8 @@ const FormSchema = z.object({
     message: "Enter valid name.",
   }),
   email: z.email(),
-  password: z.string().min(6, {
-    message: "Password must be at least 6 characters.",
+  password: z.string().min(4, {
+    message: "Password must be at least 6 characters.", // must be at least 6 characters
   }),
 });
 

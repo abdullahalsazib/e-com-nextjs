@@ -117,14 +117,14 @@ const ProductForm = () => {
     try {
       const res = await getProducts();
       const filtered = res.data
-        .filter((p: Product) => p.user_id === user?.ID)
+        .filter((p: Product) => p.user_id === user?.id)
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         .map((p: any) => ({
           ...p,
           product_name: p.name, // ✅ map `name` to `product_name`
         }));
-
       setProducts(filtered);
+      console.log("Fetched products:", filtered);
     } catch (err) {
       console.error(err);
       toast.error("Failed to load products");
@@ -132,10 +132,11 @@ const ProductForm = () => {
       setIsFetching(false);
     }
   };
+  // fetchProducts();
 
   useEffect(() => {
-    if (user?.ID) fetchProducts();
-  }, [user?.ID]);
+    if (user?.id) fetchProducts();
+  }, [user?.id]);
 
   const onSubmit = async (data: FormSchema) => {
     try {
@@ -327,13 +328,6 @@ const ProductForm = () => {
 
       {/* You can keep your table rendering part as it is */}
       <div className="flex justify-between items-center mt-6">
-        <Button type="submit" disabled={form.formState.isSubmitting}>
-          {form.formState.isSubmitting
-            ? "Saving..."
-            : isEditing
-            ? "Update Product"
-            : "Add Product"}
-        </Button>
         {isEditing && (
           <Button
             type="button"
@@ -391,7 +385,7 @@ const ProductForm = () => {
                           className="h-10 w-10 rounded object-cover"
                         />
                       )}
-                      <div>
+                      <div className=" w-1/2 overflow-hidden">
                         <div className="font-medium">{p.product_name}</div>
                         {/* <div className="text-sm text-muted-foreground line-clamp-1 ">
                           {p.description}

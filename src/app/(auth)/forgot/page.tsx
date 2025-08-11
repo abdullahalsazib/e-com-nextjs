@@ -1,14 +1,14 @@
-"use client"
-import LoginBtn from "@/components/buttons/LoginBtn"
-import Breadcrumb from "@/components/smallComponent/Breadcrumb"
-import Link from "next/link"
-import { FiMail, FiArrowRight } from "react-icons/fi"
-import { motion } from "framer-motion"
+"use client";
+import Breadcrumb from "@/components/smallComponent/Breadcrumb";
+import Link from "next/link";
+import { FiMail, FiArrowRight } from "react-icons/fi";
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
 
 const breadcrumb = [
   { label: "Home", link: "/" },
   { label: "Forgot password", active: true },
-]
+];
 
 const ForgotPage = () => {
   return (
@@ -25,7 +25,9 @@ const ForgotPage = () => {
           >
             Forgot Your Password?
           </motion.h1>
-          <p className="text-gray-600 mb-6">Enter your email to receive a password reset link</p>
+          <p className="text-gray-600 mb-6">
+            Enter your email to receive a password reset link
+          </p>
         </div>
 
         {/* Main Content */}
@@ -47,7 +49,10 @@ const ForgotPage = () => {
               {/* Form */}
               <form className="p-6 sm:p-8 space-y-6">
                 <div className="space-y-2">
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Email Address
                   </label>
                   <div className="relative">
@@ -68,16 +73,12 @@ const ForgotPage = () => {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <LoginBtn
-                    disabled
-                    title="Send Reset Link"
-                    className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700"
-                  />
+                  <Button variant={"secondary"}>Send Reset Link</Button>
                 </motion.div>
 
                 <div className="text-center pt-4 border-t border-gray-100">
                   <p className="text-sm text-gray-600">
-                    Remember your password?{' '}
+                    Remember your password?{" "}
                     <Link
                       href="/login"
                       className="text-blue-600 hover:text-blue-800 font-medium inline-flex items-center"
@@ -86,7 +87,7 @@ const ForgotPage = () => {
                     </Link>
                   </p>
                   <p className="text-sm text-gray-600 mt-2">
-                    Don&apos;t have an account?{' '}
+                    Don&apos;t have an account?{" "}
                     <Link
                       href="/register"
                       className="text-indigo-600 hover:text-indigo-800 font-medium inline-flex items-center"
@@ -100,7 +101,9 @@ const ForgotPage = () => {
 
             {/* Security Tips */}
             <div className="mt-8 bg-blue-50 p-4 rounded-lg border border-blue-100">
-              <h3 className="font-medium text-blue-800 mb-2">Password Security Tips:</h3>
+              <h3 className="font-medium text-blue-800 mb-2">
+                Password Security Tips:
+              </h3>
               <ul className="text-sm text-blue-700 space-y-1">
                 <li className="flex items-start">
                   <span className="text-blue-500 mr-2">•</span>
@@ -120,7 +123,7 @@ const ForgotPage = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ForgotPage
+export default ForgotPage;

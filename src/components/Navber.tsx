@@ -1,16 +1,9 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
-import Topbar from "./Topbar/Topbar";
+import { useState, useEffect, useRef } from "react";
 import { BsBoxSeamFill } from "react-icons/bs";
 import { BiArrowToTop } from "react-icons/bi";
-import {
-  FaBars,
-  FaCashRegister,
-  FaSignInAlt,
-  FaRegUserCircle,
-} from "react-icons/fa";
+import { FaBars, FaRegUserCircle } from "react-icons/fa";
 import { PiX } from "react-icons/pi";
-import { CgClose } from "react-icons/cg";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -23,11 +16,7 @@ import WishlistDropdown from "./WishlistDropdown";
 import { useWishlist } from "../app/context/WishlistContext";
 import CartListDropdown from "./CartListDropdown";
 import { Button } from "@/components/ui/button";
-import { Input } from "./ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
-import { Search } from "lucide-react";
-import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
-import Login_d from "@/app/(auth)/login/components/Login_d";
 import { FaBasketShopping } from "react-icons/fa6";
 import { ModeToggle } from "./Theme_Button";
 import {
@@ -41,6 +30,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "./ui/alert-dialog";
+import hasRole from "@/lib/role-extr";
+import Topbar from "./Topbar/Topbar";
 
 export default function Navbar() {
   const router = useRouter();
@@ -52,8 +43,6 @@ export default function Navbar() {
     [key: string]: number[];
   }>({});
   const [isMobile, setIsMobile] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false); // const dropdownRef = useRef<HTMLDivElement>(null);
-
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const { wishlist } = useWishlist();
 
@@ -143,7 +132,8 @@ export default function Navbar() {
         }`}
       >
         <Topbar />
-        <nav className=" dark:bg-black dark:text-white bg-white py-5 px-4 lg:px-5 xl:px-[10%] flex items-center justify-between">
+
+        <nav className=" border-b dark:bg-black dark:text-white bg-white py-5 px-4 lg:px-5 xl:px-[10%] flex items-center justify-between">
           <div className="flex items-center justify-start w-full relative md:gap-10">
             <div className="flex items-center">
               <Link
@@ -240,34 +230,11 @@ export default function Navbar() {
           </div>
 
           {/* Desktop right section */}
-          <div className="hidden lg:flex items-center justify-center gap-3 relative pr-0 md:px-10">
-            <Popover
-              open={isSearchOpen}
-              onOpenChange={(open) => setIsSearchOpen(open)}
-            >
-              <PopoverTrigger asChild>
-                <Button
-                  onClick={() => setIsSearchOpen(!isSearchOpen)}
-                  size="icon"
-                  variant="secondary"
-                  className="size-8"
-                >
-                  {isSearchOpen ? (
-                    <CgClose className="size-4" />
-                  ) : (
-                    <Search className="size-4" />
-                  )}
-                </Button>
-              </PopoverTrigger>
-
-              <PopoverContent align="end" className=" border-2 w-72">
-                <Input type="search" placeholder="Search here..." />
-              </PopoverContent>
-            </Popover>
+          <div className="hidden lg:flex items-center justify-between  gap-3 relative ">
             <ModeToggle />
             {/* cart */}
             {/* wishlist */}
-            {user?.role ? (
+            {user?.roles ? (
               <>
                 {/* cart  */}
                 <CartListDropdown />
@@ -296,8 +263,53 @@ export default function Navbar() {
                   <>
                     <div>
                       <ul className="space-y-3 text-sm ">
-                        {user?.role == "admin" ? (
+                        {hasRole(user?.roles, "superadmin") ? (
                           <>
+                            <li>
+                              <Link
+                                href={`/user-account/${user?.name}`}
+                                className="block hover:text-blue-500 transition-colors"
+                              >
+                                <Button
+                                  variant={"secondary"}
+                                  className=" w-full"
+                                  size={"sm"}
+                                >
+                                  My Account
+                                </Button>
+                              </Link>
+                            </li>
+                            <li>
+                              <Link
+                                href="/super-admin"
+                                className="block hover:text-blue-500 transition-colors"
+                              >
+                                <Button
+                                  variant={"secondary"}
+                                  className=" w-full"
+                                  size={"sm"}
+                                >
+                                  Super admin
+                                </Button>
+                              </Link>
+                            </li>
+                          </>
+                        ) : hasRole(user?.roles, "admin") ? (
+                          <>
+                            <li>
+                              <Link
+                                href={`/user-account/${user?.name}`}
+                                className="block hover:text-blue-500 transition-colors"
+                              >
+                                <Button
+                                  variant={"secondary"}
+                                  className=" w-full"
+                                  size={"sm"}
+                                >
+                                  My Account
+                                </Button>
+                              </Link>
+                            </li>
                             <li>
                               <Link
                                 href={"/seller"}
@@ -313,11 +325,11 @@ export default function Navbar() {
                               </Link>
                             </li>
                           </>
-                        ) : user?.role == "user" ? (
+                        ) : hasRole(user?.roles, "user") ? (
                           <>
                             <li>
                               <Link
-                                href="/user-account"
+                                href={`/user-account/${user?.name}`}
                                 className="block hover:text-blue-500 transition-colors"
                               >
                                 <Button
@@ -362,38 +374,7 @@ export default function Navbar() {
                         )}
 
                         {isLoading && <h1>Loading data...</h1>}
-                        {!user ? (
-                          <>
-                            {" "}
-                            <li className="border-t border-gray-200 pt-3">
-                              <Link
-                                href="/register"
-                                className="block hover:text-blue-500 transition-colors"
-                              >
-                                <Button variant="outline" className=" w-full">
-                                  <FaCashRegister />
-                                  Create an Account
-                                </Button>
-                              </Link>
-                            </li>
-                            <li>
-                              <Dialog>
-                                {/* Trigger should be outside the form */}
-                                <DialogTrigger asChild>
-                                  <Button variant="outline" className=" w-full">
-                                    <FaSignInAlt />
-                                    Sign In
-                                  </Button>
-                                </DialogTrigger>
-
-                                {/* Form starts inside DialogContent */}
-                                <DialogContent className="sm:max-w-[425px]">
-                                  <Login_d />
-                                </DialogContent>
-                              </Dialog>
-                            </li>
-                          </>
-                        ) : (
+                        {user && (
                           <>
                             <AlertDialog>
                               <AlertDialogTrigger asChild>
@@ -452,8 +433,53 @@ export default function Navbar() {
                 <>
                   <div>
                     <ul className="space-y-3 text-sm ">
-                      {user?.role == "admin" ? (
+                      {hasRole(user?.roles, "superadmin") ? (
                         <>
+                          <li>
+                            <Link
+                              href={`/user-account/${user?.name}`}
+                              className="block hover:text-blue-500 transition-colors"
+                            >
+                              <Button
+                                variant={"secondary"}
+                                className=" w-full"
+                                size={"sm"}
+                              >
+                                My Account
+                              </Button>
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              href="/super-admin"
+                              className="block hover:text-blue-500 transition-colors"
+                            >
+                              <Button
+                                variant={"secondary"}
+                                className=" w-full"
+                                size={"sm"}
+                              >
+                                Super admin
+                              </Button>
+                            </Link>
+                          </li>
+                        </>
+                      ) : hasRole(user?.roles, "admin") ? (
+                        <>
+                          <li>
+                            <Link
+                              href={`/user-account/${user?.name}`}
+                              className="block hover:text-blue-500 transition-colors"
+                            >
+                              <Button
+                                variant={"secondary"}
+                                className=" w-full"
+                                size={"sm"}
+                              >
+                                My Account
+                              </Button>
+                            </Link>
+                          </li>
                           <li>
                             <Link href={"/seller"}>
                               <Button variant={"secondary"} className=" w-full">
@@ -462,11 +488,11 @@ export default function Navbar() {
                             </Link>
                           </li>
                         </>
-                      ) : user?.role == "user" ? (
+                      ) : hasRole(user?.roles, "user") ? (
                         <>
                           <li>
                             <Link
-                              href="/user-account"
+                              href={`/user-account/${user?.name}`}
                               className="block hover:text-blue-500 transition-colors"
                             >
                               <Button
@@ -511,38 +537,7 @@ export default function Navbar() {
                       )}
 
                       {isLoading && <h1>Loading data...</h1>}
-                      {!user ? (
-                        <>
-                          {" "}
-                          <li className="border-t border-gray-200 pt-3">
-                            <Link
-                              href="/register"
-                              className="block hover:text-blue-500 transition-colors"
-                            >
-                              <Button variant="outline" className=" w-full">
-                                <FaCashRegister />
-                                Create an Account
-                              </Button>
-                            </Link>
-                          </li>
-                          <li>
-                            <Dialog>
-                              {/* Trigger should be outside the form */}
-                              <DialogTrigger asChild>
-                                <Button variant="outline" className=" w-full">
-                                  <FaSignInAlt />
-                                  Sign In
-                                </Button>
-                              </DialogTrigger>
-
-                              {/* Form starts inside DialogContent */}
-                              <DialogContent className="sm:max-w-[425px]">
-                                <Login_d />
-                              </DialogContent>
-                            </Dialog>
-                          </li>
-                        </>
-                      ) : (
+                      {user && (
                         <>
                           <AlertDialog>
                             <AlertDialogTrigger asChild>
@@ -580,7 +575,7 @@ export default function Navbar() {
               </PopoverContent>
             </Popover>
             <ModeToggle />
-            {user?.role ? (
+            {user?.roles ? (
               <>
                 {/* cart  */}
                 <CartListDropdown />
