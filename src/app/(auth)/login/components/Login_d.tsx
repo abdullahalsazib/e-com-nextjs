@@ -3,7 +3,8 @@ import { useAuth } from "@/app/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
-  DialogDescription,  DialogHeader,
+  DialogDescription,
+  DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
 import {
@@ -37,6 +38,7 @@ const FormSchema = z.object({
 
 const Login_d = () => {
   const { login } = useAuth();
+  const navigate = useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -53,6 +55,7 @@ const Login_d = () => {
 
       if (data.access_token) {
         toast.success(data.message);
+        // navigate.push("/");
         await login(data.access_token);
         // localStorage.setItem("authToken", data.access_token);
       } else {
@@ -63,13 +66,12 @@ const Login_d = () => {
       if (axios.isAxiosError(err)) {
         console.log(err);
         toast.error(
-          err.response?.data?.message || err.message || "Something went wrong"
+          err.response?.data?.message || err.message || "Something went wrong",
         );
       }
     }
   };
 
-  const navigate = useRouter();
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>

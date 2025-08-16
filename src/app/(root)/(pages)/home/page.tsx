@@ -13,14 +13,15 @@ import brand5 from "@/../public/Logos/adata.png";
 import brand6 from "@/../public/Logos/hp.png";
 import brand7 from "@/../public/Logos/gigabyte.png";
 import News_card from "@/components/News_card";
-// import Carsol1 from "@/../public/images/cursol1.png";
+import Carsol1 from "@/../public/images/cursol1.png";
 import TestimonialSection from "@/components/Testimonials";
 
 import { useEffect, useState } from "react";
 import apiClient from "@/lib/api-client";
 import { Product2 } from "@/app/data/product";
 import ProductCard from "@/components/Product_card";
-import Hero_section from "@/components/Hero_section";
+import Carousel from "@/components/Slider";
+// import Hero_section from "@/components/Hero_section";
 
 const brandLogo = [
   { imgUrl: brand1, alr: "brand1" },
@@ -31,12 +32,13 @@ const brandLogo = [
   { imgUrl: brand6, alr: "brand6" },
   { imgUrl: brand7, alr: "brand7" },
 ];
-// const carouselImages = [
-//   { src: Carsol1.src, alt: "Banner 1" },
-//   { src: Carsol1.src, alt: "Banner 1" },
-// ];
+const carouselImages = [
+  { src: Carsol1.src, alt: "Banner 1" },
+  { src: Carsol1.src, alt: "Banner 1" },
+];
 export default function HomePage() {
   const [products, setProducts] = useState<Product2[]>([]);
+  console.log("home: ", products);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -72,11 +74,11 @@ export default function HomePage() {
   return (
     <>
       <div className=" bg-slate-400 dark:bg-gray-800 w-full ">
-        {/* <Carousel images={carouselImages} /> */}
+        <Carousel images={carouselImages} />
         {/* <BentoGridSecondDemo /> */}
         {/* <CarouselDemo /> */}
         {/* hero section */}
-        <Hero_section />
+        {/* <Hero_section /> */}
       </div>
 
       <div className={`px-[10%] bg-white dark:bg-gray-950 `}>

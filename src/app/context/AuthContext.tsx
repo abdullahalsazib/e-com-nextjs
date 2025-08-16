@@ -10,7 +10,7 @@ import {
   useCallback,
 } from "react";
 import { jwtDecode } from "jwt-decode";
-import apiClient from "@/lib/api-client"; // তোমার axios instance withCredentials:true
+import apiClient from "@/lib/api-client";
 import { getProfile } from "@/services/auth.service";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -21,6 +21,7 @@ interface User {
   name: string;
   email: string;
   roles: { id: number; name: string; slug: string }[];
+  vendor: { vendor_name: string; vendor_status: string } | null;
 }
 
 interface DecodedToken {
@@ -64,8 +65,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       setIsLoading(true);
       const res = await getProfile();
-      setUser(res.data.data);
-      return res.data.data;
+      setUser(res.data);
+      return res.data;
     } catch (err) {
       console.error("getProfile failed:", err);
       localStorage.removeItem("authToken");
@@ -80,7 +81,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const initializeAuth = async () => {
       setIsLoading(true);
       try {
-        // Refresh token cookie থেকে backend নতুন access token দেবে
+        // Refresh token cookie theke backend new access token debe
         const res = await apiClient.post("/refresh");
         const newAccessToken = res.data.access_token;
 

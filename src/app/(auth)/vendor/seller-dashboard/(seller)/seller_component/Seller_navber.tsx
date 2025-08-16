@@ -119,19 +119,9 @@ const Seller_navber = ({
 
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <CustomToolTip
-                // eslint-disable-next-line react/no-children-prop
-                children={
-                  <Button
-                    variant={"secondary"}
-                    size={"sm"}
-                    onClick={() => logout()}
-                  >
-                    <MdOutlineOutput /> log out
-                  </Button>
-                }
-                bodyContent="log out"
-              />
+              <Button variant={"secondary"} size={"sm"}>
+                log out <MdOutlineOutput />
+              </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
@@ -142,7 +132,7 @@ const Seller_navber = ({
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={() => logout()}>
+                <AlertDialogAction color="red" onClick={() => logout()}>
                   Continue
                 </AlertDialogAction>
               </AlertDialogFooter>

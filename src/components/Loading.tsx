@@ -12,7 +12,7 @@ const Loading: React.FC<LoadingProps> = ({
   subMessage = "Please wait",
 }) => {
   const containerClasses = fullScreen
-    ? "flex items-center justify-center min-h-screen bg-gray-50"
+    ? "flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900"
     : "flex items-center justify-center py-12";
 
   return (

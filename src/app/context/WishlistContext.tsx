@@ -43,7 +43,7 @@ export const WishlistProvider = ({ children }: { children: ReactNode }) => {
         setWishlist(data);
       } else {
         // console.warn("Unexpected wishlist format:", data);
-        console.warn("Invalid wishlist data");
+        console.info("Invalid wishlist data");
         // toast.error("Invalid wishlist data");
       }
 
@@ -82,7 +82,7 @@ export const WishlistProvider = ({ children }: { children: ReactNode }) => {
           }
         }
 
-        await fetchWishlist();
+        // await fetchWishlist();
       } else {
         const stored = localStorage.getItem("wishlist");
         const parsed = stored ? JSON.parse(stored) : [];

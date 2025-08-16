@@ -4,7 +4,7 @@ export const registerUser = async (userData: {
   name: string;
   email: string;
   password: string;
-  role: string;
+  // role: string;
 }) => {
   const response = await apiClient.post("/register", userData);
   return response;
@@ -19,6 +19,11 @@ export const login = async (credentials: {
 };
 
 export const getProfile = async () => {
-  const response = await apiClient.get("/auth/me");
-  return response;
+  try {
+    const response = await apiClient.get("/auth/me");
+    return response.data;
+  } catch (error) {
+    console.error("AxiosError:", error);
+    return { error };
+  }
 };

@@ -20,7 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { useForm } from "react-hook-form";
+import { Control, SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
@@ -45,7 +45,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 
 const formSchema = z.object({
-  product_name: z.string().min(1, "Product name is required"),
+  name: z.string().min(1, "Product name is required"),
   description: z.string().optional(),
   price: z.string().refine((val) => !isNaN(Number(val)), {
     message: "Price must be a number",
@@ -55,6 +55,7 @@ const formSchema = z.object({
   }),
   image_url: z.string().optional(),
   category_id: z.string().min(1, "Category is required"),
+  status: z.string().default("draft"),
 });
 
 type FormSchema = z.infer<typeof formSchema>;
@@ -66,7 +67,7 @@ interface Category {
 
 interface Product {
   ID: number;
-  product_name: string;
+  name: string;
   description?: string;
   price: number;
   stock: number;
@@ -76,29 +77,32 @@ interface Product {
     Name: string;
   };
   user_id?: number;
+  status?: string;
 }
 
 const ProductForm = () => {
+  const { user } = useAuth();
   const [categories, setCategories] = useState<Category[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [isEditing, setIsEditing] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
-  const [products, setProducts] = useState<Product[]>([]);
   const [isFetching, setIsFetching] = useState(false);
 
-  const { user } = useAuth();
-
-  const form = useForm<FormSchema>({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const form = useForm<any>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      product_name: "",
+      name: "",
       description: "",
       price: "",
       stock: "",
       image_url: "",
       category_id: "",
+      status: "draft",
     },
   });
 
+  // Fetch categories
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -112,19 +116,13 @@ const ProductForm = () => {
     fetchCategories();
   }, []);
 
+  // Fetch products for logged-in user/vendor
   const fetchProducts = async () => {
     setIsFetching(true);
     try {
       const res = await getProducts();
-      const filtered = res.data
-        .filter((p: Product) => p.user_id === user?.id)
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        .map((p: any) => ({
-          ...p,
-          product_name: p.name, // ✅ map `name` to `product_name`
-        }));
+      const filtered = res.data.filter((p: Product) => p.user_id === user?.id);
       setProducts(filtered);
-      console.log("Fetched products:", filtered);
     } catch (err) {
       console.error(err);
       toast.error("Failed to load products");
@@ -132,29 +130,31 @@ const ProductForm = () => {
       setIsFetching(false);
     }
   };
-  // fetchProducts();
 
   useEffect(() => {
     if (user?.id) fetchProducts();
   }, [user?.id]);
 
-  const onSubmit = async (data: FormSchema) => {
+  // Form submit handler
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const onSubmit: SubmitHandler<any> = async (data) => {
     try {
       const payload = {
-        ...data,
+        name: data.name,
+        description: data.description ?? "",
         price: Number(data.price),
         stock: Number(data.stock),
+        image_url: data.image_url ?? "",
         category_id: Number(data.category_id),
-        description: data.description ?? "", // ensure string
-        image_url: data.image_url ?? "", // ensure string
+        status: data.status ?? "draft",
       };
 
       if (isEditing && editingId) {
         await updateProduct(editingId, payload);
-        toast.success("Product updated!");
+        toast.success("Product updated successfully");
       } else {
         await createProduct(payload);
-        toast.success("Product created!");
+        toast.success("Product created successfully");
       }
 
       fetchProducts();
@@ -168,12 +168,13 @@ const ProductForm = () => {
   };
 
   const handleEdit = (product: Product) => {
-    form.setValue("product_name", product.product_name);
-    form.setValue("description", product.description);
+    form.setValue("name", product.name);
+    form.setValue("description", product.description ?? "");
     form.setValue("price", String(product.price));
     form.setValue("stock", String(product.stock));
-    form.setValue("image_url", product.image_url || "");
+    form.setValue("image_url", product.image_url ?? "");
     form.setValue("category_id", String(product.category_id));
+    form.setValue("status", product.status ?? "draft");
 
     setEditingId(product.ID);
     setIsEditing(true);
@@ -183,11 +184,11 @@ const ProductForm = () => {
     if (!confirm("Are you sure you want to delete this product?")) return;
     try {
       await deleteProduct(id);
-      toast.success("Product deleted");
+      toast.success("Product deleted successfully");
       fetchProducts();
     } catch (err) {
       console.error(err);
-      toast.error("Failed to delete");
+      toast.error("Failed to delete product");
     }
   };
 
@@ -195,6 +196,7 @@ const ProductForm = () => {
     <div className="p-6 dark:text-white text-black">
       <h2 className="text-2xl font-bold mb-6">Products</h2>
 
+      {/* Product Form */}
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -206,8 +208,8 @@ const ProductForm = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <FormField
-              control={form.control}
-              name="product_name"
+              control={form.control as unknown as Control<FormSchema>}
+              name="name"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Product Name *</FormLabel>
@@ -218,9 +220,8 @@ const ProductForm = () => {
                 </FormItem>
               )}
             />
-
             <FormField
-              control={form.control}
+              control={form.control as unknown as Control<FormSchema>}
               name="description"
               render={({ field }) => (
                 <FormItem>
@@ -232,9 +233,8 @@ const ProductForm = () => {
                 </FormItem>
               )}
             />
-
             <FormField
-              control={form.control}
+              control={form.control as unknown as Control<FormSchema>}
               name="price"
               render={({ field }) => (
                 <FormItem>
@@ -246,9 +246,8 @@ const ProductForm = () => {
                 </FormItem>
               )}
             />
-
             <FormField
-              control={form.control}
+              control={form.control as unknown as Control<FormSchema>}
               name="stock"
               render={({ field }) => (
                 <FormItem>
@@ -260,9 +259,8 @@ const ProductForm = () => {
                 </FormItem>
               )}
             />
-
             <FormField
-              control={form.control}
+              control={form.control as unknown as Control<FormSchema>}
               name="image_url"
               render={({ field }) => (
                 <FormItem>
@@ -274,16 +272,15 @@ const ProductForm = () => {
                 </FormItem>
               )}
             />
-
             <FormField
-              control={form.control}
+              control={form.control as unknown as Control<FormSchema>}
               name="category_id"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Category *</FormLabel>
                   <Select
                     onValueChange={field.onChange}
-                    defaultValue={field.value}
+                    value={field.value || ""}
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -326,25 +323,7 @@ const ProductForm = () => {
         </form>
       </Form>
 
-      {/* You can keep your table rendering part as it is */}
-      <div className="flex justify-between items-center mt-6">
-        {isEditing && (
-          <Button
-            type="button"
-            variant="ghost"
-            className="text-red-500"
-            onClick={() => {
-              form.reset();
-              setIsEditing(false);
-              setEditingId(null);
-            }}
-          >
-            Cancel
-          </Button>
-        )}
-      </div>
-
-      {/* Table Section */}
+      {/* Products Table */}
       <div className="mt-8 rounded-lg border">
         <Table>
           <TableHeader>
@@ -352,6 +331,7 @@ const ProductForm = () => {
               <TableHead className="text-left">Product</TableHead>
               <TableHead className="text-left">Price</TableHead>
               <TableHead className="text-left">Stock</TableHead>
+              <TableHead className="text-left">Status</TableHead>
               <TableHead className="text-left">Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -381,20 +361,18 @@ const ProductForm = () => {
                       {p.image_url && (
                         <img
                           src={p.image_url}
-                          alt={p.product_name}
+                          alt={p.name}
                           className="h-10 w-10 rounded object-cover"
                         />
                       )}
-                      <div className=" w-1/2 overflow-hidden">
-                        <div className="font-medium">{p.product_name}</div>
-                        {/* <div className="text-sm text-muted-foreground line-clamp-1 ">
-                          {p.description}
-                        </div> */}
+                      <div className="w-1/2 overflow-hidden">
+                        <div className="font-medium">{p.name}</div>
                       </div>
                     </div>
                   </TableCell>
                   <TableCell>${p.price.toFixed(2)}</TableCell>
                   <TableCell>{p.stock} in stock</TableCell>
+                  <TableCell>{p.status}</TableCell>
                   <TableCell>
                     <div className="flex gap-2">
                       <Button

@@ -1,16 +1,12 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { BsBoxSeamFill } from "react-icons/bs";
 import { BiArrowToTop } from "react-icons/bi";
-import { FaBars, FaRegUserCircle } from "react-icons/fa";
-import { PiX } from "react-icons/pi";
+import { FaRegUserCircle } from "react-icons/fa";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import {
-  accountNavagationLink,
-  NavLink as navLink,
-} from "../app/data/navegationLinks";
-import { Item, NestedItem, SubItem } from "../app/type/type";
+import { NavLink as navLink } from "../app/data/navegationLinks";
+import { NestedItem } from "../app/type/type";
 import { useAuth } from "../app/context/AuthContext";
 import WishlistDropdown from "./WishlistDropdown";
 import { useWishlist } from "../app/context/WishlistContext";
@@ -32,18 +28,36 @@ import {
 } from "./ui/alert-dialog";
 import hasRole from "@/lib/role-extr";
 import Topbar from "./Topbar/Topbar";
+import { FloatingDock } from "./ui/floating-dock";
+
+const dockItem = [
+  { title: "home", icon: <BsBoxSeamFill />, href: "/" },
+  {
+    title: "cart",
+    icon: <FaBasketShopping />,
+    href: "/shoping-card",
+  },
+  {
+    title: "wishlist",
+    icon: <FaRegUserCircle />,
+    href: "/wishlist",
+  },
+  {
+    title: "account",
+    icon: <FaRegUserCircle />,
+    href: "/user-account",
+  },
+];
 
 export default function Navbar() {
   const router = useRouter();
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
   const [showScrollButton, setShowScrollButton] = useState<boolean>(false);
   const [activeDropdowns, setActiveDropdowns] = useState<number[]>([]);
   const [activeNestedDropdowns, setActiveNestedDropdowns] = useState<{
     [key: string]: number[];
   }>({});
   const [isMobile, setIsMobile] = useState(false);
-  const mobileMenuRef = useRef<HTMLDivElement>(null);
   const { wishlist } = useWishlist();
 
   // useAuth
@@ -51,10 +65,6 @@ export default function Navbar() {
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 1024);
-      // Close mobile menu when resizing to desktop
-      if (window.innerWidth >= 1024) {
-        setIsMobileMenuOpen(false);
-      }
     };
 
     handleResize();
@@ -116,14 +126,6 @@ export default function Navbar() {
     }
   };
 
-  // const toggleAccountDropdown = () => {
-  //   setIsAccountDropdownOpen(!isAccountDropdownOpen);
-  // };
-
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
-
   return (
     <>
       <div
@@ -131,7 +133,13 @@ export default function Navbar() {
           isScrolled ? "fixed top-0 left-0 z-50 shadow-md" : ""
         }`}
       >
-        <Topbar />
+        <div className="">
+          <Topbar />
+        </div>
+
+        <div className=" fixed md:hidden right-5 bottom-4 z-50">
+          <FloatingDock items={dockItem} />
+        </div>
 
         <nav className=" border-b dark:bg-black dark:text-white bg-white py-5 px-4 lg:px-5 xl:px-[10%] flex items-center justify-between">
           <div className="flex items-center justify-start w-full relative md:gap-10">
@@ -230,7 +238,7 @@ export default function Navbar() {
           </div>
 
           {/* Desktop right section */}
-          <div className="hidden lg:flex items-center justify-between  gap-3 relative ">
+          <div className=" flex items-center justify-between gap-1 lg:gap-3 relative ">
             <ModeToggle />
             {/* cart */}
             {/* wishlist */}
@@ -311,18 +319,20 @@ export default function Navbar() {
                               </Link>
                             </li>
                             <li>
-                              <Link
-                                href={"/seller"}
-                                className="block hover:text-blue-500 transition-colors"
-                              >
-                                <Button
-                                  variant={"secondary"}
-                                  className=" w-full"
-                                  size={"sm"}
+                              {user?.vendor?.vendor_status === "approved" && (
+                                <Link
+                                  href={"/vendor/seller-dashboard"}
+                                  className="block hover:text-blue-500 transition-colors"
                                 >
-                                  Seller Dashboard
-                                </Button>
-                              </Link>
+                                  <Button
+                                    variant={"secondary"}
+                                    className=" w-full"
+                                    size={"sm"}
+                                  >
+                                    Seller Dashboard
+                                  </Button>
+                                </Link>
+                              )}
                             </li>
                           </>
                         ) : hasRole(user?.roles, "user") ? (
@@ -413,212 +423,14 @@ export default function Navbar() {
               </Popover>
             </div>
           </div>
-
-          {/* Mobile right section */}
-          <div className="flex lg:hidden items-center justify-center gap-2">
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  size={"icon"}
-                  variant={"secondary"}
-                  className="size-9 rounded-full"
-                  aria-label="User account"
-                >
-                  <span>
-                    <FaRegUserCircle />
-                  </span>
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent align="center" className="  border-2">
-                <>
-                  <div>
-                    <ul className="space-y-3 text-sm ">
-                      {hasRole(user?.roles, "superadmin") ? (
-                        <>
-                          <li>
-                            <Link
-                              href={`/user-account/${user?.name}`}
-                              className="block hover:text-blue-500 transition-colors"
-                            >
-                              <Button
-                                variant={"secondary"}
-                                className=" w-full"
-                                size={"sm"}
-                              >
-                                My Account
-                              </Button>
-                            </Link>
-                          </li>
-                          <li>
-                            <Link
-                              href="/super-admin"
-                              className="block hover:text-blue-500 transition-colors"
-                            >
-                              <Button
-                                variant={"secondary"}
-                                className=" w-full"
-                                size={"sm"}
-                              >
-                                Super admin
-                              </Button>
-                            </Link>
-                          </li>
-                        </>
-                      ) : hasRole(user?.roles, "admin") ? (
-                        <>
-                          <li>
-                            <Link
-                              href={`/user-account/${user?.name}`}
-                              className="block hover:text-blue-500 transition-colors"
-                            >
-                              <Button
-                                variant={"secondary"}
-                                className=" w-full"
-                                size={"sm"}
-                              >
-                                My Account
-                              </Button>
-                            </Link>
-                          </li>
-                          <li>
-                            <Link href={"/seller"}>
-                              <Button variant={"secondary"} className=" w-full">
-                                Seller Dashboard
-                              </Button>
-                            </Link>
-                          </li>
-                        </>
-                      ) : hasRole(user?.roles, "user") ? (
-                        <>
-                          <li>
-                            <Link
-                              href={`/user-account/${user?.name}`}
-                              className="block hover:text-blue-500 transition-colors"
-                            >
-                              <Button
-                                variant={"secondary"}
-                                className=" w-full"
-                                size={"sm"}
-                              >
-                                My Account
-                              </Button>
-                            </Link>
-                          </li>
-
-                          <li>
-                            <Link
-                              className="block hover:text-blue-500 transition-colors"
-                              href={"/shoping-card"}
-                            >
-                              <Button
-                                variant={"secondary"}
-                                className=" w-full"
-                                size={"sm"}
-                              >
-                                My Wish List {`(${wishlist.length})`}
-                              </Button>
-                            </Link>
-                          </li>
-                        </>
-                      ) : (
-                        <>
-                          <li>
-                            <Link
-                              className="block hover:text-blue-500 transition-colors"
-                              href={"/shoping-card"}
-                            >
-                              <Button variant="default" className=" w-full">
-                                <FaBasketShopping />
-                                My Wish List {`(${wishlist.length})`}
-                              </Button>
-                            </Link>
-                          </li>
-                        </>
-                      )}
-
-                      {isLoading && <h1>Loading data...</h1>}
-                      {user && (
-                        <>
-                          <AlertDialog>
-                            <AlertDialogTrigger asChild>
-                              <Button
-                                variant={"secondary"}
-                                size={"default"}
-                                className="size-8 w-full"
-                              >
-                                log out
-                              </Button>
-                            </AlertDialogTrigger>
-                            <AlertDialogContent>
-                              <AlertDialogHeader>
-                                <AlertDialogTitle>
-                                  Are you absolutely sure?
-                                </AlertDialogTitle>
-                                <AlertDialogDescription>
-                                  This action cannot be undone. This will log
-                                  out your system .
-                                </AlertDialogDescription>
-                              </AlertDialogHeader>
-                              <AlertDialogFooter>
-                                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                <AlertDialogAction onClick={() => logout()}>
-                                  Continue
-                                </AlertDialogAction>
-                              </AlertDialogFooter>
-                            </AlertDialogContent>
-                          </AlertDialog>
-                        </>
-                      )}
-                    </ul>
-                  </div>
-                </>
-              </PopoverContent>
-            </Popover>
-            <ModeToggle />
-            {user?.roles ? (
-              <>
-                {/* cart  */}
-                <CartListDropdown />
-                {/* wishlist  */}
-                <WishlistDropdown />
-              </>
-            ) : (
-              <WishlistDropdown />
-            )}
-            <button
-              className="lg:hidden ml-4 text-2xl mobile-menu-toggle"
-              onClick={toggleMobileMenu}
-            >
-              {!isMobileMenuOpen ? <FaBars /> : <PiX />}
-            </button>
-          </div>
         </nav>
-
-        {/* Mobile menu */}
-        {isMobileMenuOpen && (
-          <div
-            className="lg:hidden dark:bg-black dark:text-white bg-white shadow-lg"
-            ref={mobileMenuRef}
-          >
-            <ul className="flex flex-col items-start px-4 py-2">
-              {navLink.map((item, index) => (
-                <MobileNavItem key={index} item={item} index={index} />
-              ))}
-              <li className="w-full py-3">
-                {accountNavagationLink.map((item, index) => (
-                  <MobileNavItem key={index} item={item} index={index} />
-                ))}
-              </li>
-            </ul>
-          </div>
-        )}
       </div>
 
       {/* Scroll to top button */}
       {showScrollButton && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center shadow-lg hover:bg-blue-700 transition-colors duration-300"
+          className="fixed bottom-6 left-6 md:right-6 z-50 w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center shadow-lg hover:bg-blue-700 transition-colors duration-300"
         >
           <BiArrowToTop className="text-2xl" />
         </button>
@@ -629,77 +441,3 @@ export default function Navbar() {
     </>
   );
 }
-
-const MobileNavItem = ({ item, index }: { item: Item; index: number }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <h4
-      key={index}
-      className="w-full py-3 border-b dark:border-gray-700 border-gray-200 capitalize"
-    >
-      <div
-        className="flex justify-between items-center text-sm font-semibold dark:text-white text-black hover:text-blue-500 duration-300 transition-colors cursor-pointer"
-        onClick={() => {
-          if (item.dropDown) {
-            setIsOpen(!isOpen);
-          } else if (item.link) {
-            window.location.href = item.link;
-          }
-        }}
-      >
-        {item.title}
-        {item.dropDown && (
-          <svg
-            className={`w-4 h-4 transition-transform duration-200 ${
-              isOpen ? "rotate-90" : ""
-            }`}
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M9 5l7 7-7 7"
-            />
-          </svg>
-        )}
-      </div>
-
-      {/* First level dropdown */}
-      {item.dropDown && isOpen && (
-        <div className="pl-4 mt-2">
-          {item.content?.map((subItem: SubItem, subIndex: number) => (
-            <div key={subIndex}>
-              <Link
-                href={`${subItem.link}`}
-                className="block py-2 text-sm text-gray-600 hover:text-blue-500"
-              >
-                {subItem.title}
-              </Link>
-
-              {/* Second level nested dropdown */}
-              {subItem.nested && (
-                <div className="pl-4">
-                  {subItem.nested.map(
-                    (nestedItem: NestedItem, nestedIndex: number) => (
-                      <Link
-                        key={nestedIndex}
-                        href={`${nestedItem.link}`}
-                        className="block py-2 text-sm text-gray-500 hover:text-blue-500"
-                      >
-                        {nestedItem.title}
-                      </Link>
-                    )
-                  )}
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      )}
-    </h4>
-  );
-};
