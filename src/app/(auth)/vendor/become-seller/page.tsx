@@ -17,9 +17,6 @@ import { toast } from "sonner";
 import { applyVendor } from "@/services/vendor.service";
 import { useRouter } from "next/navigation";
 
-// "shop_name": "Tech World jack",
-//   "address": "Dhaka, Bangladesh",
-//   "phone": "+8801712345678"
 const FormSchema = z.object({
   shop_name: z.string().min(3, {
     message: "Enter valid shop name.",
