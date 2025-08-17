@@ -17,10 +17,10 @@ import Carsol1 from "@/../public/images/cursol1.png";
 import TestimonialSection from "@/components/Testimonials";
 
 import { useEffect, useState } from "react";
-import apiClient from "@/lib/api-client";
 import { Product2 } from "@/app/data/product";
 import ProductCard from "@/components/Product_card";
 import Carousel from "@/components/Slider";
+import { getProducts } from "@/services/product.service";
 // import Hero_section from "@/components/Hero_section";
 
 const brandLogo = [
@@ -38,15 +38,15 @@ const carouselImages = [
 ];
 export default function HomePage() {
   const [products, setProducts] = useState<Product2[]>([]);
-  console.log("home: ", products);
+
   const [error, setError] = useState("");
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await apiClient.get("/api/v1/products");
-        // console.log("response: ", response.data);
+        const response = await getProducts();
+
         setProducts(response.data);
       } catch (err) {
         setError("Failed to load products");

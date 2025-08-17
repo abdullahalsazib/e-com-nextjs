@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
@@ -30,8 +30,9 @@ import { getCategorys } from "@/services/category.service";
 import {
   createProduct,
   updateProduct,
-  getProducts,
   deleteProduct,
+  getProductsVendor,
+  updateProductStatus,
 } from "@/services/product.service";
 import { useAuth } from "@/app/context/AuthContext";
 import {
@@ -60,11 +61,18 @@ const formSchema = z.object({
 
 type FormSchema = z.infer<typeof formSchema>;
 
+// Status options
+const OrderStatusOptions = [
+  { ID: 1, Name: "draft" },
+  { ID: 2, Name: "published" },
+  { ID: 3, Name: "private" },
+  { ID: 4, Name: "archived" },
+];
+
 interface Category {
   ID: number;
   Name: string;
 }
-
 interface Product {
   ID: number;
   name: string;
@@ -73,9 +81,7 @@ interface Product {
   stock: number;
   image_url?: string;
   category_id: number;
-  Category: {
-    Name: string;
-  };
+  Category: { Name: string };
   user_id?: number;
   status?: string;
 }
@@ -88,8 +94,7 @@ const ProductForm = () => {
   const [editingId, setEditingId] = useState<number | null>(null);
   const [isFetching, setIsFetching] = useState(false);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const form = useForm<any>({
+  const form = useForm<FormSchema | any>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
@@ -116,13 +121,12 @@ const ProductForm = () => {
     fetchCategories();
   }, []);
 
-  // Fetch products for logged-in user/vendor
+  // Fetch vendor products
   const fetchProducts = async () => {
     setIsFetching(true);
     try {
-      const res = await getProducts();
-      const filtered = res.data.filter((p: Product) => p.user_id === user?.id);
-      setProducts(filtered);
+      const res = await getProductsVendor();
+      setProducts(res.data);
     } catch (err) {
       console.error(err);
       toast.error("Failed to load products");
@@ -135,9 +139,8 @@ const ProductForm = () => {
     if (user?.id) fetchProducts();
   }, [user?.id]);
 
-  // Form submit handler
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onSubmit: SubmitHandler<any> = async (data) => {
+  // Form submit
+  const onSubmit: SubmitHandler<FormSchema> = async (data) => {
     try {
       const payload = {
         name: data.name,
@@ -167,6 +170,7 @@ const ProductForm = () => {
     }
   };
 
+  // Edit product
   const handleEdit = (product: Product) => {
     form.setValue("name", product.name);
     form.setValue("description", product.description ?? "");
@@ -180,6 +184,7 @@ const ProductForm = () => {
     setIsEditing(true);
   };
 
+  // Delete product
   const handleDelete = async (id: number) => {
     if (!confirm("Are you sure you want to delete this product?")) return;
     try {
@@ -189,6 +194,18 @@ const ProductForm = () => {
     } catch (err) {
       console.error(err);
       toast.error("Failed to delete product");
+    }
+  };
+
+  // Update product status
+  const handleStatusChange = async (id: number, status: string) => {
+    try {
+      await updateProductStatus(id, status);
+      toast.success("Status updated!");
+      fetchProducts();
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to update status");
     }
   };
 
@@ -272,33 +289,64 @@ const ProductForm = () => {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control as unknown as Control<FormSchema>}
-              name="category_id"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Category *</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    value={field.value || ""}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a category" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {categories.map((cat) => (
-                        <SelectItem key={cat.ID} value={String(cat.ID)}>
-                          {cat.Name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+
+            <div className=" flex items-center justify-between w-full gap-10">
+              <FormField
+                control={form.control as unknown as Control<FormSchema>}
+                name="category_id"
+                render={({ field }) => (
+                  <FormItem className=" w-full">
+                    <FormLabel>Category *</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      value={field.value || ""}
+                    >
+                      <FormControl className=" w-full">
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select a category" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {categories.map((cat) => (
+                          <SelectItem key={cat.ID} value={String(cat.ID)}>
+                            {cat.Name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control as unknown as Control<FormSchema>}
+                name="status"
+                render={({ field }) => (
+                  <FormItem className=" w-full">
+                    <FormLabel>Order Status *</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      value={field.value || "draft"}
+                    >
+                      <FormControl className=" w-full">
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select a status" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {OrderStatusOptions.map((status) => (
+                          <SelectItem key={status.ID} value={status.Name}>
+                            {status.Name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
           </div>
 
           <div className="flex justify-between items-center pt-2">
@@ -339,7 +387,7 @@ const ProductForm = () => {
             {isFetching ? (
               [...Array(3)].map((_, i) => (
                 <TableRow key={i}>
-                  <TableCell colSpan={4}>
+                  <TableCell colSpan={5}>
                     <Skeleton className="h-8 w-full" />
                   </TableCell>
                 </TableRow>
@@ -347,7 +395,7 @@ const ProductForm = () => {
             ) : products.length === 0 ? (
               <TableRow>
                 <TableCell
-                  colSpan={4}
+                  colSpan={5}
                   className="text-center py-6 text-gray-500"
                 >
                   No products available
@@ -372,7 +420,25 @@ const ProductForm = () => {
                   </TableCell>
                   <TableCell>${p.price.toFixed(2)}</TableCell>
                   <TableCell>{p.stock} in stock</TableCell>
-                  <TableCell>{p.status}</TableCell>
+                  <TableCell>
+                    <Select
+                      defaultValue={p.status || "draft"}
+                      onValueChange={(newStatus) =>
+                        handleStatusChange(p.ID, newStatus)
+                      }
+                    >
+                      <SelectTrigger className="w-[120px] capitalize">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {OrderStatusOptions.map((status) => (
+                          <SelectItem key={status.ID} value={status.Name}>
+                            {status.Name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </TableCell>
                   <TableCell>
                     <div className="flex gap-2">
                       <Button
