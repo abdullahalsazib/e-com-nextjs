@@ -63,7 +63,7 @@ const page = () => {
       </div>
       <Form {...form}>
         <form
-          className=" lg:w-full xl:w-[450px] space-y-6 p-5 z-50 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg bg-white dark:bg-gray-900"
+          className=" lg:w-full xl:w-[450px] space-y-6 p-5 z-50 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg bg_blur_effect"
           onSubmit={form.handleSubmit(handleSubmit)}
         >
           <div className=" flex flex-col items-center justify-center text-center">

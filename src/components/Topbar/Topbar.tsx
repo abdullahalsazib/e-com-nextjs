@@ -55,7 +55,7 @@ const Topbar = () => {
     : null;
 
   return (
-    <div className="w-full py-1 px-3 lg:px-5 xl:px-[10%] bg-slate-800 flex flex-col md:flex-row items-center justify-between gap-2">
+    <div className="w-full py-1 px-3 lg:px-5 xl:px-[10%] bg-slate-500 dark:bg-slate-800 hidden md:flex flex-col md:flex-row items-center justify-between gap-2">
       {/* Left Section */}
       <div className="flex items-center gap-4 text-white">
         <Link href="/" className="text-sm whitespace-nowrap">
@@ -104,7 +104,7 @@ const Topbar = () => {
               Help & Support
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
+          <DropdownMenuContent align="end" className=" bg_blur_effect">
             {HelpSupport.map((item) => (
               <DropdownMenuItem key={item.label}>
                 <Link
@@ -131,7 +131,7 @@ const Topbar = () => {
                   Log In
                 </Button>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-[425px]">
+              <DialogContent className="sm:max-w-[425px] bg_blur_effect">
                 <Login_d />
               </DialogContent>
             </Dialog>

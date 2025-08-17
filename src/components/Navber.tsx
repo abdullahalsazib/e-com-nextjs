@@ -52,7 +52,7 @@ const dockItem = [
 export default function Navbar() {
   const router = useRouter();
   const [isScrolled, setIsScrolled] = useState(false);
-  const [showScrollButton, setShowScrollButton] = useState<boolean>(false);
+  
   const [activeDropdowns, setActiveDropdowns] = useState<number[]>([]);
   const [activeNestedDropdowns, setActiveNestedDropdowns] = useState<{
     [key: string]: number[];
@@ -72,22 +72,7 @@ export default function Navbar() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > window.innerHeight);
-      setShowScrollButton(window.scrollY > 300);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
+  
 
   const handleDropdownEnter = (index: number) => {
     if (!isMobile) {
@@ -141,7 +126,7 @@ export default function Navbar() {
           <FloatingDock items={dockItem} />
         </div>
 
-        <nav className=" border-b dark:bg-black dark:text-white bg-white py-5 px-4 lg:px-5 xl:px-[10%] flex items-center justify-between">
+        <nav className=" border-b dark:bg-black dark:text-white bg-white md:py-5 md:px-4 py-3 px-3 lg:px-5 xl:px-[10%] flex items-center justify-between">
           <div className="flex items-center justify-start w-full relative md:gap-10">
             <div className="flex items-center">
               <Link
@@ -149,7 +134,7 @@ export default function Navbar() {
                 className=" flex items-center justify-center gap-2"
               >
                 <BsBoxSeamFill className="text-2xl md:text-3xl text-blue-600" />
-                <h1 className=" font-bold">E_shop</h1>
+                <h1 className=" font-bold hidden md:block ">E_shop</h1>
               </Link>
             </div>
 
@@ -424,17 +409,15 @@ export default function Navbar() {
             </div>
           </div>
         </nav>
+
+        {/* Mobile device nav-bar */}
+        {/* <nav className=" w-full py-3 px-10 bg-yellow-400">
+
+        </nav> */}
       </div>
 
       {/* Scroll to top button */}
-      {showScrollButton && (
-        <button
-          onClick={scrollToTop}
-          className="fixed bottom-6 left-6 md:right-6 z-50 w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center shadow-lg hover:bg-blue-700 transition-colors duration-300"
-        >
-          <BiArrowToTop className="text-2xl" />
-        </button>
-      )}
+    
 
       {/* Add padding to content when navbar is fixed */}
       {isScrolled && <div className="h-[110px] md:h-[120px]"></div>}
