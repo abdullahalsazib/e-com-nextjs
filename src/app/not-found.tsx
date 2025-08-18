@@ -1,18 +1,28 @@
-import Link from "next/link";
+"use client";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 // app/not-found.tsx
 export default function NotFound() {
+  const navigate = useRouter();
   return (
-    <div className="text-center py-20">
-      <h1 className="text-3xl font-bold mb-4">404 - Product Not Found</h1>
-      <p>The product you&apos;re looking for does not exist.</p>
-      <div className=" flex items-center justify-center py-10">
-        <Link
-          href={"/"}
-          className=" py-2 px-4 font-semibold text-3xl capitalize rounded-lg bg-blue-500 hover:bg-blue-600 text-white "
+    <div className="text-center py-20 w-full h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
+      <div>
+        <h1 className="text-6xl font-bold text-gray-800 dark:text-red-500">
+          404
+        </h1>
+        <p className="text-2xl text-gray-600 mt-4">Page Not Found</p>
+        <p className="text-lg text-gray-500 mt-2">
+          The page you are looking for does not exist.
+        </p>
+        <Button
+          size={"lg"}
+          variant={"outline"}
+          onClick={() => navigate.push("/")}
+          className=" mt-5"
         >
-          Home jack sparrow
-        </Link>
+          Back To Home
+        </Button>
       </div>
     </div>
   );

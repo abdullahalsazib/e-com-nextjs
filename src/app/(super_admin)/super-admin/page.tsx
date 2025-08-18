@@ -1,9 +1,12 @@
-import ProtectedRoute from "@/components/PrivateRoute";
+import React from "react";
+import Super_Admin_dashboard from "./superadmin_components/Super_a_dashboard";
 
-export default function SuperAdminPage() {
+function page() {
   return (
-    <ProtectedRoute allowedRoles={["superadmin"]}>
-      <div>Welcome SuperAdmin</div>
-    </ProtectedRoute>
+    <>
+      <Super_Admin_dashboard />
+    </>
   );
 }
+
+export default page;

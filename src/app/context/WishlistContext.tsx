@@ -25,14 +25,10 @@ export const WishlistProvider = ({ children }: { children: ReactNode }) => {
   const getAuthToken = () =>
     typeof window !== "undefined" ? localStorage.getItem("authToken") : null;
 
-  // const isLoggedIn = Boolean(getAuthToken());
-
   const fetchWishlist = async () => {
     setLoading(true);
     try {
       const token = getAuthToken();
-      // console.log("🪪 Fetched authToken:", token); // Debugging line
-
       if (!token) throw new Error("Not logged in");
 
       const response = await apiClient.get("/auth/wishlist", {
@@ -42,20 +38,13 @@ export const WishlistProvider = ({ children }: { children: ReactNode }) => {
       });
 
       const data = response.data;
-      // console.log("data form fetch wishlist: ", data);
-
-      // if (Array.isArray(data)) {
-      //   console.log(data); // ✅ <- THIS was missing
-      // } else {
-      //   console.error("Unexpected wishlist format:", data);
-      //   toast.error("Invalid wishlist data");
-      // }
 
       if (Array.isArray(data)) {
         setWishlist(data);
       } else {
-        console.warn("Unexpected wishlist format:", data);
-        toast.error("Invalid wishlist data");
+        // console.warn("Unexpected wishlist format:", data);
+        console.info("Invalid wishlist data");
+        // toast.error("Invalid wishlist data");
       }
 
       setError(null);
@@ -93,7 +82,7 @@ export const WishlistProvider = ({ children }: { children: ReactNode }) => {
           }
         }
 
-        await fetchWishlist();
+        // await fetchWishlist();
       } else {
         const stored = localStorage.getItem("wishlist");
         const parsed = stored ? JSON.parse(stored) : [];
@@ -102,7 +91,7 @@ export const WishlistProvider = ({ children }: { children: ReactNode }) => {
     };
 
     loadWishlist();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const addToWishlist = async (product: WishlistItemWithProduct) => {

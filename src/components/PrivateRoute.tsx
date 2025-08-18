@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useRouter } from "next/navigation";
@@ -17,16 +18,21 @@ const PrivateRoute = ({ children, allowedRoles }: PrivateRouteProps) => {
     if (!isLoading) {
       if (!user) {
         router.push("/login");
-      } else if (allowedRoles && !allowedRoles.includes(user.role)) {
-        router.push("/unauthorized"); // You must create this page
+      } else if (
+        allowedRoles &&
+        !user.roles?.some((role) => allowedRoles.includes(role.slug as any))
+      ) {
+        router.push("/unauthorized"); // Create this page
       }
     }
   }, [user, isLoading, allowedRoles, router]);
 
   if (isLoading || !user) return null;
 
-  // If user is allowed or no role restriction
-  if (!allowedRoles || allowedRoles.includes(user.role)) {
+  if (
+    !allowedRoles ||
+    user.roles?.some((role) => allowedRoles.includes(role.slug as any))
+  ) {
     return <>{children}</>;
   }
 

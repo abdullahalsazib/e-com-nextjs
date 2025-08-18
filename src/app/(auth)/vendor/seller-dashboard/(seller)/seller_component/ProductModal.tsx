@@ -11,7 +11,7 @@ interface ProductModalProps {
 
 const ProductModal = ({ isOpen, onClose, onSubmit }: ProductModalProps) => {
   const [product, setProduct] = useState<Product>({
-    product_name: "",
+    name: "",
     description: "",
     price: 0,
     stock: 0,
@@ -35,7 +35,7 @@ const ProductModal = ({ isOpen, onClose, onSubmit }: ProductModalProps) => {
     e.preventDefault();
     onSubmit(product);
     setProduct({
-      product_name: "",
+      name: "",
       description: "",
       price: 0,
       stock: 0,

@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className="dark"
+      className="light"
       style={{ colorScheme: "light" }}
       suppressHydrationWarning
     >
@@ -48,7 +48,7 @@ export default function RootLayout({
                 <CartProvider>
                   <NextTopLoader />
                   <Toaster
-                    position="top-right"
+                    position="bottom-right"
                     richColors
                     visibleToasts={5}
                     swipeDirections={["left", "right", "bottom"]}

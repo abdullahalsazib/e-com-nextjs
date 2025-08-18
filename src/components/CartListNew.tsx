@@ -1,55 +1,30 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-"use client";
-import { useRef, useState } from "react";
-import { useClickOutside } from "@/hooks/useClickOutSide";
-import { toast } from "sonner";
-import { LuShoppingCart } from "react-icons/lu";
-import Link from "next/link";
-import { useCart } from "../app/context/CartListContext";
-import { Button } from "./ui/button";
-import { Badge } from "./ui/badge";
+import { useAuth } from '@/app/context/AuthContext';
+import { useCart } from '@/app/context/CartListContext';
+import Link from 'next/link';
+import React from 'react'
+import { toast } from 'sonner';
 
-const CartListDropdown = () => {
-  const [isOpen, setIsOpen] = useState(false);
+const CartListNew = () => {
   const { cart, loading, error, cartItemCount, cartTotal } = useCart();
-  const dropdownRef = useRef<HTMLDivElement>(null);
-
-  // console.log("dropdown cart: ", cart);
-
-  useClickOutside(dropdownRef, () => setIsOpen(false));
-  const toggleDropdown = () => setIsOpen(!isOpen);
-
+  const {isAuthenticated} = useAuth()
+  // console.log("cart form wishlit: ", cart)
+ 
   return (
-    <div className="relative" ref={dropdownRef}>
-      {/* Cart Icon Button */}
-      <Button
-        onClick={toggleDropdown}
-        size="lg"
-        className=" size-8 "
-        variant="secondary"
-      >
-        <LuShoppingCart className="text-xl" />
-        {cartItemCount > 0 && (
+    <div className=' py-4'>
+    {!isAuthenticated ? (
+        <>
+          <div className=' flex items-center justify-center flex-col gap-2'>
+            <p className=' text-center text-3xl dark:text-white'>Sign Up please</p>
+            <Link href={"/register"} className=' dark:text-blue-300 underline capitalize text-xl'>sign up</Link>
+        </div>
+        </>
+      ): (
           <>
-            <Badge
-              variant={"default"}
-              title="counter"
-              className="absolute size-5 bg-red-500 text-white -top-1.5 -right-1.5"
-            >
-              {cartItemCount}
-            </Badge>
-          </>
-        )}
-      </Button>
-
-      {/* Dropdown Content */}
-      {isOpen && (
-        <div className="absolute top-10 right-0 z-50 w-80 bg-white rounded-md shadow-lg border border-gray-200 flex flex-col py-3 gap-2">
-          <div className="flex flex-col items-center w-full px-4">
-            <h1 className="text-xl font-semibold text-black text-center">
+            <div className="flex flex-col items-start w-full px-4">
+            <h1 className="text-xl font-semibold text-black dark:text-white text-center">
               My Cart
             </h1>
-            <p className="text-xs text-gray-500 capitalize">
+            <p className="text-xs text-gray-500 dark:text-gray-300 capitalize">
               {cartItemCount} {cartItemCount === 1 ? "item" : "items"} in Cart
             </p>
           </div>
@@ -60,7 +35,7 @@ const CartListDropdown = () => {
             ) : error ? (
               <p className="text-red-500 text-center py-4">{error}</p>
             ) : !cart || cart.items.length === 0 ? (
-              <p className="text-gray-500 text-center py-4">
+              <p className="text-gray-500 dark:text-gray-300 text-center py-4">
                 Your cart is empty
               </p>
             ) : (
@@ -70,21 +45,21 @@ const CartListDropdown = () => {
 
           {cart && cart.items.length > 0 && (
             <div className="px-4 border-t border-gray-100 pt-3">
-              <div className="flex justify-between font-medium mb-3">
+              <div className="flex justify-between dark:text-white font-medium mb-3">
                 <span>Subtotal:</span>
                 <span>${cartTotal.toFixed(2)}</span>
               </div>
               <div className="flex flex-col gap-2">
                 <Link
                   href="/shoping-card"
-                  onClick={() => setIsOpen(false)}
+                //   onClick={() => setIsOpen(false)}
                   className="w-full py-2 px-4 rounded-full text-sm text-center bg-blue-500 text-white hover:bg-blue-600 duration-200 font-medium"
                 >
                   View Cart
                 </Link>
                 <Link
                   href="/checkout"
-                  onClick={() => setIsOpen(false)}
+                //   onClick={() => setIsOpen(false)}
                   className="w-full py-2 px-4 rounded-full text-sm text-center border border-blue-500 text-blue-500 hover:bg-blue-50 duration-200 font-medium"
                 >
                   Checkout
@@ -92,12 +67,16 @@ const CartListDropdown = () => {
               </div>
             </div>
           )}
-        </div>
+    </>
       )}
-    </div>
-  );
-};
+      </div>
+  )
+}
 
+export default CartListNew
+
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const CartItem = ({ item }: { item: any }) => {
   const { removeFromCart, updateCartItem } = useCart();
 
@@ -118,13 +97,13 @@ const CartItem = ({ item }: { item: any }) => {
           />
         )}
         <div className="flex-1">
-          <h3 className="font-medium text-sm line-clamp-1">
+          <h3 className="font-medium text-sm dark:text-white line-clamp-1">
             {item.product?.name}
           </h3>
-          <p className="text-gray-500 text-sm">
+          <p className="text-gray-500 dark:text-gray-300 text-sm">
             ${item.product?.price?.toFixed(2)}
           </p>
-          <div className="flex items-center gap-2 mt-1">
+          <div className="flex items-center gap-2 mt-1 dark:text-white">
             <button
               onClick={() => handleQuantityChange(item.quantity - 1)}
               className="w-6 h-6 flex items-center justify-center border rounded text-sm"
@@ -154,5 +133,3 @@ const CartItem = ({ item }: { item: any }) => {
     </div>
   );
 };
-
-export default CartListDropdown;

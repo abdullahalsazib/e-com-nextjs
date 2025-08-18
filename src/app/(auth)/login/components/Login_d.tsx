@@ -3,7 +3,8 @@ import { useAuth } from "@/app/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
-  DialogDescription,  DialogHeader,
+  DialogDescription,
+  DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
 import {
@@ -37,6 +38,7 @@ const FormSchema = z.object({
 
 const Login_d = () => {
   const { login } = useAuth();
+  const navigate = useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -53,8 +55,9 @@ const Login_d = () => {
 
       if (data.access_token) {
         toast.success(data.message);
+        // navigate.push("/");
         await login(data.access_token);
-        localStorage.setItem("authToken", data.access_token);
+        // localStorage.setItem("authToken", data.access_token);
       } else {
         // toast.error("No access token found");
         throw new Error("No access token found");
@@ -63,13 +66,12 @@ const Login_d = () => {
       if (axios.isAxiosError(err)) {
         console.log(err);
         toast.error(
-          err.response?.data?.message || err.message || "Something went wrong"
+          err.response?.data?.message || err.message || "Something went wrong",
         );
       }
     }
   };
 
-  const navigate = useRouter();
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -80,7 +82,7 @@ const Login_d = () => {
               <h1 className=" text-center">Wellcome to E_shop</h1>
             </div>
           </DialogTitle>
-          <DialogDescription asChild>
+          <DialogDescription asChild className=" text-slate-800 dark:text-slate-300">
             <p className=" text-center">
               Make changes to your profile here. Click save when you&apos;re
               done.

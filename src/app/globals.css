@@ -4,7 +4,7 @@
 @custom-variant dark (&:is(.dark *));
 
 body {
-  background: #fff;
+  @apply bg-white dark:bg-black;
 }
 
 button {
@@ -66,7 +66,6 @@ button {
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-  
 }
 
 .dark {
@@ -93,7 +92,6 @@ button {
   --chart-3: oklch(0.769 0.188 70.08);
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
-  
 }
 
 @layer base {
@@ -108,11 +106,22 @@ button {
 
 @layer bg_image_seller_card {
   .card_container {
-    background: linear-gradient(60deg, rgba(23, 10, 10, 0.431), rgba(0, 0, 255, 0.323)), url("../../public/ivancik.jpg");
+    background: linear-gradient(
+        60deg,
+        rgba(23, 10, 10, 0.431),
+        rgba(0, 0, 255, 0.323)
+      ),
+      url("../../public/ivancik.jpg");
     background-position: 0px 0px;
     background-size: cover;
   }
 }
 
-
 /* my custom css */
+.bg_blur_effect {
+  @apply backdrop-blur-lg bg-white/50 dark:bg-black/40 border-none;
+}
+
+.bg_white {
+  @apply bg-white dark:bg-black text-black dark:text-white;
+}

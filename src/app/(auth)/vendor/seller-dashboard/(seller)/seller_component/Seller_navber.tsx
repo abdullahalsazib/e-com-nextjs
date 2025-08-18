@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { BiBell } from "react-icons/bi";
 import { useRouter } from "next/navigation";
+import hasRole from "@/lib/role-extr";
 const Seller_navber = ({
   isOpen,
   setOpen,
@@ -110,21 +111,17 @@ const Seller_navber = ({
             <PopoverContent className=" text-sm" align="end">
               <p className=" capitalize">name: {user?.name}</p>
               <p className=" ">Email: {user?.email}</p>
-              <p className=" capitalize">role: {user?.role}</p>
+              <p className=" capitalize">
+                role: {hasRole(user?.roles, "admin") ? "admin" : "user"}
+              </p>
             </PopoverContent>
           </Popover>
 
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <CustomToolTip
-                // eslint-disable-next-line react/no-children-prop
-                children={
-                  <Button variant={"secondary"} size={"sm"}>
-                    <MdOutlineOutput /> log out
-                  </Button>
-                }
-                bodyContent="log out"
-              />
+              <Button variant={"secondary"} size={"sm"}>
+                log out <MdOutlineOutput />
+              </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
@@ -135,7 +132,7 @@ const Seller_navber = ({
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={() => logout()}>
+                <AlertDialogAction color="red" onClick={() => logout()}>
                   Continue
                 </AlertDialogAction>
               </AlertDialogFooter>

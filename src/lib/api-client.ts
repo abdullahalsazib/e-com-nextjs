@@ -34,19 +34,5 @@ apiClient.interceptors.request.use(
     return Promise.reject(error);
   }
 );
-// Response interceptor for handling errors
-// apiClient.interceptors.response.use(
-//   (response: AxiosResponse) => response,
-//   (error: AxiosError) => {
-//     if (error.response?.status === 401) {
-//       // Handle unauthorized access
-//       localStorage.removeItem("authToken");
-//       if (typeof window !== "undefined") {
-//         window.location.href = "/login";
-//       }
-//     }
-//     return Promise.reject(error);
-//   }
-// );
 
 export default apiClient;

@@ -16,7 +16,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-import React, { useState } from "react";
 import CustomBreadcrumb from "@/components/smallComponent/Breadcrumb";
 import {
   BsBoxSeamFill,
@@ -28,8 +27,6 @@ import Link from "next/link";
 import { registerUser } from "@/services/auth.service";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 import animateBackgorund from "@/../public/register.svg";
 import Image from "next/image";
@@ -43,13 +40,13 @@ const FormSchema = z.object({
     message: "Enter valid name.",
   }),
   email: z.email(),
-  password: z.string().min(6, {
-    message: "Password must be at least 6 characters.",
+  password: z.string().min(4, {
+    message: "Password must be at least 6 characters.", // must be at least 6 characters
   }),
 });
 
 function InputForm() {
-  const [selectedRole, setSelectedRole] = useState<"user" | "admin">("user");
+  // const [selectedRole, setSelectedRole] = useState<"user" | "admin">("user");
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -66,7 +63,7 @@ function InputForm() {
         name: data_z.name,
         email: data_z.email,
         password: data_z.password,
-        role: selectedRole, // pass the role
+        // role: selectedRole, // pass the role
       });
       toast.success(data.message);
       route.push("/");
@@ -192,38 +189,6 @@ function InputForm() {
                     )}
                   />
                 </div>
-                {/* select role  */}
-                <RadioGroup
-                  value={selectedRole}
-                  onValueChange={(value: "user" | "admin") =>
-                    setSelectedRole(value)
-                  }
-                  className="grid grid-cols-2 gap-2"
-                >
-                  {/* Normal Account */}
-                  <div className="flex items-center space-x-2 border p-3 rounded-md">
-                    <RadioGroupItem
-                      value="user"
-                      id="r-user"
-                      className="border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white"
-                    />
-                    <Label htmlFor="r-user" className="cursor-pointer">
-                      Normal Account
-                    </Label>
-                  </div>
-
-                  {/* Business Account */}
-                  <div className="flex items-center space-x-2 border p-3 rounded-md">
-                    <RadioGroupItem
-                      value="admin"
-                      id="r-admin"
-                      className="border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white"
-                    />
-                    <Label htmlFor="r-admin" className="cursor-pointer">
-                      Business Account
-                    </Label>
-                  </div>
-                </RadioGroup>
 
                 <div className=" space-y-3">
                   <Button type="submit" className=" w-full">

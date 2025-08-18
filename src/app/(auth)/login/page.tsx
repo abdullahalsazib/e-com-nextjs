@@ -61,6 +61,7 @@ function LoginPage() {
         toast.success(data.message);
         await login(data.access_token);
         localStorage.setItem("authToken", data.access_token);
+        navigate.push("/");
       } else {
         // toast.error("No access token found");
         throw new Error("No access token found");

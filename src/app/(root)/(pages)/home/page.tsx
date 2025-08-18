@@ -13,14 +13,15 @@ import brand5 from "@/../public/Logos/adata.png";
 import brand6 from "@/../public/Logos/hp.png";
 import brand7 from "@/../public/Logos/gigabyte.png";
 import News_card from "@/components/News_card";
-import Carousel from "@/components/Slider";
 import Carsol1 from "@/../public/images/cursol1.png";
 import TestimonialSection from "@/components/Testimonials";
 
 import { useEffect, useState } from "react";
-import apiClient from "@/lib/api-client";
 import { Product2 } from "@/app/data/product";
 import ProductCard from "@/components/Product_card";
+import { getProducts } from "@/services/product.service";
+import Carousel from "@/components/Slider";
+// import Hero_section from "@/components/Hero_section";
 
 const brandLogo = [
   { imgUrl: brand1, alr: "brand1" },
@@ -37,14 +38,15 @@ const carouselImages = [
 ];
 export default function HomePage() {
   const [products, setProducts] = useState<Product2[]>([]);
+
   const [error, setError] = useState("");
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await apiClient.get("/api/v1/products");
-        // console.log("response: ", response.data);
+        const response = await getProducts();
+
         setProducts(response.data);
       } catch (err) {
         setError("Failed to load products");
@@ -71,12 +73,13 @@ export default function HomePage() {
   };
   return (
     <>
-      <div className="w-full bg-white dark:bg-gray-800">
+      <div className=" z-0 bg-slate-400 dark:bg-gray-800 w-full ">
         <Carousel images={carouselImages} />
+        {/* <BentoGridSecondDemo /> */}
+        {/* <CarouselDemo /> */}
+        {/* hero section */}
+        {/* <Hero_section /> */}
       </div>
-
-      {/* hero section */}
-      {/* <Hero_section /> */}
 
       <div className={`px-[10%] bg-white dark:bg-gray-950 `}>
         {/* Products sections  */}
@@ -258,10 +261,10 @@ export default function HomePage() {
             <News_card />
             <News_card />
             <News_card />
+            {/* <News_card />
             <News_card />
             <News_card />
-            <News_card />
-            <News_card />
+            <News_card /> */}
           </div>
         </div>
         {/* reviews sections */}

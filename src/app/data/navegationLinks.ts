@@ -47,62 +47,62 @@ export const NavLink = [
       { title: "Budget Laptops", link: "#" },
     ],
   },
-  {
-    title: "Printers & Scanners",
-    link: "#",
-    dropDown: true,
-    content: [
-      {
-        title: "Inkjet Printers",
-        link: "#",
-        nested: [
-          { title: "Home Inkjet", link: "#" },
-          { title: "Office Inkjet", link: "#" },
-          { title: "Photo Inkjet", link: "#" },
-        ],
-      },
-      {
-        title: "Laser Printers",
-        link: "#",
-        nested: [
-          { title: "Monochrome", link: "#" },
-          { title: "Color Laser", link: "#" },
-          { title: "Multifunction", link: "#" },
-        ],
-      },
-      { title: "All-in-One Printers", link: "#" },
-      { title: "Photo Printers", link: "#" },
-      { title: "3D Printers", link: "#" },
-    ],
-  },
-  {
-    title: "PC parts",
-    link: "#",
-    dropDown: true,
-    content: [
-      {
-        title: "Processors",
-        link: "#",
-        nested: [
-          { title: "Intel", link: "#" },
-          { title: "AMD", link: "#" },
-          { title: "Server CPUs", link: "#" },
-        ],
-      },
-      {
-        title: "Graphics Cards",
-        link: "#",
-        nested: [
-          { title: "NVIDIA", link: "#" },
-          { title: "AMD Radeon", link: "#" },
-          { title: "Workstation GPUs", link: "#" },
-        ],
-      },
-      { title: "Motherboards", link: "#" },
-      { title: "RAM", link: "#" },
-      { title: "Storage", link: "#" },
-    ],
-  },
+  // {
+  //   title: "Printers & Scanners",
+  //   link: "#",
+  //   dropDown: true,
+  //   content: [
+  //     {
+  //       title: "Inkjet Printers",
+  //       link: "#",
+  //       nested: [
+  //         { title: "Home Inkjet", link: "#" },
+  //         { title: "Office Inkjet", link: "#" },
+  //         { title: "Photo Inkjet", link: "#" },
+  //       ],
+  //     },
+  //     {
+  //       title: "Laser Printers",
+  //       link: "#",
+  //       nested: [
+  //         { title: "Monochrome", link: "#" },
+  //         { title: "Color Laser", link: "#" },
+  //         { title: "Multifunction", link: "#" },
+  //       ],
+  //     },
+  //     { title: "All-in-One Printers", link: "#" },
+  //     { title: "Photo Printers", link: "#" },
+  //     { title: "3D Printers", link: "#" },
+  //   ],
+  // },
+  // {
+  //   title: "PC parts",
+  //   link: "#",
+  //   dropDown: true,
+  //   content: [
+  //     {
+  //       title: "Processors",
+  //       link: "#",
+  //       nested: [
+  //         { title: "Intel", link: "#" },
+  //         { title: "AMD", link: "#" },
+  //         { title: "Server CPUs", link: "#" },
+  //       ],
+  //     },
+  //     {
+  //       title: "Graphics Cards",
+  //       link: "#",
+  //       nested: [
+  //         { title: "NVIDIA", link: "#" },
+  //         { title: "AMD Radeon", link: "#" },
+  //         { title: "Workstation GPUs", link: "#" },
+  //       ],
+  //     },
+  //     { title: "Motherboards", link: "#" },
+  //     { title: "RAM", link: "#" },
+  //     { title: "Storage", link: "#" },
+  //   ],
+  // },
   { title: "About us", link: "/aboutus", dropDown: false },
   { title: "Contact Us", link: "/contactus", dropDown: false },
   { title: "FAQ", link: "/faq", dropDown: false },

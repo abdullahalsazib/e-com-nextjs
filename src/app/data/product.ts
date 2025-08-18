@@ -1,12 +1,13 @@
 // src/types/product.ts
 
 export interface Product {
-  product_name: string;
+  name: string;
   description: string;
   price: number | string;
   stock: number | string;
   image_url: string;
   category_id: number | null;
+  status?: string
 }
 // src/types/product.ts
 export interface Product2 {

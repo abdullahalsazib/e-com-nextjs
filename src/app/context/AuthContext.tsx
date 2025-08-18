@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import {
@@ -8,23 +9,34 @@ import {
   useState,
   useCallback,
 } from "react";
+import { jwtDecode } from "jwt-decode";
+import apiClient from "@/lib/api-client";
 import { getProfile } from "@/services/auth.service";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useWishlist } from "./WishlistContext";
 
 interface User {
-  ID: string;
+  id: string;
   name: string;
   email: string;
-  role: "admin" | "superadmin" | "user";
+  roles: { id: number; name: string; slug: string }[];
+  vendor: { vendor_name: string; vendor_status: string } | null;
+}
+
+interface DecodedToken {
+  user_id: number;
+  email: string;
+  roles: string[];
+  exp: number;
 }
 
 interface AuthContextType {
   user: User | null;
   isLoading: boolean;
   isAuthenticated: boolean;
-  login: (token: string) => Promise<void>;
+  hasRole: (roles: string[]) => boolean;
+  login: (access_token: string) => Promise<void>;
   logout: () => void;
 }
 
@@ -33,22 +45,28 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
+  const [decodedRoles, setDecodedRoles] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { fetchWishlist } = useWishlist();
 
-  const fetchUser = useCallback(async () => {
+  const decodeToken = useCallback(() => {
     const token = localStorage.getItem("authToken");
-    if (!token) {
-      setUser(null);
-      setIsLoading(false);
+    if (!token) return null;
+
+    try {
+      return jwtDecode<DecodedToken>(token);
+    } catch (error) {
+      console.error("Invalid token", error);
       return null;
     }
+  }, []);
 
+  const fetchUser = useCallback(async () => {
     try {
       setIsLoading(true);
       const res = await getProfile();
-      setUser(res.data.data);
-      return res.data.data; // Return user data
+      setUser(res.data);
+      return res.data;
     } catch (err) {
       console.error("getProfile failed:", err);
       localStorage.removeItem("authToken");
@@ -61,62 +79,87 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const initializeAuth = async () => {
-      const token = localStorage.getItem("authToken");
-      if (token) {
-        try {
+      setIsLoading(true);
+      try {
+        // Refresh token cookie theke backend new access token debe
+        const res = await apiClient.post("/refresh");
+        const newAccessToken = res.data.access_token;
+
+        if (newAccessToken) {
+          localStorage.setItem("authToken", newAccessToken);
+          const decoded = decodeToken();
+          setDecodedRoles(decoded?.roles || []);
           await fetchUser();
-        } catch {
-          // Error already handled in fetchUser
-          console.log("error form authcontext");
+          await fetchWishlist();
         }
-      } else {
+      } catch (error) {
+        localStorage.removeItem("authToken");
+        setUser(null);
+        setDecodedRoles([]);
+      } finally {
         setIsLoading(false);
       }
     };
+
     initializeAuth();
-  }, [fetchUser]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const login = useCallback(
-    async (token: string) => {
+    async (access_token: string) => {
       try {
-        localStorage.setItem("authToken", token);
+        setIsLoading(true);
+        localStorage.setItem("authToken", access_token);
+
+        const decoded = decodeToken();
+        setDecodedRoles(decoded?.roles || []);
 
         const userData = await fetchUser();
+        if (!userData) throw new Error("No user data");
 
-        const redirectPath = userData?.role === "admin" ? "/seller" : "/";
-        router.push(redirectPath);
         await fetchWishlist();
-        // setTimeout(() => {
-        //   window.location.reload();
-        // }, 100); // delay ensures router.push completes
-
-        // setTimeout(() => window.location.reload(), 100);
-        toast.success("Login successful");
       } catch (error) {
-        toast.error("Login failed");
+        toast.error("Login failed from authContext");
         throw error;
+      } finally {
+        setIsLoading(false);
       }
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [fetchUser, router]
+    [decodeToken, fetchUser, fetchWishlist]
   );
 
-  const logout = useCallback(() => {
-    localStorage.removeItem("authToken");
-    setUser(null);
-    toast.success("Logged out successfully");
-    router.push("/");
+  const logout = useCallback(async () => {
+    try {
+      await apiClient.post("/logout");
+    } catch (error) {
+      console.error("Logout API error:", error);
+    } finally {
+      localStorage.removeItem("authToken"); // access token remove
+      setUser(null);
+      setDecodedRoles([]);
+      toast.success("Logged out successfully");
+      router.push("/login");
+    }
   }, [router]);
+
+  const hasRole = useCallback(
+    (roles: string[]) => {
+      if (!decodedRoles.length) return false;
+      return roles.some((role) => decodedRoles.includes(role));
+    },
+    [decodedRoles]
+  );
 
   const value = useMemo(
     () => ({
       user,
       isLoading,
       isAuthenticated: !!user,
+      hasRole,
       login,
       logout,
     }),
-    [user, isLoading, login, logout]
+    [user, isLoading, hasRole, login, logout]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
