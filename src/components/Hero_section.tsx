@@ -26,14 +26,14 @@ export default Hero_section;
 
 const Home_card_component_Big = ({ image }: { image: StaticImport }) => {
   return (
-    <div className=" relative overflow-hidden group cursor-pointer w-full lg:w-auto">
+    <div className=" z-10 relative overflow-hidden group cursor-pointer w-full lg:w-auto">
       <Image
         src={image}
         alt="image"
         className="w-full h-auto object-cover duration-150 group-hover:scale-105"
         priority
       />
-      <div className="absolute inset-0 bg-transparent px-4 sm:px-6 md:px-10 py-6 sm:py-8 md:py-10 flex flex-col justify-center space-y-4">
+      <div className="absolute bg-transparent px-4 sm:px-6 md:px-10 py-6 sm:py-8 md:py-10 flex flex-col justify-center space-y-4">
         <p className="uppercase text-yellow-500 font-semibold text-sm sm:text-base">
           Digital Cable TV
         </p>
@@ -59,7 +59,7 @@ const Home_card_component_Big = ({ image }: { image: StaticImport }) => {
 
 const Home_card_component_Small = ({ image }: { image: StaticImport }) => {
   return (
-    <div className="border relative overflow-hidden group  cursor-pointer w-full lg:w-auto">
+    <div className=" z-10 border relative overflow-hidden group  cursor-pointer w-full lg:w-auto">
       <Image
         src={image}
         alt="image"

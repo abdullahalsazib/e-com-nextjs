@@ -83,7 +83,7 @@ const NavberM = () => {
         }`}
       >
         <Topbar />
-        <div className=" w-full py-1 px-3 lg:px-5 xl:px-[10%] flex flex-row items-center justify-between gap-3 lg:gap-4 bg-white dark:bg-black  relative">
+        <div className=" w-full py-1 px-3 lg:px-5 xl:px-[10%] flex flex-row items-center justify-between gap-3 lg:gap-4 bg-white dark:bg-black  lg:relative">
           {/* left section */}
           {/* logo and brand */}
           <Link href={"/"}>
@@ -305,8 +305,8 @@ const NavberM = () => {
             className={` w-full sm:w-[450px] ${
               !wishlistOpen
                 ? "translate-x-[100%] duration-300"
-                : "translate-x-0 duration-200"
-            } fixed h-full right-0 top-0 z-50 bg_blur_effect px-5 py-10`}
+                : `translate-x-0 duration-200 ${!isScrolled ? "top-0 bg_blur_effect": "  -top-[0%]  "}`
+            } fixed h-screen right-0 top-0 z-50  px-5 py-10`}
           >
             <div className=" w-full flex items-center justify-start">
               <Button
@@ -320,6 +320,12 @@ const NavberM = () => {
             <div className="w-full h-full">
               <WishlistNew />
             </div>
+             {
+              isScrolled && (
+
+                <div className="bg-white/95 dark:bg-black/95 -z-30  w-full h-screen absolute left-0 top-0"></div>
+              )
+            }
           </div>
 
           {/* cart for Desktop device */}
@@ -328,8 +334,8 @@ const NavberM = () => {
             className={` w-full sm:w-[450px] ${
               !cartOpen
                 ? "translate-x-[100%] duration-300"
-                : "translate-x-0 duration-200"
-            } fixed h-full right-0 top-0 z-50 bg_blur_effect px-5 py-10`}
+                : `translate-x-0 duration-200 ${!isScrolled ? "top-0 bg_blur_effect": "  -top-[0%]  "}`
+            } fixed h-screen right-0 top-0 z-50  px-5 py-10`}
           >
             <div className=" w-full flex items-center justify-start">
               <Button
@@ -343,18 +349,25 @@ const NavberM = () => {
             <div className="w-full h-full py-2 text-black">
               <CartListNew />
             </div>
+            {
+              isScrolled && (
+
+                <div className="bg-white/95 dark:bg-black/95 -z-30  w-full h-screen absolute left-0 top-0"></div>
+              )
+            }
           </div>
 
           {/* mobile device navber  */}
           <div
-            className={`  z-50 bottom-0 right-0 w-[100%] h-full md:hidden fixed py-10 px-3 bg_blur_effect ${
+            className={`  z-50  right-0  md:hidden fixed py-5 px-3 ${
               !menuOpen
-                ? "-translate-x-[200%] duration-400 opacity-10"
-                : "translate-x-0 duration-400"
+                ? "-translate-x-[200%] duration-200 opacity-0"
+                : `translate-x-0 duration-400 w-[100%] h-screen fixed ${!isScrolled ? "top-0": "  -top-[0%] bg-black "}`
             }
                 `}
           >
-            <div className="w-full  flex items-center justify-end">
+            
+            <div className=" z-[9999] w-full  flex items-center justify-end">
               <Button
                 size={"icon"}
                 variant={"outline"}
@@ -373,6 +386,7 @@ const NavberM = () => {
                 Search
               </button>
             </div>
+             <div className=" -z-30 bg-white/60 dark:bg-white/5 backdrop-blur-lg w-full h-screen absolute left-0 top-0"></div>
           </div>
 
           
@@ -391,3 +405,4 @@ const NavberM = () => {
 };
 
 export default NavberM;
+

@@ -82,7 +82,7 @@ const Login_d = () => {
               <h1 className=" text-center">Wellcome to E_shop</h1>
             </div>
           </DialogTitle>
-          <DialogDescription asChild>
+          <DialogDescription asChild className=" text-slate-800 dark:text-slate-300">
             <p className=" text-center">
               Make changes to your profile here. Click save when you&apos;re
               done.

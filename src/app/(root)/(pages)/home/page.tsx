@@ -19,8 +19,8 @@ import TestimonialSection from "@/components/Testimonials";
 import { useEffect, useState } from "react";
 import { Product2 } from "@/app/data/product";
 import ProductCard from "@/components/Product_card";
-import Carousel from "@/components/Slider";
 import { getProducts } from "@/services/product.service";
+import Carousel from "@/components/Slider";
 // import Hero_section from "@/components/Hero_section";
 
 const brandLogo = [
@@ -73,7 +73,7 @@ export default function HomePage() {
   };
   return (
     <>
-      <div className=" bg-slate-400 dark:bg-gray-800 w-full ">
+      <div className=" z-0 bg-slate-400 dark:bg-gray-800 w-full ">
         <Carousel images={carouselImages} />
         {/* <BentoGridSecondDemo /> */}
         {/* <CarouselDemo /> */}
@@ -261,10 +261,10 @@ export default function HomePage() {
             <News_card />
             <News_card />
             <News_card />
+            {/* <News_card />
             <News_card />
             <News_card />
-            <News_card />
-            <News_card />
+            <News_card /> */}
           </div>
         </div>
         {/* reviews sections */}
