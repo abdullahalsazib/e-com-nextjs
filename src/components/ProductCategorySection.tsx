@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Product2 } from "../app/data/product";
+import { Product2 } from "../type/product";
 import apiClient from "@/lib/api-client";
 import ProductCard from "./Product_card";
 

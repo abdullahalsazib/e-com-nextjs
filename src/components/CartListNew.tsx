@@ -1,5 +1,5 @@
-import { useAuth } from '@/app/context/AuthContext';
-import { useCart } from '@/app/context/CartListContext';
+import { useAuth } from '@/context/AuthContext';
+import { useCart } from '@/context/CartListContext';
 import Link from 'next/link';
 import React from 'react'
 import { toast } from 'sonner';
@@ -51,14 +51,14 @@ const CartListNew = () => {
               </div>
               <div className="flex flex-col gap-2">
                 <Link
-                  href="/shoping-card"
+                  href="/pages/shoping-card"
                 //   onClick={() => setIsOpen(false)}
                   className="w-full py-2 px-4 rounded-full text-sm text-center bg-blue-500 text-white hover:bg-blue-600 duration-200 font-medium"
                 >
                   View Cart
                 </Link>
                 <Link
-                  href="/checkout"
+                  href="/pages/shoping-card"
                 //   onClick={() => setIsOpen(false)}
                   className="w-full py-2 px-4 rounded-full text-sm text-center border border-blue-500 text-blue-500 hover:bg-blue-50 duration-200 font-medium"
                 >

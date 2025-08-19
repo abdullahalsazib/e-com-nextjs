@@ -25,7 +25,7 @@ import axios from "axios";
 
 import animateBackgorund from "@/../public/register.svg";
 import Image from "next/image";
-import { useAuth } from "@/app/context/AuthContext";
+import { useAuth } from "@/context/AuthContext";
 
 const breadcrumbItems = [
   { label: "Home", link: "/" },

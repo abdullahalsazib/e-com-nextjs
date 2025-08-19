@@ -1,12 +1,11 @@
-import { useWishlist } from '@/app/context/WishlistContext';
-import { WishlistItemWithProduct } from '@/app/type/type';
+
+import { useWishlist } from '@/context/WishlistContext';
+import { WishlistItemWithProduct } from '@/type/type';
 import Link from 'next/link';
 import { toast } from 'sonner';
 
 const WishlistNew = () => {
       const { wishlist, clearWishlist, loading, error } = useWishlist();
-     
-    
   return (
       <>
           <div className=' py-4'>
@@ -47,7 +46,7 @@ const WishlistNew = () => {
               Clear all Items
             </button>
             <Link
-              href={"/shoping-card"}
+              href={"/pages/shoping-card"}
               className="flex items-center justify-center w-full py-3 px-6 rounded-full text-sm bg-blue-500 text-white hover:bg-blue-600 duration-200 capitalize font-bold"
             >
               View Full Wishlist
@@ -60,7 +59,7 @@ const WishlistNew = () => {
 
 const WishlistItem = ({ item }: { item: WishlistItemWithProduct }) => {
   const { removeFromWishlist } = useWishlist();
-
+  console.log(item.product.image)
   return (
     <div className="w-full px-4 py-2 flex items-center justify-between border-b border-gray-100">
       <div className="flex items-center gap-3">
@@ -74,7 +73,7 @@ const WishlistItem = ({ item }: { item: WishlistItemWithProduct }) => {
         )} */}
         <div>
           <h3 className="font-medium text-sm">{item.product.name}</h3>
-          <p className=" text-black dark:ext-green-300 text-sm">${item.product.price}</p>
+          <p className=" text-black dark:text-green-300 text-sm">${item.product.price}</p>
         </div>
       </div>
       <button
