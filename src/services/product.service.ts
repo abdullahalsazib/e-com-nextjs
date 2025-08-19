@@ -1,8 +1,7 @@
 // src/services/products.ts;
 
-import { Product } from "@/app/data/product";
+import { Product } from "@/type/product";
 import apiClient from "@/lib/api-client";
-
 
 // get products user/customer - admin/vendor and superadmin
 export const getProducts = async () => {
@@ -13,11 +12,11 @@ export const getProducts = async () => {
 export const getProductsVendor = async () => {
   const response = await apiClient.get("/api/v1/products/vendor");
   return response;
-}
+};
 export const getProductsSuperadmin = async () => {
   const response = await apiClient.get("/api/v1/products/superadmin");
   return response;
-}
+};
 
 // get product by id user/customer - admin/vendor and superadmin
 export const getProductById = async (id: string) => {
@@ -33,16 +32,17 @@ export const getProductByIdSuperadmin = async (id: string) => {
   return response;
 };
 
-
-
-
 // create product
 export const createProduct = async (productData: Product) => {
-  const response = await apiClient.post("/api/v1/products/vendor", productData, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  const response = await apiClient.post(
+    "/api/v1/products/vendor",
+    productData,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
   return response.data;
 };
 
@@ -51,7 +51,10 @@ export const updateProduct = async (
   id: number | string,
   productData: Product
 ) => {
-  const response = await apiClient.put(`/api/v1/products/vendor/${id}`, productData);
+  const response = await apiClient.put(
+    `/api/v1/products/vendor/${id}`,
+    productData
+  );
   return response;
 };
 
@@ -63,6 +66,9 @@ export const deleteProduct = async (id: number | string) => {
 
 // update - PATCH - product status
 export const updateProductStatus = async (id: number, status: string) => {
-  const response = await apiClient.patch(`/api/v1/products/vendor/${String(id)}/status`, {status});
+  const response = await apiClient.patch(
+    `/api/v1/products/vendor/${String(id)}/status`,
+    { status }
+  );
   return response;
-}
+};

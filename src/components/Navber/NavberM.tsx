@@ -14,9 +14,7 @@ import WishlistNew from "../WishlistNew";
 import { ModeToggle } from "../Theme_Button";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
-import { useCart } from "@/app/context/CartListContext";
-import { useWishlist } from "@/app/context/WishlistContext";
-import { useAuth } from "@/app/context/AuthContext";
+import { useAuth } from "@/context/AuthContext";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import hasRole from "@/lib/role-extr";
 import {
@@ -33,6 +31,8 @@ import {
 import Login_d from "@/app/(auth)/login/components/Login_d";
 import { Dialog } from "@radix-ui/react-dialog";
 import { DialogContent, DialogTrigger } from "../ui/dialog";
+import { useCart } from "@/context/CartListContext";
+import { useWishlist } from "@/context/WishlistContext";
 
 const NavberM = () => {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
@@ -132,7 +132,7 @@ const NavberM = () => {
                           <>
                             <li>
                               <Link
-                                href={`/user-account/${user?.name}`}
+                                href={`/dashboard/${user?.name}`}
                                 className="block hover:text-blue-500 transition-colors"
                               >
                                 <Button variant={"link"} size={"sm"}>
@@ -155,7 +155,7 @@ const NavberM = () => {
                           <>
                             <li>
                               <Link
-                                href={`/user-account/${user?.name}`}
+                                href={`/dashboard/${user?.name}`}
                                 className="block hover:text-blue-500 transition-colors"
                               >
                                 <Button variant={"link"} size={"sm"}>
@@ -166,7 +166,7 @@ const NavberM = () => {
                             <li>
                               {user?.vendor?.vendor_status === "approved" && (
                                 <Link
-                                  href={"/vendor/seller-dashboard"}
+                                  href={"/vendor/dashboard"}
                                   className="block hover:text-blue-500 transition-colors"
                                 >
                                   <Button variant={"link"} size={"sm"}>
@@ -180,7 +180,7 @@ const NavberM = () => {
                           <>
                             <li>
                               <Link
-                                href={`/user-account/${user?.name}`}
+                                href={`/dashboard/${user?.name}`}
                                 className="block hover:text-blue-500 transition-colors"
                               >
                                 <Button variant={"link"} size={"sm"}>

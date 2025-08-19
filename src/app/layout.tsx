@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import "./globals.css";
 import NextTopLoader from "nextjs-toploader";
-import { AuthProvider } from "./context/AuthContext";
+import { AuthProvider } from "@/context/AuthContext";
 import { Toaster } from "@/components/ui/sonner";
 import { Suspense } from "react";
 import Loading from "../components/Loading";
-import { WishlistProvider } from "./context/WishlistContext";
-import { CartProvider } from "./context/CartListContext";
+import { WishlistProvider } from "@/context/WishlistContext";
+import { CartProvider } from "@/context/CartListContext";
 import { ThemeProvider } from "@/components/Theme_provider";
 
 const geistSans = Geist({

@@ -8,16 +8,16 @@ import { IoCheckmarkCircle } from "react-icons/io5";
 import { FaCartArrowDown, FaRegHeart, FaHeart, FaStar } from "react-icons/fa";
 import p1 from "@/../public/product-image/image-1.png";
 import { useRouter } from "next/navigation";
-import { Product2 } from "../app/data/product";
-import { useWishlist } from "../app/context/WishlistContext";
-import { toast } from "sonner";
-import { useCart } from "../app/context/CartListContext";
-import { useAuth } from "../app/context/AuthContext";
+import { Product2 } from "../type/product";
 import { Button } from "./ui/button";
 import { CiLocationArrow1 } from "react-icons/ci";
 import { Badge } from "./ui/badge";
 import { Verified } from "lucide-react";
 import { CustomToolTip } from "./custom_compoent/CustomToolTip";
+import { useWishlist } from "@/context/WishlistContext";
+import { useCart } from "@/context/CartListContext";
+import { toast } from "sonner";
+import { useAuth } from "@/context/AuthContext";
 
 const defaultProduct: Product2 = {
   ID: 0,
@@ -110,7 +110,7 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
   const { isAuthenticated } = useAuth();
   const QuickHandleButton = (e: any, id: number) => {
     e.stopPropagation();
-    router.push(`/products/${id}`);
+    router.push(`/pages/products/${id}`);
     // /products/${product?.ID}
   };
   return (

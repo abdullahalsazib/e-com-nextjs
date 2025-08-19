@@ -1,4 +1,4 @@
-import { WishlistItemWithProduct } from "@/app/type/type";
+import { WishlistItemWithProduct } from "@/type/type";
 import apiClient from "@/lib/api-client";
 
 export type WishlistItem = {

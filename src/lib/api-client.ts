@@ -1,7 +1,8 @@
 // src/lib/api-client.ts
 import axios, { AxiosError } from "axios";
 
-const API_BASE_URL = "https://e-com-backend-next-js.onrender.com"
+// const API_BASE_URL = "https://e-com-backend-next-js.onrender.com"
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 // https://e-com-backend-next-js.onrender.com
 // http://localhost:8080
 

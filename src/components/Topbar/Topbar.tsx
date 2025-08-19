@@ -15,7 +15,7 @@ import {
 } from "../ui/dropdown-menu";
 import { MdHelpCenter, MdLocalShipping } from "react-icons/md";
 import { RiCustomerServiceLine } from "react-icons/ri";
-import { useAuth } from "@/app/context/AuthContext";
+import { useAuth } from "@/context/AuthContext";
 import hasRole from "@/lib/role-extr";
 import { InfoIcon } from "lucide-react";
 import { CustomToolTip } from "../custom_compoent/CustomToolTip";
