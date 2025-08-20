@@ -79,11 +79,13 @@ const NavberM = () => {
     <>
       <div
         className={` border-b ${
-          isScrolled ? "fixed top-0 left-0 z-50 shadow-md w-full bg-white/10 backdrop-blur-md " : " w-full bg-black"
+          isScrolled
+            ? "fixed top-0 left-0 z-50 shadow-md w-full bg-white/10 backdrop-blur-md "
+            : " w-full bg-black"
         }`}
       >
-        <div className={`${isScrolled ? "hidden": "block"}`}>
-        <Topbar />
+        <div className={`${isScrolled ? "hidden" : "block"}`}>
+          <Topbar />
         </div>
 
         <div className=" w-full py-1 px-3 lg:px-5 xl:px-[10%] flex flex-row items-center justify-between gap-3 lg:gap-4 bg-white dark:bg-black  lg:relative">
@@ -308,10 +310,14 @@ const NavberM = () => {
             className={` w-full sm:w-[450px] ${
               !wishlistOpen
                 ? "translate-x-[100%] duration-300"
-                : `translate-x-0 duration-200 ${!isScrolled ? "top-0 bg_blur_effect": "  -top-[0%]  "}`
-            } fixed h-screen right-0 top-0 z-50  px-5 py-10`}
+                : `translate-x-0 duration-200 ${
+                    !isScrolled
+                      ? "top-0 bg_blur_effect border-l"
+                      : "  -top-[0%]  "
+                  }`
+            } fixed h-screen right-0 top-0 z-50  px-5 py-10 border-l`}
           >
-            <div className=" w-full flex items-center justify-start">
+            <div className=" w-full flex items-center justify-end">
               <Button
                 size={"icon"}
                 variant={"outline"}
@@ -323,12 +329,9 @@ const NavberM = () => {
             <div className="w-full h-full">
               <WishlistNew />
             </div>
-             {
-              isScrolled && (
-
-                <div className="bg-white/95 dark:bg-black/95 -z-30  w-full h-screen absolute left-0 top-0"></div>
-              )
-            }
+            {isScrolled && (
+              <div className="bg-white/95 dark:bg-black/95 -z-30  w-full h-screen absolute left-0 top-0"></div>
+            )}
           </div>
 
           {/* cart for Desktop device */}
@@ -337,10 +340,14 @@ const NavberM = () => {
             className={` w-full sm:w-[450px] ${
               !cartOpen
                 ? "translate-x-[100%] duration-300"
-                : `translate-x-0 duration-200 ${!isScrolled ? "top-0 bg_blur_effect": "  -top-[0%]  "}`
-            } fixed h-screen right-0 top-0 z-50  px-5 py-10`}
+                : `translate-x-0 duration-200 border-l ${
+                    !isScrolled
+                      ? "top-0 bg_blur_effect"
+                      : "  -top-[0%] border-l  "
+                  }`
+            } fixed h-screen right-0 top-0 z-50  px-5 py-10 border-l`}
           >
-            <div className=" w-full flex items-center justify-start">
+            <div className=" w-full flex items-center justify-end">
               <Button
                 size={"icon"}
                 variant={"outline"}
@@ -352,12 +359,9 @@ const NavberM = () => {
             <div className="w-full h-full py-2 text-black">
               <CartListNew />
             </div>
-            {
-              isScrolled && (
-
-                <div className="bg-white/95 dark:bg-black/95 -z-30  w-full h-screen absolute left-0 top-0"></div>
-              )
-            }
+            {isScrolled && (
+              <div className="bg-white/95 dark:bg-black/95 -z-30  w-full h-screen absolute left-0 top-0"></div>
+            )}
           </div>
 
           {/* mobile device navber  */}
@@ -365,11 +369,12 @@ const NavberM = () => {
             className={`  z-50  right-0  md:hidden fixed py-5 px-3 ${
               !menuOpen
                 ? "-translate-x-[200%] duration-200 opacity-0"
-                : `translate-x-0 duration-400 w-[100%] h-screen fixed ${!isScrolled ? "top-0": "  -top-[0%] bg-black "}`
+                : `translate-x-0 duration-400 w-[100%] h-screen fixed ${
+                    !isScrolled ? "top-0" : "  -top-[0%] bg-black "
+                  }`
             }
                 `}
           >
-            
             <div className=" z-[9999] w-full  flex items-center justify-end">
               <Button
                 size={"icon"}
@@ -389,23 +394,20 @@ const NavberM = () => {
                 Search
               </button>
             </div>
-             <div className=" -z-30 bg-white/60 dark:bg-white/5 backdrop-blur-lg w-full h-screen absolute left-0 top-0"></div>
+            <div className=" -z-30 bg-white/60 dark:bg-white/5 backdrop-blur-lg w-full h-screen absolute left-0 top-0"></div>
           </div>
-
-          
-          </div>
+        </div>
       </div>
-          {showScrollButton && (
-            <button
-            onClick={scrollToTop}
-            className="fixed bottom-6 right-6 md:right-6 z-50 w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center shadow-lg hover:bg-blue-700 transition-colors duration-300"
-            >
-              <BiArrowToTop className="text-2xl" />
-            </button>
-          )}
+      {showScrollButton && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-6 right-6 md:right-6 z-50 w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center shadow-lg hover:bg-blue-700 transition-colors duration-300"
+        >
+          <BiArrowToTop className="text-2xl" />
+        </button>
+      )}
     </>
   );
 };
 
 export default NavberM;
-
