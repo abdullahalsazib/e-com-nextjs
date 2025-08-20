@@ -82,7 +82,7 @@ const Topbar = () => {
         )}
 
         {isAuthenticated && isUserRole && !isVendor && (
-          <Link href="/vendor/become-seller">
+          <Link href="/register/become-vendor">
             <Button
               variant="link"
               size="sm"

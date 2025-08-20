@@ -22,21 +22,24 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { BsBoxSeamFill } from "react-icons/bs";
 import { MdArrowOutward } from "react-icons/md";
 import { toast } from "sonner";
 import z from "zod";
+import { FaSpinner } from "react-icons/fa6";
 
 const FormSchema = z.object({
-  email: z.string(),
+  email: z.string().email("Invalid email address!"),
   password: z.string().min(4, {
     message: "password must be at least 4 characters.",
   }),
+  remember: z.boolean().optional()
 });
 
 const Login_d = () => {
+  const [loading, setLoading] = useState<boolean>(false);
   const { login } = useAuth();
   const navigate = useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -44,9 +47,12 @@ const Login_d = () => {
     defaultValues: {
       email: "",
       password: "",
+      remember: false,
     },
   });
   const onSubmit = async (data_z: z.infer<typeof FormSchema>) => {
+    setLoading(true);
+    const startTime = Date.now();
     try {
       const { data } = await loginUser({
         email: data_z.email,
@@ -66,8 +72,18 @@ const Login_d = () => {
       if (axios.isAxiosError(err)) {
         console.log(err);
         toast.error(
-          err.response?.data?.message || err.message || "Something went wrong",
+          err.response?.data?.message || err.message || "Something went wrong"
         );
+      }
+    } finally {
+      const elapsed = Date.now() - startTime;
+      const minDelay = 5000; // 5s
+      const remaining = minDelay - elapsed;
+
+      if (remaining > 0) {
+        setTimeout(() => setLoading(false), remaining);
+      } else {
+        setLoading(false);
       }
     }
   };
@@ -82,7 +98,10 @@ const Login_d = () => {
               <h1 className=" text-center">Wellcome to E_shop</h1>
             </div>
           </DialogTitle>
-          <DialogDescription asChild className=" text-slate-800 dark:text-slate-300">
+          <DialogDescription
+            asChild
+            className=" text-slate-800 dark:text-slate-300"
+          >
             <p className=" text-center">
               Make changes to your profile here. Click save when you&apos;re
               done.
@@ -136,12 +155,23 @@ const Login_d = () => {
             />
           </div>
           <div className="flex items-center justify-between gap-3">
-            <div className=" flex gap-2">
-              <Checkbox id="terms" />
-              <Label htmlFor="terms" className=" cursor-pointer">
-                Remember me
-              </Label>
-            </div>
+            <FormField
+              control={form.control}
+              name="remember"
+              render={({ field }) => (
+                <div className="flex gap-2 items-center">
+                  <Checkbox
+                    id="remember"
+                    checked={field.value} // bind checked state
+                    onCheckedChange={field.onChange} // update form value
+                  />
+                  <Label htmlFor="remember" className="cursor-pointer">
+                    Remember me
+                  </Label>
+                </div>
+              )}
+            />
+
             <Link
               href={"/"}
               className="text-sm flex underline text-blue-400 capitalize"
@@ -155,8 +185,8 @@ const Login_d = () => {
           </div> */}
         </div>
         <div className=" grid grid-cols-3 gap-3">
-          <Button className="mt-5" type="submit">
-            Submit
+          <Button disabled={loading} className="mt-5" type="submit">
+            {loading ? <FaSpinner className=" animate-spin" /> : "Login"}
           </Button>
           <Button
             onClick={() => navigate.push("/register")}

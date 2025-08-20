@@ -40,7 +40,7 @@ const carouselImages = [
 // import placeholderImage from "@/../public/placeholder-image/image.png";
 import { Button } from "@/components/ui/button";
 import { BiError } from "react-icons/bi";
-import { PiSpinnerGap } from "react-icons/pi";
+import { Skeleton } from "@/components/ui/skeleton";
 export default function HomePage() {
   const [products, setProducts] = useState<Product2[]>([]);
 
@@ -100,23 +100,31 @@ export default function HomePage() {
               {numbers
                 .slice(0, showAll ? numbers.length : 9) // show 5 or all
                 .map((key) => (
-                  <div
-                    key={key}
-                    className="border py-2 rounded-md border-white/60 hover:scale-105 duration-300 cursor-pointer hover:shadow-lg  border-dotted w-[100%] md:h-[auto] overflow-clip m-auto relative flex items-center justify-center bg-blue-500/10 dark:bg-gray-500/20 dark:border-white/10 dark:shadow-gray-50/10"
-                  >
-                    {/* <Image
+                  <>
+                    {loading ? (
+                      <div>
+                        <Skeleton className="  w-[full] h-[100px]" />
+                      </div>
+                    ) : (
+                      <div
+                        key={key}
+                        className="border py-2 rounded-md border-white/60 hover:scale-105 duration-300 cursor-pointer hover:shadow-lg  border-dotted w-[100%] md:h-[auto] overflow-clip m-auto relative flex items-center justify-center bg-blue-500/10 dark:bg-gray-500/20 dark:border-white/10 dark:shadow-gray-50/10"
+                      >
+                        {/* <Image
                     src={placeholderImage} // replace with your placeholderImage
                     alt={`placeholder ${key}`}
                     className=" rounded-md w-[90%] m-auto"
                     width={120}
                     height={120}
                   /> */}
-                    <div className=" w-[100px] h-[100px] flex items-center justify-center text-xs">
-                      category {key + 1}
-                    </div>
-                    <div className="w-full h-full absolute top-0 left-0 duration-300 hover:bg-blue-500/20 hover:backdrop-blur-xs m-auto"></div>
-                    {/* <p className="absolute -bottom-0">Category {key}</p> */}
-                  </div>
+                        <div className=" w-[100px] h-[100px] flex items-center justify-center text-xs">
+                          category {key + 1}
+                        </div>
+                        <div className="w-full h-full absolute top-0 left-0 duration-300 hover:bg-blue-500/20 hover:backdrop-blur-xs m-auto"></div>
+                        {/* <p className="absolute -bottom-0">Category {key}</p> */}
+                      </div>
+                    )}
+                  </>
                 ))}
             </div>
             <div className=" mt-4 w-full flex items-center justify-center">
@@ -148,14 +156,6 @@ export default function HomePage() {
 
             {/* handle error and loading  */}
             <div>
-              {loading && (
-                <div className=" w-full py-10 h-10 flex items-center justify-center text-yellow-400">
-                  <h1 className=" flex items-center justify-center gap-3">
-                    Product is Loading...{" "}
-                    <PiSpinnerGap className=" text-2xl animate-spin " />{" "}
-                  </h1>
-                </div>
-              )}
               {error && (
                 <div className=" w-full py-10 h-10 flex items-center justify-center">
                   {" "}
@@ -173,6 +173,15 @@ export default function HomePage() {
                   lg:grid-cols-5 
                   xl:grid-cols-6"
               >
+                {loading && (
+                  <>
+                    {numbers.slice(0, 6).map((key) => (
+                      <>
+                        <ProductCardSkeleton key={key} />
+                      </>
+                    ))}
+                  </>
+                )}
                 {products.map((product) => (
                   <div key={product.ID} className="mb-6 break-inside-avoid">
                     <ProductCard product={enhanceProductData(product)} />
@@ -209,6 +218,15 @@ export default function HomePage() {
                 see all products
               </a>
             </div>
+            {loading && (
+              <>
+                {numbers.slice(0, 6).map((key) => (
+                  <>
+                    <ProductCardSkeleton key={key} />
+                  </>
+                ))}
+              </>
+            )}
             {products.map((product) => (
               <ProductCard
                 key={product.ID}
@@ -255,6 +273,15 @@ export default function HomePage() {
                   see all products
                 </a>
               </div>
+              {loading && (
+                <>
+                  {numbers.slice(0, 6).map((key) => (
+                    <>
+                      <ProductCardSkeleton key={key} />
+                    </>
+                  ))}
+                </>
+              )}
               {products.map((product) => (
                 <ProductCard
                   key={product.ID}
@@ -281,6 +308,15 @@ export default function HomePage() {
                   see all products
                 </a>
               </div>
+              {loading && (
+                <>
+                  {numbers.slice(0, 6).map((key) => (
+                    <>
+                      <ProductCardSkeleton key={key} />
+                    </>
+                  ))}
+                </>
+              )}
               {products.map((product) => (
                 <ProductCard
                   key={product.ID}
@@ -302,6 +338,15 @@ export default function HomePage() {
                   see all products
                 </a>
               </div>
+              {loading && (
+                <>
+                  {numbers.slice(0, 6).map((key) => (
+                    <>
+                      <ProductCardSkeleton key={key} />
+                    </>
+                  ))}
+                </>
+              )}
               {products.map((product) => (
                 <ProductCard
                   key={product.ID}
@@ -350,5 +395,35 @@ export default function HomePage() {
       </div>
       {/* <Footer /> */}
     </>
+  );
+}
+
+export function ProductCardSkeleton() {
+  return (
+    <div className=" rounded-sm shadow-sm p-3 flex flex-col gap-2">
+      {/* Image */}
+      <div className="flex items-center justify-center">
+        <Skeleton className="h-[200px] w-[200px] rounded-md " />
+      </div>
+
+      {/* Title + Price */}
+      <div className="flex items-center justify-between w-full">
+        <Skeleton className="h-5 w-28 rounded " /> {/* product name */}
+        <Skeleton className="h-5 w-16 rounded " /> {/* price */}
+      </div>
+
+      {/* Description */}
+      <Skeleton className="h-4 w-full rounded " />
+      <Skeleton className="h-4 w-2/3 rounded " />
+
+      {/* Rating */}
+      <div className="flex items-center gap-2">
+        <Skeleton className="h-4 w-24 rounded " />
+        <Skeleton className="h-3 w-6 rounded " />
+      </div>
+
+      {/* Button */}
+      <Skeleton className="h-8 w-full rounded-full " />
+    </div>
   );
 }
