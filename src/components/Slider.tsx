@@ -73,7 +73,7 @@ const Carousel: React.FC<CarouselProps> = ({
   }, [currentIndex, images]);
 
   return (
-    <div className="w-full bg-white dark:bg-gray-950 relative overflow-hidden h-[64vh] md:h-[80vh]">
+    <div className=" bg-white dark:bg-gray-950 relative overflow-hidden w-full lg:w-[40vw] h-[64vw] md:h-[34vh] rounded-md">
       {/* Carousel container */}
       <div
         className="flex h-full transition-transform duration-500 ease-out"
@@ -106,14 +106,14 @@ const Carousel: React.FC<CarouselProps> = ({
           className="pointer-events-auto p-2 bg-black/50 text-white rounded-full hover:bg-black/70 transition-colors z-10"
           aria-label="Previous slide"
         >
-          <MdKeyboardArrowLeft className="text-2xl md:text-3xl" />
+          <MdKeyboardArrowLeft className="text-lg md:text-xl" />
         </button>
         <button
           onClick={goToNext}
           className="pointer-events-auto p-2 bg-black/50 text-white rounded-full hover:bg-black/70 transition-colors z-10"
           aria-label="Next slide"
         >
-          <MdKeyboardArrowRight className="text-2xl md:text-3xl" />
+          <MdKeyboardArrowRight className="text-lg md:text-xl" />
         </button>
       </div>
 

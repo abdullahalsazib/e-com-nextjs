@@ -36,6 +36,10 @@ const carouselImages = [
   { src: Carsol1.src, alt: "Banner 1" },
   { src: Carsol1.src, alt: "Banner 1" },
 ];
+
+import placeholderImage from "@/../public/placeholder-image/image.png";
+import { Button } from "@/components/ui/button";
+import { FaAngleDown } from "react-icons/fa";
 export default function HomePage() {
   const [products, setProducts] = useState<Product2[]>([]);
 
@@ -71,16 +75,63 @@ export default function HomePage() {
         (Math.random() > 0.5 ? product.price * 1.2 : undefined), // 50% chance to show original price
     };
   };
+
+  const numbers = Array.from({ length: 10 }, (_, i) => i);
+  const [showAll, setShowAll] = useState(false);
   return (
     <>
-      <div className=" z-0 bg-slate-400 dark:bg-gray-800 w-full ">
+      <div className=" z-0  w-full  md:px-[5%] lg:px-[10%] py-5 px-2 ">
         <Carousel images={carouselImages} />
-        {/* <CarouselDemo /> */}
-        {/* hero section */}
-        {/* <Hero_section /> */}
       </div>
 
-      <div className={`px-[10%] bg-white dark:bg-gray-950 `}>
+      <div className={` px-2 md:px-[5%] lg:px-[10%] `}>
+        <div className=" w-full py-2">
+          <h2 className=" text-sm md:text-2xl font-semibold md:font-bold">
+            Category&apos;s
+          </h2>
+
+          <div className="py-3 w-full duration-300 grid gap-3 [grid-template-columns:repeat(auto-fit,minmax(150px,1fr))]">
+            {numbers
+              .slice(0, showAll ? numbers.length : 5) // show 5 or all
+              .map((key) => (
+                <div
+                  key={key}
+                  className="border border-white/60 hover:scale-105 duration-300 cursor-pointer hover:shadow-lg rounded-full border-dotted w-[150px] h-[150px] overflow-clip m-auto relative flex items-center justify-center bg-blue-500/10 dark:bg-gray-500/20 dark:border-white/10 dark:shadow-gray-50/10"
+                >
+                  <Image
+                    src={placeholderImage} // replace with your placeholderImage
+                    alt={`placeholder ${key}`}
+                    className="rounded-full w-[90%] m-auto"
+                    width={120}
+                    height={120}
+                  />
+                  <div className="w-full h-full absolute top-0 left-0 duration-300 hover:bg-blue-500/30 hover:backdrop-blur-xs m-auto"></div>
+                  {/* <p className="absolute -bottom-0">Category {key}</p> */}
+                </div>
+              ))}
+          </div>
+          <div className=" w-full flex items-center justify-center">
+            {!showAll && (
+              <Button
+                onClick={() => setShowAll(true)}
+                className="text-xs bg-transparent hover:bg-transparent text-black m-auto"
+                size={"sm"}
+              >
+                See More <FaAngleDown className=" text-xs" />
+              </Button>
+            )}
+            {showAll && (
+              <Button
+                onClick={() => setShowAll(false)}
+                className="text-xs bg-transparent hover:bg-transparent text-black m-auto"
+                size={"sm"}
+              >
+                See Less <FaAngleDown className=" rotate-180 text-xs" />
+              </Button>
+            )}
+          </div>
+        </div>
+
         {/* Products sections  */}
         <div className=" pt-7">
           <div className="  flex items-center justify-between w-full">
@@ -93,7 +144,7 @@ export default function HomePage() {
             </a>
           </div>
           {/* in hear some product card's */}
-          <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-2.5 pt-3 mb-10">
+          <div className=" px-4 sm:px-10 md:px-0 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-2.5 pt-3 mb-10">
             {loading && <h1>Product is Loading...</h1>}
             {error && <h1>{error}</h1>}
             {products.map((product) => (

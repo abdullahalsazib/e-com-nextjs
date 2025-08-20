@@ -78,11 +78,14 @@ const NavberM = () => {
   return (
     <>
       <div
-        className={`${
+        className={` border-b ${
           isScrolled ? "fixed top-0 left-0 z-50 shadow-md w-full bg-white/10 backdrop-blur-md " : " w-full bg-black"
         }`}
       >
+        <div className={`${isScrolled ? "hidden": "block"}`}>
         <Topbar />
+        </div>
+
         <div className=" w-full py-1 px-3 lg:px-5 xl:px-[10%] flex flex-row items-center justify-between gap-3 lg:gap-4 bg-white dark:bg-black  lg:relative">
           {/* left section */}
           {/* logo and brand */}

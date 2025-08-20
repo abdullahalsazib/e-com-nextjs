@@ -55,13 +55,13 @@ const Topbar = () => {
     : null;
 
   return (
-    <div className="w-full py-1 px-3 lg:px-5 xl:px-[10%] bg-slate-500 dark:bg-slate-800 hidden md:flex flex-col md:flex-row items-center justify-between gap-2">
+    <div className="w-full py-1 px-3 lg:px-5 xl:px-[10%] bg-gradient-to-r from-blue-700 to-blue-400 dark:to-blue-800 dark:from-blue-900 hidden md:flex flex-col md:flex-row items-center justify-between gap-2">
       {/* Left Section */}
       <div className="flex items-center gap-4 text-white">
         <Link href="/" className="text-sm whitespace-nowrap">
           <span className="font-semibold">E-COM</span> Next.js
         </Link>
-        <div className="hidden lg:flex items-center gap-2 text-sm">
+        <div className="hidden lg:flex items-center gap-2 text-xs">
           <span>Call Us:</span>
           <span className="font-semibold">+880 123 456 789</span>
         </div>
@@ -99,7 +99,7 @@ const Topbar = () => {
             <Button
               variant="link"
               size="sm"
-              className="text-sm text-white uppercase hidden md:inline-flex"
+              className="text-xs text-white uppercase hidden md:inline-flex"
             >
               Help & Support
             </Button>
@@ -126,7 +126,7 @@ const Topbar = () => {
                 <Button
                   variant="link"
                   size="sm"
-                  className="text-white uppercase"
+                  className="text-white uppercase text-xs"
                 >
                   Log In
                 </Button>
@@ -139,7 +139,7 @@ const Topbar = () => {
               <Button
                 variant="link"
                 size="sm"
-                className="text-white uppercase hidden md:inline-flex"
+                className="text-white uppercase hidden md:inline-flex text-xs"
               >
                 Sign Up
               </Button>
