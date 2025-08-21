@@ -1,80 +1,88 @@
-import { useAuth } from '@/context/AuthContext';
-import { useCart } from '@/context/CartListContext';
-import Link from 'next/link';
-import React from 'react'
-import { toast } from 'sonner';
+import { useAuth } from "@/context/AuthContext";
+import { useCart } from "@/context/CartListContext";
+import Link from "next/link";
+import React from "react";
+import { toast } from "sonner";
 
 const CartListNew = () => {
   const { cart, loading, error, cartItemCount, cartTotal } = useCart();
-  const {isAuthenticated} = useAuth()
+  const { isAuthenticated } = useAuth();
   // console.log("cart form wishlit: ", cart)
- 
-  return (
-    <div className=' py-4'>
-    {!isAuthenticated ? (
-        <>
-          <div className=' flex items-center justify-center flex-col gap-2'>
-            <p className=' text-center text-3xl dark:text-white'>Sign Up please</p>
-            <Link href={"/register"} className=' dark:text-blue-300 underline capitalize text-xl'>sign up</Link>
-        </div>
-        </>
-      ): (
-          <>
-            <div className="flex flex-col items-start w-full px-4">
-            <h1 className="text-xl font-semibold text-black dark:text-white text-center">
-              My Cart
-            </h1>
-            <p className="text-xs text-gray-500 dark:text-gray-300 capitalize">
-              {cartItemCount} {cartItemCount === 1 ? "item" : "items"} in Cart
-            </p>
-          </div>
 
-          <div className="py-3 w-full flex flex-col gap-0 max-h-60 overflow-y-auto px-4">
-            {loading ? (
-              <p className="text-center py-4">Loading cart...</p>
-            ) : error ? (
-              <p className="text-red-500 text-center py-4">{error}</p>
-            ) : !cart || cart.items.length === 0 ? (
-              <p className="text-gray-500 dark:text-gray-300 text-center py-4">
-                Your cart is empty
+  return (
+    <div className=" py-4 h-full">
+      {!isAuthenticated ? (
+        <>
+          <div className=" flex items-center justify-center flex-col gap-2">
+            <p className=" text-center text-3xl dark:text-white">
+              Sign Up please
+            </p>
+            <Link
+              href={"/register"}
+              className=" dark:text-blue-300 underline capitalize text-xl"
+            >
+              sign up
+            </Link>
+          </div>
+        </>
+      ) : (
+        <>
+          <div className=" h-full w-full flex items-start justify-between flex-col">
+            <div className="flex flex-col items-start w-full px-4">
+              <h1 className="text-xl font-semibold text-black dark:text-white text-center">
+                My Cart
+              </h1>
+              <p className="text-xs text-gray-500 dark:text-gray-300 capitalize">
+                {cartItemCount} {cartItemCount === 1 ? "item" : "items"} in Cart
               </p>
-            ) : (
-              cart.items.map((item) => <CartItem key={item.ID} item={item} />)
+            </div>
+
+            <div className="py-3 w-full flex flex-col gap-0 max-h-full px-4">
+              {loading ? (
+                <p className="text-center py-4">Loading cart...</p>
+              ) : error ? (
+                <p className="text-red-500 text-center py-4">{error}</p>
+              ) : !cart || cart.items.length === 0 ? (
+                <p className="text-gray-500 dark:text-gray-300 text-center py-4">
+                  Your cart is empty
+                </p>
+              ) : (
+                cart.items.map((item) => <CartItem key={item.ID} item={item} />)
+              )}
+            </div>
+
+            {cart && cart.items.length > 0 && (
+              <div className="px-4 border-t border-gray-100 pt-3 w-full">
+                <div className="flex justify-between dark:text-white font-medium mb-3">
+                  <span>Subtotal:</span>
+                  <span>${cartTotal.toFixed(2)}</span>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <Link
+                    href="/pages/shoping-card"
+                    //   onClick={() => setIsOpen(false)}
+                    className="w-full py-2 px-4 rounded-full text-sm text-center bg-blue-500 text-white hover:bg-blue-600 duration-200 font-medium"
+                  >
+                    View Cart
+                  </Link>
+                  <Link
+                    href="/pages/shoping-card"
+                    //   onClick={() => setIsOpen(false)}
+                    className="w-full py-2 px-4 rounded-full text-sm text-center border border-blue-500 text-blue-500 hover:bg-blue-50 duration-200 font-medium"
+                  >
+                    Checkout
+                  </Link>
+                </div>
+              </div>
             )}
           </div>
-
-          {cart && cart.items.length > 0 && (
-            <div className="px-4 border-t border-gray-100 pt-3">
-              <div className="flex justify-between dark:text-white font-medium mb-3">
-                <span>Subtotal:</span>
-                <span>${cartTotal.toFixed(2)}</span>
-              </div>
-              <div className="flex flex-col gap-2">
-                <Link
-                  href="/pages/shoping-card"
-                //   onClick={() => setIsOpen(false)}
-                  className="w-full py-2 px-4 rounded-full text-sm text-center bg-blue-500 text-white hover:bg-blue-600 duration-200 font-medium"
-                >
-                  View Cart
-                </Link>
-                <Link
-                  href="/pages/shoping-card"
-                //   onClick={() => setIsOpen(false)}
-                  className="w-full py-2 px-4 rounded-full text-sm text-center border border-blue-500 text-blue-500 hover:bg-blue-50 duration-200 font-medium"
-                >
-                  Checkout
-                </Link>
-              </div>
-            </div>
-          )}
-    </>
+        </>
       )}
-      </div>
-  )
-}
+    </div>
+  );
+};
 
-export default CartListNew
-
+export default CartListNew;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const CartItem = ({ item }: { item: any }) => {

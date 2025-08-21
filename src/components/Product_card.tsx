@@ -1,23 +1,15 @@
-/* eslint-disable react/no-children-prop */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @next/next/no-img-element */
 "use client";
-
-import React from "react";
-import { IoCheckmarkCircle } from "react-icons/io5";
-import { FaCartArrowDown, FaRegHeart, FaHeart, FaStar } from "react-icons/fa";
+import { FaRegHeart, FaHeart, FaStar } from "react-icons/fa";
 import p1 from "@/../public/product-image/image-1.png";
-import { useRouter } from "next/navigation";
 import { Product2 } from "../type/product";
 import { Button } from "./ui/button";
-import { CiLocationArrow1 } from "react-icons/ci";
-import { Badge } from "./ui/badge";
-import { Verified } from "lucide-react";
-import { CustomToolTip } from "./custom_compoent/CustomToolTip";
 import { useWishlist } from "@/context/WishlistContext";
 import { useCart } from "@/context/CartListContext";
 import { toast } from "sonner";
 import { useAuth } from "@/context/AuthContext";
+import { IoCheckmarkCircle } from "react-icons/io5";
+import Link from "next/link";
 
 const defaultProduct: Product2 = {
   ID: 0,
@@ -29,7 +21,7 @@ const defaultProduct: Product2 = {
 };
 
 const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
-  const router = useRouter();
+  // const router = useRouter();
   const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
   const { addToCart, loading: cartLoading } = useCart();
 
@@ -69,6 +61,7 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
     stock = 0,
     image_url = p1.src,
     name = "Product Name",
+    description = "",
     price = 0,
     rating = 0,
     review_count = 0,
@@ -108,147 +101,97 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
   };
 
   const { isAuthenticated } = useAuth();
-  const QuickHandleButton = (e: any, id: number) => {
-    e.stopPropagation();
-    router.push(`/pages/products/${id}`);
-    // /products/${product?.ID}
-  };
+  // const QuickHandleButton = (e: any, id: number) => {
+  //   e.stopPropagation();
+  //   router.push(`/pages/products/${id}`);
+  //   // /products/${product?.ID}
+  // };
+
   return (
-    <div className="bg-white dark:bg-gray-900 border-[1.5] rounded-md flex items-center justify-between flex-col shadow-sm hover:shadow-xl transition-shadow duration-300 ease-in-out">
+    <div className="bg-white dark:bg-white dark:text-white flex items-center justify-between flex-col border-[1.5] border-slate-100 dark:border-slate-900 hover:shadow-xl transition-shadow duration-500 relative active:scale-105">
       {/* Product Image */}
-      <div className="w-full p-1 h-auto  ">
-        <img
-          src={image_url}
-          alt={name}
-          className="object-cover w-full rounded-md border-[1.5] "
-        />
-      </div>
+      <Link
+        href={`/pages/products/${product.ID}`}
+        className="peer cursor-pointer hover:scale-110 duration-500 bg-transparent w-[full] h-[250px] flex items-center justify-center"
+      >
+        <img src={`${image_url}`} alt={name} width={"200px"} />
+      </Link>
 
       {/* Product Info */}
-      <div className="flex flex-col w-full p-2 space-y-2">
-        <div className=" ">
-          <div className="flex items-center justify-between gap-2">
-            <CustomToolTip
-              children={
-                <Badge
-                  variant="secondary"
-                  className="bg-blue-500 text-white dark:bg-blue-600 self-start"
-                >
-                  <Verified /> john deo
-                </Badge>
-              }
-              bodyContent="Mr. John Deo"
-            />
-            <div className=" flex gap-2">
-              <CustomToolTip
-                children={
-                  <Badge
-                    variant="secondary"
-                    className="bg-blue-500 text-white dark:bg-blue-600"
-                  >
-                    New
-                  </Badge>
-                }
-                bodyContent="New Uploaded Product"
-              />
+      <div className=" peer-hover:bg-blue-300/10 peer-hover:blur-xs duration-500 bg-slate-100 dark:bg-black  w-full  h-[140px] px-2 py-3 flex flex-col justify-between">
+        <div className=" flex flex-col gap-1 items-start justify-start">
+          <div className=" w-full flex items-center justify-between gap-2">
+            <h3 className="text-sm font-bold dark:text-gray-100 text-gray-900 line-clamp-1 ">
+              {name}
+            </h3>
 
-              <CustomToolTip
-                children={
-                  <Badge
-                    variant="secondary"
-                    className="bg-green-500 text-white dark:bg-green-500"
-                  >
-                    {product.stock}
-                  </Badge>
-                }
-                bodyContent="Available stock"
-              />
-            </div>
-          </div>
-          <div className="flex items-center justify-start w-full relative">
-            <div>
-              {rating > 0 && (
-                <div className="flex items-center">
-                  <div className="flex">{renderStars()}</div>
-                  <span className="text-xs text-gray-500 ml-2">
-                    ({review_count})
-                  </span>
-                </div>
-              )}
-            </div>
-            <div className="flex justify-between items-start absolute -top-0 right-0">
-              <p
-                className={`text-xs flex items-center gap-1 ${
-                  inStock ? "text-green-700" : "text-red-600"
-                }`}
-              >
-                <IoCheckmarkCircle />
-                {inStock ? "In stock" : "Out of stock"}
-              </p>{" "}
-            </div>
-          </div>
-
-          <h3 className="text-sm font-bold dark:text-gray-100 text-gray-900 line-clamp-2 ">
-            {name}
-          </h3>
-          <p className=" text-xs dark:text-gray-300 text-gray-500 w-full line-clamp-2">
-            {product.description}
-          </p>
-
-          <div className="flex items-center justify-between">
-            {/* {original_price && original_price > price && (
-              <del className="text-xs text-gray-400">
-                ${original_price.toFixed(2)}
-              </del>
-            )} */}
-            <del className="text-sm font-bold dark:text-gray-500 text-gray-600">
-              ${price.toFixed(2)}
-            </del>
-            <span className="text-lg font-bold dark:text-gray-300 text-gray-900">
-              ${price.toFixed(2)}
+            <span className="text-sm self-start font-bold dark:text-gray-300 text-gray-700">
+              <sup> $</sup>
+              {price}.<sup>00</sup>
+              {/* .toFixed(2) */}
             </span>
           </div>
+          <p className="text-xs text-gray-500 line-clamp-1">{description}</p>
+
+          <div>
+            <div className="flex items-center justify-start w-full relative">
+              <div>
+                {rating > 0 && (
+                  <div className="flex items-center">
+                    <div className="flex text-xs">{renderStars()}</div>
+                    <span className="text-[12px] text-gray-500 ml-2">
+                      ({review_count})
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
+
         <div className=" flex flex-row justify-between items-center gap-1">
           <div className=" flex gap-2">
-            <Button
+            {/* addTocart */}
+            <button
               onClick={(e) => {
                 e.stopPropagation();
                 handleAddToCart();
               }}
               disabled={cartLoading || !inStock || !isAuthenticated}
-              size={"icon"}
-              variant={"secondary"}
-              className=" size-9 "
+              className={`text-xs capitalize ring-2 bg-transparent text-black dark:text-white rounded-full px-5 py-1.5  ${
+                cartLoading || !inStock || !isAuthenticated
+                  ? "active:scale-100 hover:scale-100 ring-1 ring-white/50 pointer-events-none bg-black/50"
+                  : "text-gray-400 ring-black/50 dark:ring-white/50 hover:bg-black/100 dark:hover:bg-blue-500/40 hover:ring-blue-500 dark:hover:ring-blue-500 hover:text-white duration-500 active:scale-105"
+              } `}
             >
-              <FaCartArrowDown />
-            </Button>
-            <Button
-              onClick={(e) => {
-                e.stopPropagation();
-                toggleWishlist();
-              }}
-              size={"icon"}
-              variant={"secondary"}
-              className=" size-9"
-            >
-              {isWishlisted ? (
-                <FaHeart className="text-red-500" />
-              ) : (
-                <FaRegHeart />
-              )}
-            </Button>
+              {/* <FaCartArrowDown /> */}
+              add to cart
+            </button>
           </div>
-          <Button
-            onClick={(e: any) => QuickHandleButton(e, product.ID)}
-            size={"lg"}
-            variant={"secondary"}
-            className=" w-ful"
-          >
-            <CiLocationArrow1 />
-            <span>Open</span>
-          </Button>
         </div>
+      </div>
+
+      {/* absolute card top */}
+      <div className="peer-hover:bg-blue-300/10 peer-hover:blur-xs duration-500 flex justify-between items-center absolute py-3 bg-transparent w-full px-5">
+        <p
+          className={`text-xs flex items-center gap-1 ${
+            inStock ? "text-green-700" : "text-red-600"
+          }`}
+        >
+          <IoCheckmarkCircle className=" animate-pulse" />
+          {inStock ? "In stock" : "Out of stock"}
+        </p>
+        {/* wishlist */}
+        <Button
+          onClick={(e) => {
+            e.stopPropagation();
+            toggleWishlist();
+          }}
+          size={"icon"}
+          className=" hover:scale-105 duration-500 size-9 bg-transparent rounded-full dark:bg-transparent text-black hover:bg-transparent"
+        >
+          {isWishlisted ? <FaHeart className="text-red-500" /> : <FaRegHeart />}
+        </Button>
       </div>
     </div>
   );

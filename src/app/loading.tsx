@@ -8,7 +8,7 @@ export default function Loading() {
           </span>
         </div>
         <h1 className="mt-4 text-2xl font-semibold text-gray-800 dark:text-white">
-          Loading your Web-Site...
+          Loading e-com..
         </h1>
         <p className="mt-2 text-gray-600">
           Please wait while we prepare everything

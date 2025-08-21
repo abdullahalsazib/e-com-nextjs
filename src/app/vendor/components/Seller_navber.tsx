@@ -39,7 +39,9 @@ const Seller_navber = ({
     console.log(isOpen);
   };
   const { user, logout } = useAuth();
+
   const navigate = useRouter();
+
   return (
     <div className=" w-full dark:bg-slate-900 bg-white py-5 px-6 flex items-center justify-between border-b-[0.01] ">
       <div className=" flex items-center justify-start gap-6">

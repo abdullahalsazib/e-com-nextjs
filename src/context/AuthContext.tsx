@@ -13,7 +13,6 @@ import { jwtDecode } from "jwt-decode";
 import apiClient from "@/lib/api-client";
 import { getProfile } from "@/services/auth.service";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 import { useWishlist } from "./WishlistContext";
 
 interface User {
@@ -43,7 +42,6 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [decodedRoles, setDecodedRoles] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -107,8 +105,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const login = useCallback(
     async (access_token: string) => {
+      setIsLoading(true);
+      const startTime = Date.now();
       try {
-        setIsLoading(true);
         localStorage.setItem("authToken", access_token);
 
         const decoded = decodeToken();
@@ -119,16 +118,28 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
         await fetchWishlist();
       } catch (error) {
-        toast.error("Login failed from authContext");
+        toast.error("Login failed from authContext", {
+          position: "top-center",
+        });
         throw error;
       } finally {
-        setIsLoading(false);
+        const elapsed = Date.now() - startTime;
+        const minDelay = 5000; // 5s
+        const remaining = minDelay - elapsed;
+
+        if (remaining > 0) {
+          setTimeout(() => setIsLoading(false), remaining);
+        } else {
+          setIsLoading(false);
+        }
       }
     },
     [decodeToken, fetchUser, fetchWishlist]
   );
 
   const logout = useCallback(async () => {
+    setIsLoading(true);
+    const startTime = Date.now();
     try {
       await apiClient.post("/logout");
     } catch (error) {
@@ -137,10 +148,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       localStorage.removeItem("authToken"); // access token remove
       setUser(null);
       setDecodedRoles([]);
-      toast.success("Logged out successfully");
-      router.push("/login");
+      const elapsed = Date.now() - startTime;
+      const minDelay = 5000; // 5s
+      const remaining = minDelay - elapsed;
+
+      if (remaining > 0) {
+        setTimeout(() => setIsLoading(false), remaining);
+      } else {
+        setIsLoading(false);
+      }
+      toast.info("Logged out successfully", {
+        position: "top-center",
+      });
+      // router.push("/login");
     }
-  }, [router]);
+  }, []);
 
   const hasRole = useCallback(
     (roles: string[]) => {

@@ -8,6 +8,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
+import { PiSpinner } from "react-icons/pi";
 
 interface BreadcrumbProps {
   items: {
@@ -16,7 +17,6 @@ interface BreadcrumbProps {
     active?: boolean;
   }[];
 }
-
 const CustomBreadcrumb: React.FC<BreadcrumbProps> = ({ items }) => {
   return (
     <Breadcrumb>
@@ -25,7 +25,16 @@ const CustomBreadcrumb: React.FC<BreadcrumbProps> = ({ items }) => {
           <React.Fragment key={index}>
             <BreadcrumbItem>
               {item.active ? (
-                <BreadcrumbPage>{item.label}</BreadcrumbPage>
+                <BreadcrumbPage>
+                  {item.label === "Loading..." ? (
+                    <div className="flex items-center gap-2">
+                      <span>Loading...</span>
+                      <PiSpinner className="animate-spin" />
+                    </div>
+                  ) : (
+                    item.label
+                  )}
+                </BreadcrumbPage>
               ) : (
                 <Link href={`${item.link}`}>{item.label}</Link>
               )}

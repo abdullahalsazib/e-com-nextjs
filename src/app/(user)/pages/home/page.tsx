@@ -36,6 +36,11 @@ const carouselImages = [
   { src: Carsol1.src, alt: "Banner 1" },
   { src: Carsol1.src, alt: "Banner 1" },
 ];
+
+// import placeholderImage from "@/../public/placeholder-image/image.png";
+import { Button } from "@/components/ui/button";
+import { BiError } from "react-icons/bi";
+import { Skeleton } from "@/components/ui/skeleton";
 export default function HomePage() {
   const [products, setProducts] = useState<Product2[]>([]);
 
@@ -71,38 +76,121 @@ export default function HomePage() {
         (Math.random() > 0.5 ? product.price * 1.2 : undefined), // 50% chance to show original price
     };
   };
+
+  const numbers = Array.from({ length: 20 }, (_, i) => i);
+  const [showAll, setShowAll] = useState(false);
   return (
     <>
-      <div className=" z-0 bg-slate-400 dark:bg-gray-800 w-full ">
+      <div className=" z-0  w-full  md:px-[5%] lg:px-[10%] py-5 px-2 ">
         <Carousel images={carouselImages} />
-        {/* <CarouselDemo /> */}
-        {/* hero section */}
-        {/* <Hero_section /> */}
       </div>
 
-      <div className={`px-[10%] bg-white dark:bg-gray-950 `}>
-        {/* Products sections  */}
-        <div className=" pt-7">
-          <div className="  flex items-center justify-between w-full">
-            <h1 className="text-2xl font-semibold capitalize">New Products</h1>
-            <a
-              href="#"
-              className="text-sm font-semibold capitalize text-blue-500 hover:text-blue-700 duration-200 underline underline-offset-2"
+      <div className={` px-2 md:px-[5%] lg:px-[1%] xl:px-[10%] `}>
+        <div>
+          <div className=" w-full py-10">
+            <h2 className=" text-lg md:text-xl text-center md:text-left font-semibold md:font-bold lg:py-2">
+              Category&apos;s
+            </h2>
+
+            <div
+              className={`
+              py-3 w-full grid gap-2 [grid-template-columns:repeat(auto-fit,minmax(120px,1fr))]
+            transition-all duration-500 ease-in overflow-hidden  `}
             >
-              see more all products
-            </a>
+              {numbers
+                .slice(0, showAll ? numbers.length : 9) // show 5 or all
+                .map((key) => (
+                  <>
+                    {loading ? (
+                      <div>
+                        <Skeleton className="  w-[full] h-[100px]" />
+                      </div>
+                    ) : (
+                      <div
+                        key={key}
+                        className="border py-2 rounded-md border-white/60 hover:scale-105 duration-300 cursor-pointer hover:shadow-lg  border-dotted w-[100%] md:h-[auto] overflow-clip m-auto relative flex items-center justify-center bg-blue-500/10 dark:bg-gray-500/20 dark:border-white/10 dark:shadow-gray-50/10"
+                      >
+                        {/* <Image
+                    src={placeholderImage} // replace with your placeholderImage
+                    alt={`placeholder ${key}`}
+                    className=" rounded-md w-[90%] m-auto"
+                    width={120}
+                    height={120}
+                  /> */}
+                        <div className=" w-[100px] h-[100px] flex items-center justify-center text-xs">
+                          category {key + 1}
+                        </div>
+                        <div className="w-full h-full absolute top-0 left-0 duration-300 hover:bg-blue-500/20 hover:backdrop-blur-xs m-auto"></div>
+                        {/* <p className="absolute -bottom-0">Category {key}</p> */}
+                      </div>
+                    )}
+                  </>
+                ))}
+            </div>
+            <div className=" mt-4 w-full flex items-center justify-center">
+              <Button
+                onClick={() => setShowAll(!showAll)}
+                className=" text-xs "
+                size={"sm"}
+                variant={"outline"}
+              >
+                {showAll ? "See Less" : "See More"}
+              </Button>
+            </div>
           </div>
-          {/* in hear some product card's */}
-          <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-2.5 pt-3 mb-10">
-            {loading && <h1>Product is Loading...</h1>}
-            {error && <h1>{error}</h1>}
-            {products.map((product) => (
-              <ProductCard
-                key={product.ID}
-                product={enhanceProductData(product)}
-              />
-            ))}{" "}
+
+          {/* Products sections  */}
+          <div>
+            <div className="  flex items-center justify-between w-full">
+              <h1 className="lg:text-xl font-semibold capitalize">
+                New Products
+              </h1>
+              <a
+                href="#"
+                className=" text-xs  font-semibold capitalize text-blue-500 hover:text-blue-700 duration-200 underline underline-offset-2"
+              >
+                see more all products
+              </a>
+            </div>
+            {/* in hear some product card's */}
+
+            {/* handle error and loading  */}
+            <div>
+              {error && (
+                <div className=" w-full py-10 h-10 flex items-center justify-center">
+                  {" "}
+                  <h1 className=" text-red-500 flex gap-3 items-center justify-center">
+                    {error} <BiError className=" text-xl" />
+                  </h1>
+                </div>
+              )}
+            </div>
+            <div className="w-full py-2">
+              <div
+                className="
+              grid gap-6 sm:grid-cols-2 
+                  md:grid-cols-4 
+                  lg:grid-cols-5 
+                  xl:grid-cols-6"
+              >
+                {loading && (
+                  <>
+                    {numbers.slice(0, 6).map((key) => (
+                      <>
+                        <ProductCardSkeleton key={key} />
+                      </>
+                    ))}
+                  </>
+                )}
+                {products.map((product) => (
+                  <div key={product.ID} className="mb-6 break-inside-avoid">
+                    <ProductCard product={enhanceProductData(product)} />
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
+
           <div className=" dark:bg-[#e7e7e7] bg-[#F5F7FF] w-full py-5 mb-7 px-0 flex items-center justify-center">
             <div className="flex items-center justify-center gap-3 ">
               <Image src={zipLogo} alt="ziplogo" /> |{" "}
@@ -130,6 +218,15 @@ export default function HomePage() {
                 see all products
               </a>
             </div>
+            {loading && (
+              <>
+                {numbers.slice(0, 6).map((key) => (
+                  <>
+                    <ProductCardSkeleton key={key} />
+                  </>
+                ))}
+              </>
+            )}
             {products.map((product) => (
               <ProductCard
                 key={product.ID}
@@ -176,6 +273,15 @@ export default function HomePage() {
                   see all products
                 </a>
               </div>
+              {loading && (
+                <>
+                  {numbers.slice(0, 6).map((key) => (
+                    <>
+                      <ProductCardSkeleton key={key} />
+                    </>
+                  ))}
+                </>
+              )}
               {products.map((product) => (
                 <ProductCard
                   key={product.ID}
@@ -202,6 +308,15 @@ export default function HomePage() {
                   see all products
                 </a>
               </div>
+              {loading && (
+                <>
+                  {numbers.slice(0, 6).map((key) => (
+                    <>
+                      <ProductCardSkeleton key={key} />
+                    </>
+                  ))}
+                </>
+              )}
               {products.map((product) => (
                 <ProductCard
                   key={product.ID}
@@ -223,6 +338,15 @@ export default function HomePage() {
                   see all products
                 </a>
               </div>
+              {loading && (
+                <>
+                  {numbers.slice(0, 6).map((key) => (
+                    <>
+                      <ProductCardSkeleton key={key} />
+                    </>
+                  ))}
+                </>
+              )}
               {products.map((product) => (
                 <ProductCard
                   key={product.ID}
@@ -271,5 +395,35 @@ export default function HomePage() {
       </div>
       {/* <Footer /> */}
     </>
+  );
+}
+
+export function ProductCardSkeleton() {
+  return (
+    <div className=" rounded-sm shadow-sm p-3 flex flex-col gap-2">
+      {/* Image */}
+      <div className="flex items-center justify-center">
+        <Skeleton className="h-[200px] w-[200px] rounded-md " />
+      </div>
+
+      {/* Title + Price */}
+      <div className="flex items-center justify-between w-full">
+        <Skeleton className="h-5 w-28 rounded " /> {/* product name */}
+        <Skeleton className="h-5 w-16 rounded " /> {/* price */}
+      </div>
+
+      {/* Description */}
+      <Skeleton className="h-4 w-full rounded " />
+      <Skeleton className="h-4 w-2/3 rounded " />
+
+      {/* Rating */}
+      <div className="flex items-center gap-2">
+        <Skeleton className="h-4 w-24 rounded " />
+        <Skeleton className="h-3 w-6 rounded " />
+      </div>
+
+      {/* Button */}
+      <Skeleton className="h-8 w-full rounded-full " />
+    </div>
   );
 }
