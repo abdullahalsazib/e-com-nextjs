@@ -35,7 +35,7 @@ const FormSchema = z.object({
   password: z.string().min(4, {
     message: "password must be at least 4 characters.",
   }),
-  remember: z.boolean().optional()
+  remember: z.boolean().optional(),
 });
 
 const Login_d = () => {
@@ -60,7 +60,9 @@ const Login_d = () => {
       });
 
       if (data.access_token) {
-        toast.success(data.message);
+        toast.success(data.message, {
+          position: "top-center",
+        });
         // navigate.push("/");
         await login(data.access_token);
         // localStorage.setItem("authToken", data.access_token);

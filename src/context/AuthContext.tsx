@@ -13,9 +13,7 @@ import { jwtDecode } from "jwt-decode";
 import apiClient from "@/lib/api-client";
 import { getProfile } from "@/services/auth.service";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 import { useWishlist } from "./WishlistContext";
-import { date } from "zod";
 
 interface User {
   id: string;
@@ -44,7 +42,6 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [decodedRoles, setDecodedRoles] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -121,7 +118,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
         await fetchWishlist();
       } catch (error) {
-        toast.error("Login failed from authContext");
+        toast.error("Login failed from authContext", {
+          position: "top-center",
+        });
         throw error;
       } finally {
         const elapsed = Date.now() - startTime;
@@ -158,7 +157,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       } else {
         setIsLoading(false);
       }
-      // toast.success("Logged out successfully");
+      toast.info("Logged out successfully", {
+        position: "top-center",
+      });
       // router.push("/login");
     }
   }, []);

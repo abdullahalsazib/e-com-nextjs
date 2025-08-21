@@ -111,10 +111,10 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
     <div className="bg-white dark:bg-white dark:text-white flex items-center justify-between flex-col border-[1.5] border-slate-100 dark:border-slate-900 hover:shadow-xl transition-shadow duration-500 relative active:scale-105">
       {/* Product Image */}
       <Link
-        href={"/"}
+        href={`/pages/products/${product.ID}`}
         className="peer cursor-pointer hover:scale-110 duration-500 bg-transparent w-[full] h-[250px] flex items-center justify-center"
       >
-        <img src={image_url} alt={name} width={"200px"} />
+        <img src={`${image_url}`} alt={name} width={"200px"} />
       </Link>
 
       {/* Product Info */}
