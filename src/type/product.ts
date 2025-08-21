@@ -22,7 +22,7 @@ export interface Product2 {
   description: string;
   price: number;
   stock: number;
-  image_url: string | StaticImport;
+  image_url: StaticImport | string;
   created_by?: number;
   CategoryID?: number;
   original_price?: number; // Optional field for discounted price
