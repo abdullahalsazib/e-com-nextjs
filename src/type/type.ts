@@ -44,3 +44,22 @@ export interface Testimonial {
   text: string;
   author: string;
 }
+
+export interface getProdcutType {
+  id: number;
+  name: string;
+  description: string;
+  image_url: string;
+  price: number;
+  status: string;
+  stock: number;
+  user: {
+    id: number;
+    name: string;
+    email: string;
+  };
+  vendor: {
+    id: number;
+    shop_name: string;
+  };
+}
