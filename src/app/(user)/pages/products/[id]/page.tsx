@@ -9,6 +9,7 @@ import { BiHeart } from "react-icons/bi";
 import { Button } from "@/components/ui/button";
 import { getProdcutType } from "@/type/type";
 import { BsFacebook, BsMailboxFlag, BsWhatsapp } from "react-icons/bs";
+import Link from "next/link";
 
 interface ProductPageProps {
   params: Promise<{ id: string }>; // params is now a Promise
@@ -124,9 +125,9 @@ const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
             <div className="flex flex-col justify-between gap-0 border p-3 rounded-md">
               <div className="">
                 <div className="flex justify-between items-center">
-                  <h2 className=" text-lg font-semibold capitalize">
+                  <Link href={`/vendor/${product.vendor.id}`} className=" text-lg font-semibold capitalize">
                     {product.vendor.shop_name}
-                  </h2>
+                  </Link>
 
                   <p className="uppercase font-bold text-gray-700">
                     Id: #VHXUeI{product.vendor.id}
