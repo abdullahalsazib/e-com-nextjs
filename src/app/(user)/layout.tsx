@@ -12,7 +12,7 @@ export default function UserLayout({
   return (
     <>
       {/* <Navbar /> */}
-      <NavberM/>
+      <NavberM />
       <main className=" w-full bg-white dark:bg-black">{children}</main>
       <Footer />
     </>
