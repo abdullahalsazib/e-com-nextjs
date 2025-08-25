@@ -111,13 +111,6 @@ export default function HomePage() {
                           key={key}
                           className="border py-2 rounded-md border-white/60 hover:scale-105 duration-300 cursor-pointer hover:shadow-lg  border-dotted w-[100%] md:h-[auto] overflow-clip m-auto relative flex items-center justify-center bg-blue-500/10 dark:bg-gray-500/20 dark:border-white/10 dark:shadow-gray-50/10"
                         >
-                          {/* <Image
-                    src={placeholderImage} // replace with your placeholderImage
-                    alt={`placeholder ${key}`}
-                    className=" rounded-md w-[90%] m-auto"
-                    width={120}
-                    height={120}
-                  /> */}
                           <div className=" w-[100px] h-[100px] flex items-center justify-center text-xs">
                             category {key + 1}
                           </div>

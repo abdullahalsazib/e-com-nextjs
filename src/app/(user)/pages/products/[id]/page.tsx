@@ -197,10 +197,10 @@ const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
       )}
 
       <div className=" w-full mt-10 ">
-        <div className=" flex items-center justify-start gap-3">
+        <div className=" flex items-center justify-center lg:justify-start gap-3">
           <p
             onClick={() => setSwtichActive("reviews")}
-            className={` text-lg capitalize font-semibold px-5 py-2 border cursor-pointer hover:text-gray-800  ${
+            className={` text-sm lg:text-lg capitalize font-semibold px-5 py-2 border cursor-pointer hover:text-gray-800  ${
               swtichActive === "reviews"
                 ? "text-black duration-300 dark:text-white"
                 : "text-gray-400 dark:text-gray-500"
@@ -210,7 +210,7 @@ const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
           </p>
           <p
             onClick={() => setSwtichActive("details")}
-            className={` text-lg capitalize font-semibold px-5 py-2 border cursor-pointer hover:text-gray-800  ${
+            className={` text-sm lg:text-lg capitalize font-semibold px-5 py-2 border cursor-pointer hover:text-gray-800  ${
               swtichActive === "details"
                 ? "text-black duration-300 dark:text-white"
                 : "text-gray-400 dark:text-gray-500"
@@ -221,7 +221,7 @@ const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
 
           <p
             onClick={() => setSwtichActive("discussion")}
-            className={` text-lg capitalize font-semibold px-5 py-2 border cursor-pointer hover:text-gray-800  ${
+            className={` text-sm lg:text-lg capitalize font-semibold px-5 py-2 border cursor-pointer hover:text-gray-800  ${
               swtichActive === "discussion"
                 ? "text-black duration-300 dark:text-white"
                 : "text-gray-400 dark:text-gray-500"
