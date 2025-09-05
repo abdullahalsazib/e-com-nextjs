@@ -1,4 +1,4 @@
-import Seller_dashboard from "../components/seller_dashboard";
+import Seller_dashboard from "../vendor/components/seller_dashboard";
 
 const page = () => {
   return (

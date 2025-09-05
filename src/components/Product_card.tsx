@@ -158,11 +158,10 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
                 handleAddToCart();
               }}
               disabled={cartLoading || !inStock || !isAuthenticated}
-              className={`text-xs capitalize ring-2 bg-transparent text-black dark:text-white rounded-full px-5 py-1.5  ${
-                cartLoading || !inStock || !isAuthenticated
-                  ? "active:scale-100 hover:scale-100 ring-1 ring-white/50 pointer-events-none bg-black/50"
-                  : "text-gray-400 ring-black/50 dark:ring-white/50 hover:bg-black/100 dark:hover:bg-blue-500/40 hover:ring-blue-500 dark:hover:ring-blue-500 hover:text-white duration-500 active:scale-105"
-              } `}
+              className={`text-xs capitalize ring-2 bg-transparent text-black dark:text-white rounded-full px-5 py-1.5  ${cartLoading || !inStock || !isAuthenticated
+                ? "active:scale-100 hover:scale-100 ring-1 ring-white/50 pointer-events-none bg-black/50"
+                : "text-gray-400 ring-black/50 dark:ring-white/50 hover:bg-black/100 dark:hover:bg-blue-500/40 hover:ring-blue-500 dark:hover:ring-blue-500 hover:text-white duration-500 active:scale-105"
+                } `}
             >
               {/* <FaCartArrowDown /> */}
               add to cart
@@ -174,9 +173,8 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
       {/* absolute card top */}
       <div className="peer-hover:bg-blue-300/10 peer-hover:blur-xs duration-500 flex justify-between items-center absolute py-3 bg-transparent w-full px-5">
         <p
-          className={`text-xs flex items-center gap-1 ${
-            inStock ? "text-green-700" : "text-red-600"
-          }`}
+          className={`text-xs flex items-center gap-1 ${inStock ? "text-green-700" : "text-red-600"
+            }`}
         >
           <IoCheckmarkCircle className=" animate-pulse" />
           {inStock ? "In stock" : "Out of stock"}

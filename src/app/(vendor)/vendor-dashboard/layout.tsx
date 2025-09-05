@@ -2,9 +2,9 @@
 
 import Loading from "@/components/Loading";
 import { Suspense, useState } from "react";
-import Sidebar from "../components/Sidebar";
 import PrivateRoute from "@/components/PrivateRoute";
-import Seller_navber from "../components/Seller_navber";
+import Seller_navber from "../vendor/components/Seller_navber";
+import Sidebar from "../vendor/components/Sidebar";
 
 export default function SellerLayout({
   children,
@@ -26,9 +26,8 @@ export default function SellerLayout({
             <div className="w-full h-screen bg-gradient-to-tr dark:from-gray-950 from-purple-50 dark:to-slate-950 to-zinc-50 flex overflow-hidden">
               {/* Sidebar with toggle animation */}
               <div
-                className={`h-full dark:bg-slate-900 bg-white transition-all duration-300 ease-in-out ${
-                  sidebarOpen ? "w-64" : "w-20"
-                }`}
+                className={`h-full dark:bg-slate-900 bg-white transition-all duration-300 ease-in-out ${sidebarOpen ? "w-64" : "w-20"
+                  }`}
               >
                 <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
               </div>

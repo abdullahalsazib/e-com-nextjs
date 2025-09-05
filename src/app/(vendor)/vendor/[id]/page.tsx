@@ -50,12 +50,14 @@ const page: React.FC<ProductPageProps> = ({ params }) => {
   return (
     <>
       <div className="w-full h-screen px-2 md:px-[5%] 2xl:px-[20%] border bg-slate-100 dark:bg-black">
-        <hr className="  mb-2" />
+        <hr className="mb-2" />
         <div className="bg-white dark:bg-slate-200">
-          <div className="w-full h-[130px] bg-gradient-to-l to-blue-600/50 from-blue-700/70 relative">
-            <div className=" absolute top-0 left-0 w-[auto] h-full py-3 flex items-center justify-start">
-              <div className=" w-[100%] min-h-full bg-white/60 dark:bg-black/10 backdrop-blur-lg flex items-center justify-between gap-5 px-5">
-                <div className=" w-[80px] h-[80px] bg-gradient-to-tl rounded-full border-2 from-red-400/60 to-lime-500/10"></div>
+          <div className="w-full h-[150px] lg:h-[130px] bg-gradient-to-l to-blue-600/50 from-blue-700/70 relative">
+            <div className=" absolute top-0 left-0 w-[auto] h-auto lg:h-full py-3 flex items-center justify-start">
+              <div className=" w-[100%] min-h-full bg-white/60 dark:bg-black/10 backdrop-blur-lg flex items-center justify-between gap-5 px-5 lg:py-2 py-4">
+                <div className="w-full hidden lg:block lg:w-[80px] h-[80px] bg-gradient-to-tl rounded-full border-2 from-red-400/60 to-lime-500/10">
+                  {/* for vendor image */}
+                </div>
                 <div>
                   {error ? (
                     "vendor fetch to faild"
@@ -73,12 +75,7 @@ const page: React.FC<ProductPageProps> = ({ params }) => {
                     </>
                   )}
                 </div>
-                <div className=""></div>
-                <div className=" flex items-center justify-end gap-2">
-                  <button className=" flex items-center justify-center py-2 px-4 border text-xs font-semibold capitalize bg-white text-black/70 dark:bg-blue-500/20 dark:text-white hover:bg-white/20 duration-300 active:scale-105">
-                    {/* <IoChatboxEllipsesOutline /> */}
-                    chat Now
-                  </button>
+                <div className=" flex flex-col items-start lg:items-center justify-end gap-2">
 
                   <button className=" flex items-center justify-center py-2 px-4 border text-xs font-semibold capitalize bg-white text-black/70 dark:bg-blue-500/20 dark:text-white hover:bg-white/20 duration-300 active:scale-105">
                     {/* <IoChatboxEllipsesOutline /> */}
@@ -90,42 +87,40 @@ const page: React.FC<ProductPageProps> = ({ params }) => {
           </div>
           <div className=" w-full py-2 flex items-center justify-between gap-5 px-2 pb-2">
             <div className=" flex items-center gap-3">
-              <div className=" text-black dark:text-black">Category</div>
-              <div className=" text-sm capitalize flex items-center gap-2 lg:gap-5  lg:px-5">
+              {/* <div className=" text-black dark:text-black">Category</div> */}
+              <div className=" text-sm capitalize flex items-center gap-2 lg:gap-2">
                 <button
-                  className={`capitalize text-sm  py-1 px-4 font-semibold ${
-                    switchActive === "store"
-                      ? "text-blue-500 dark:text-blue-300 "
-                      : "text-gray-500"
-                  }`}
+                  className={`capitalize px-3 py-1 text-sm border font-normal ${switchActive === "store"
+                    ? "text-blue-500 dark:text-blue-500 "
+                    : "text-gray-500"
+                    }`}
                   onClick={() => setSwitchActive(`store`)}
                 >
                   store
                 </button>
+
                 <button
-                  className={`capitalize text-sm py-1 px-4 font-semibold ${
-                    switchActive === "products"
-                      ? "text-blue-500 dark:text-blue-300 "
-                      : "text-gray-500"
-                  }`}
+                  className={`capitalize px-3 py-1 text-sm border font-normal ${switchActive === "products"
+                    ? "text-blue-500 dark:text-blue-500 "
+                    : "text-gray-500"
+                    }`}
                   onClick={() => setSwitchActive(`products`)}
                 >
-                  Products
+                  products
                 </button>
                 <button
-                  className={`capitalize text-sm py-1 px-4 font-semibold ${
-                    switchActive === "profile"
-                      ? "text-blue-500 dark:text-blue-300 "
-                      : "text-gray-500"
-                  }`}
+                  className={`capitalize px-3 py-1 text-sm border font-normal ${switchActive === "profile"
+                    ? "text-blue-500 dark:text-blue-500 "
+                    : "text-gray-500"
+                    }`}
                   onClick={() => setSwitchActive(`profile`)}
                 >
-                  Profile
+                  profile
                 </button>
               </div>
             </div>
             <div className=" hidden lg:block">
-              <Input placeholder="Search in Store" />
+              <Input className=" text-sm" placeholder="Search in Store" />
             </div>
           </div>
         </div>

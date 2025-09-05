@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import OrderDetailsModal from "../../components/OrderDetailsModal";
+import OrderDetailsModal from "../../vendor/components/OrderDetailsModal";
 
 type OrderStatus =
   | "pending"
@@ -160,61 +160,55 @@ const Orders = () => {
         </span>
         <button
           onClick={() => setStatusFilter("all")}
-          className={`px-3 py-1 text-sm rounded-full ${
-            statusFilter === "all"
+          className={`px-3 py-1 text-sm rounded-full ${statusFilter === "all"
               ? "bg-green-600 text-white"
               : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-          }`}
+            }`}
         >
           All
         </button>
         <button
           onClick={() => setStatusFilter("pending")}
-          className={`px-3 py-1 text-sm rounded-full ${
-            statusFilter === "pending"
+          className={`px-3 py-1 text-sm rounded-full ${statusFilter === "pending"
               ? "bg-yellow-600 text-white"
               : "bg-yellow-100 text-yellow-800 hover:bg-yellow-200"
-          }`}
+            }`}
         >
           Pending
         </button>
         <button
           onClick={() => setStatusFilter("processing")}
-          className={`px-3 py-1 text-sm rounded-full ${
-            statusFilter === "processing"
+          className={`px-3 py-1 text-sm rounded-full ${statusFilter === "processing"
               ? "bg-blue-600 text-white"
               : "bg-blue-100 text-blue-800 hover:bg-blue-200"
-          }`}
+            }`}
         >
           Processing
         </button>
         <button
           onClick={() => setStatusFilter("shipped")}
-          className={`px-3 py-1 text-sm rounded-full ${
-            statusFilter === "shipped"
+          className={`px-3 py-1 text-sm rounded-full ${statusFilter === "shipped"
               ? "bg-indigo-600 text-white"
               : "bg-indigo-100 text-indigo-800 hover:bg-indigo-200"
-          }`}
+            }`}
         >
           Shipped
         </button>
         <button
           onClick={() => setStatusFilter("delivered")}
-          className={`px-3 py-1 text-sm rounded-full ${
-            statusFilter === "delivered"
+          className={`px-3 py-1 text-sm rounded-full ${statusFilter === "delivered"
               ? "bg-green-600 text-white"
               : "bg-green-100 text-green-800 hover:bg-green-200"
-          }`}
+            }`}
         >
           Delivered
         </button>
         <button
           onClick={() => setStatusFilter("cancelled")}
-          className={`px-3 py-1 text-sm rounded-full ${
-            statusFilter === "cancelled"
+          className={`px-3 py-1 text-sm rounded-full ${statusFilter === "cancelled"
               ? "bg-red-600 text-white"
               : "bg-red-100 text-red-800 hover:bg-red-200"
-          }`}
+            }`}
         >
           Cancelled
         </button>

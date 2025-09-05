@@ -1,4 +1,3 @@
-import React from "react";
 import NavberM from "@/components/Navber/NavberM";
 import Footer from "@/components/Footer";
 

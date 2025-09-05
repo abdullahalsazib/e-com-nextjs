@@ -11,9 +11,9 @@ const Vendor_Store = () => {
       }}
       animate={{
         opacity: 1,
-          y: 0,
+        y: 0,
       }}
-          transition={{duration: 0.5}}
+      transition={{ duration: 0.5 }}
     >
       <Link href="/">
         <Image className="w-full" src={shopad1} alt="image" />
