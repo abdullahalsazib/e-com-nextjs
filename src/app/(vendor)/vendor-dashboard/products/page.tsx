@@ -210,7 +210,7 @@ const ProductForm = () => {
   };
 
   return (
-    <div className="p-6 dark:text-white text-black">
+    <div className="p-6 dark:text-white text-black max-w-7xl mx-auto">
       <h2 className="text-2xl font-bold mb-6">Products</h2>
 
       {/* Product Form */}
@@ -325,16 +325,16 @@ const ProductForm = () => {
                 render={({ field }) => (
                   <FormItem className=" w-full">
                     <FormLabel>Order Status *</FormLabel>
-                    <Select
+                    <Select 
                       onValueChange={field.onChange}
                       value={field.value || "draft"}
                     >
-                      <FormControl className=" w-full">
+                      <FormControl className=" w-full capitalize">
                         <SelectTrigger>
                           <SelectValue placeholder="Select a status" />
                         </SelectTrigger>
                       </FormControl>
-                      <SelectContent>
+                      <SelectContent className=" capitalize">
                         {OrderStatusOptions.map((status) => (
                           <SelectItem key={status.ID} value={status.Name}>
                             {status.Name}
@@ -432,7 +432,7 @@ const ProductForm = () => {
                       </SelectTrigger>
                       <SelectContent>
                         {OrderStatusOptions.map((status) => (
-                          <SelectItem key={status.ID} value={status.Name}>
+                          <SelectItem key={status.ID} value={status.Name} className=" capitalize">
                             {status.Name}
                           </SelectItem>
                         ))}

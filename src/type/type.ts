@@ -22,7 +22,7 @@ export interface WishlistItemWithProduct {
   created_at?: string;
   product: {
     id: number;
-    name: string;
+    name: string | undefined;
     price: number;
     image?: string;
   };

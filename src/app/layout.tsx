@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+// import { Geist } from "next/font/google";
 import "./globals.css";
 import NextTopLoader from "nextjs-toploader";
 import { AuthProvider } from "@/context/AuthContext";
@@ -10,10 +10,10 @@ import { WishlistProvider } from "@/context/WishlistContext";
 import { CartProvider } from "@/context/CartListContext";
 import { ThemeProvider } from "@/components/Theme_provider";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+// const geistSans = Geist({
+//   variable: "--font-geist-sans",
+//   subsets: ["latin"],
+// });
 
 export const metadata: Metadata = {
   title: "E-com.com.next",
@@ -34,7 +34,7 @@ export default function RootLayout({
     >
       <body
         cz-shortcut-listen="true"
-        className={`${geistSans.className}  antialiased`}
+        className={`  antialiased`}
       >
         <ThemeProvider
           attribute="class"

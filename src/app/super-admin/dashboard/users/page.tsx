@@ -178,7 +178,7 @@ const Page = () => {
   });
 
   return (
-    <div className="p-4">
+    <div className="p-4 max-w-7xl mx-auto">
       {/* Top controls */}
       <div className="flex justify-between mb-4">
         <Input

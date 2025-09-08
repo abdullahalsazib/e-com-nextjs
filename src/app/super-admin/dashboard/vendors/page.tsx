@@ -215,7 +215,7 @@ export default function VendorsPage() {
   }, []);
 
   return (
-    <div className="p-6 space-y-4">
+    <div className="p-6 space-y-4 max-w-7xl mx-auto">
       <Card className=" bg-white dark:bg-gray-900">
         <CardHeader className="flex justify-between items-center">
           <CardTitle>Vendors List</CardTitle>

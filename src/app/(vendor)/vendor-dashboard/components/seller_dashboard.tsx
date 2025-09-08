@@ -22,7 +22,7 @@ import {
 const Seller_dashboard = () => {
   return (
     <>
-      <div className="flex-1 overflow-y-auto p-6 dark:text-black">
+      <div className="flex-1 overflow-y-auto p-6 dark:text-black max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Stats Cards */}
           <Stats_Cards

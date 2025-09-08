@@ -1,41 +1,22 @@
 "use client";
 
 import Loading from "@/components/Loading";
-import PrivateRoute from "@/components/PrivateRoute";
 import { Suspense, useState } from "react";
-import {motion} from "framer-motion"
-import Super_admin_navber from "./components/Super_a_navber";
-import { LucideAccessibility } from "lucide-react";
+import PrivateRoute from "@/components/PrivateRoute";
+import Seller_navber from "./components/Seller_navber";
+import { navItemsForSellerDashboard as seller_dashboard } from "@/data/navegationLinks";
 import Link from "next/link";
+import { LucideAccessibility } from "lucide-react";
+import { motion } from "framer-motion"
 import { usePathname } from "next/navigation";
-import { GrDashboard } from "react-icons/gr";
-import { CiShop } from "react-icons/ci";
-import { BiUser } from "react-icons/bi";
-const navItemsSuperAdmin = [
-  {
-    name: "Dashboard",
-    icon: <GrDashboard />,
-    path: "/super-admin",
-  },
-  {
-    name: "Vendors",
-    icon: <CiShop />,
-    path: "/super-admin/dashboard/vendors",
-  },
-  {
-    name: "Users ",
-    icon: <BiUser />,
-    path: "/super-admin/dashboard/users",
-  },
-];
 
 export default function SellerLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(true);
- const pathname = usePathname();
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -46,10 +27,9 @@ export default function SellerLayout({
       {/* <h1>Seller Layout</h1> */}
       <main>
         <Suspense fallback={<Loading message="Preparing dashboard" />}>
-          <PrivateRoute allowedRoles={["superadmin"]}>
+          <PrivateRoute allowedRoles={["admin"]}>
             <div className="w-full h-screen bg-gradient-to-tr dark:from-gray-950 from-purple-50 dark:to-slate-950 to-zinc-50 flex overflow-hidden">
-              {/* Sidebar with toggle animation */}
-                <motion.div 
+              <motion.div 
               initial={{
                 opacity: 1,
                 y: 0
@@ -76,12 +56,12 @@ export default function SellerLayout({
               {/* custome sidebar  */}
               <div className="">
                 <div className="flex items-center justify-center py-7 ">
-                  <h1 className="text-xl font-bold text-green-600">Super Admin </h1>
+                  <h1 className="text-xl font-bold text-green-600">SellerHub</h1>
                 </div>
 
                 <nav className="flex-1 overflow-y-auto py-4 w-full">
                   <ul className="space-y-1 px-2">
-                    {navItemsSuperAdmin.map((item) => (
+                    {seller_dashboard.map((item) => (
                       <li key={item.name} className="">
                         <Link
                           href={item.path}
@@ -92,7 +72,20 @@ export default function SellerLayout({
                               "text-black/50 hover:text-black/70 "
                             }`}
                         >
-                          
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-5 w-5 flex-shrink-0"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d={item.icon}
+                            />
+                          </svg>
                           <span className="ml-3 font-medium">{item.name}</span>
                         </Link>
                       </li>
@@ -102,22 +95,21 @@ export default function SellerLayout({
               </div>
             </motion.div>
 
-              {/* Main content area */}
-              <div className="flex-1 flex flex-col overflow-hidden">
-                <>
-                  <Super_admin_navber
-                    isOpen={sidebarOpen}
-                    setOpen={toggleSidebar}
-                  />
-                </>
+            {/* Main content area */}
+            <div className="flex-1 flex flex-col overflow-hidden">
+              <>
+                <Seller_navber isOpen={sidebarOpen} setOpen={toggleSidebar} />
+              </>
 
-                {/* Main content */}
-                <div className=" overflow-y-scroll">{children}</div>
-              </div>
+              {/* Main content */}
+              <div className=" overflow-y-scroll">{children}</div>
             </div>
-          </PrivateRoute>
-        </Suspense>
-      </main>
+          </div>
+        </PrivateRoute>
+      </Suspense>
+    </main >
     </>
   );
 }
+
+// https://preview.themeforest.net/item/shoppoint-ecommerce-admin-dashboard-reactjs-template/full_screen_preview/47313740

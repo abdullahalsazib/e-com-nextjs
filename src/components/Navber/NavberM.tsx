@@ -78,11 +78,10 @@ const NavberM = () => {
   return (
     <>
       <div
-        className={` border-b ${
-          isScrolled
-            ? "fixed top-0 left-0 z-50 shadow-md w-full bg-white/10 backdrop-blur-md "
-            : " w-full bg-black"
-        }`}
+        className={` border-b ${isScrolled
+          ? "fixed top-0 left-0 z-50 shadow-md w-full bg-white/10 backdrop-blur-md "
+          : " w-full bg-black"
+          }`}
       >
         <div className={`${isScrolled ? "hidden" : "block"}`}>
           <Topbar />
@@ -102,7 +101,7 @@ const NavberM = () => {
             <input
               type="search"
               placeholder="Search for products, categories or brands..."
-              className=" w-full bg-transparent xl:py-2 xl:px-5 py-2 px-4 rounded-sm text-slate-600 dark:text-slate-300 border-[0.5] border-gray-200 dark:border-gray-800 focus:outline-1 focus:outline-gray-400 dark:focus:outline-gray-700 duration-300"
+              className=" w-full bg-transparent xl:py-2 xl:px-5 py-2 px-4 rounded-sm text-slate-600 dark:text-slate-300 border-[0.5] border-gray-200 dark:border-gray-800 focus:outline-1 focus:outline-gray-400 dark:focus:outline-gray-700 duration-300 text-sm"
             />
           </div>
           {/* right section */}
@@ -171,7 +170,7 @@ const NavberM = () => {
                             <li>
                               {user?.vendor?.vendor_status === "approved" && (
                                 <Link
-                                  href={"/vendor/dashboard"}
+                                  href={"/vendor-dashboard/"}
                                   className="block hover:text-blue-500 transition-colors"
                                 >
                                   <Button variant={"link"} size={"sm"}>
@@ -294,11 +293,10 @@ const NavberM = () => {
                 onClick={() => setMenuOpen(true)}
               >
                 <RiMenu2Fill
-                  className={` ${
-                    !menuOpen
-                      ? "rotate-y-180 duration-200"
-                      : "rotate-0 duration-200"
-                  }`}
+                  className={` ${!menuOpen
+                    ? "rotate-y-180 duration-200"
+                    : "rotate-0 duration-200"
+                    }`}
                 />
               </Button>
             </div>
@@ -307,15 +305,13 @@ const NavberM = () => {
           {/* wishlist for Desktop device */}
           <div
             ref={wishlistRef}
-            className={` w-full sm:w-[450px] ${
-              !wishlistOpen
-                ? "translate-x-[100%] duration-300"
-                : `translate-x-0 duration-200 ${
-                    !isScrolled
-                      ? "top-0 bg_blur_effect border-l"
-                      : "  -top-[0%]  "
-                  }`
-            } fixed h-screen right-0 top-0 z-50  px-5 py-10 border-l`}
+            className={` w-full sm:w-[450px] ${!wishlistOpen
+              ? "translate-x-[100%] duration-300"
+              : `translate-x-0 duration-200 ${!isScrolled
+                ? "top-0 bg_blur_effect border-l"
+                : "  -top-[0%]  "
+              }`
+              } fixed h-screen right-0 top-0 z-50  px-5 py-10 border-l`}
           >
             <div className=" w-full flex items-center justify-end">
               <Button
@@ -337,15 +333,13 @@ const NavberM = () => {
           {/* cart for Desktop device */}
           <div
             ref={cartRef}
-            className={` w-full sm:w-[450px] ${
-              !cartOpen
-                ? "translate-x-[100%] duration-300"
-                : `translate-x-0 duration-200 border-l ${
-                    !isScrolled
-                      ? "top-0 bg_blur_effect"
-                      : "  -top-[0%] border-l  "
-                  }`
-            } fixed h-screen right-0 top-0 z-50  px-5 py-10 border-l`}
+            className={` w-full sm:w-[450px] ${!cartOpen
+              ? "translate-x-[100%] duration-300"
+              : `translate-x-0 duration-200 border-l ${!isScrolled
+                ? "top-0 bg_blur_effect"
+                : "  -top-[0%] border-l  "
+              }`
+              } fixed h-screen right-0 top-0 z-50  px-5 py-10 border-l`}
           >
             <div className=" w-full flex items-center justify-end">
               <Button
@@ -366,13 +360,11 @@ const NavberM = () => {
 
           {/* mobile device navber  */}
           <div
-            className={`  z-50  right-0  md:hidden fixed py-5 px-3 ${
-              !menuOpen
-                ? "-translate-x-[200%] duration-200 opacity-0"
-                : `translate-x-0 duration-400 w-[100%] h-screen fixed ${
-                    !isScrolled ? "top-0" : "  -top-[0%] bg-black "
-                  }`
-            }
+            className={`  z-50  right-0  md:hidden fixed py-5 px-3 ${!menuOpen
+              ? "-translate-x-[200%] duration-200 opacity-0"
+              : `translate-x-0 duration-400 w-[100%] h-screen fixed ${!isScrolled ? "top-0" : "  -top-[0%] bg-black "
+              }`
+              }
                 `}
           >
             <div className=" z-[9999] w-full  flex items-center justify-end">
@@ -388,7 +380,7 @@ const NavberM = () => {
               <input
                 type="search"
                 placeholder="Search for products, categories or brands..."
-                className=" w-full bg-slate-50 dark:bg-transparent xl:py-3 xl:px-5 py-2 px-4  text-slate-600 dark:text-slate-300 border-[0.5] border-gray-200 focus:outline-1 focus:outline-gray-400 duration-300"
+                className=" w-full bg-slate-50 dark:bg-transparent xl:py-3 xl:px-5 py-2 px-4  text-slate-600 dark:text-slate-300 border-[0.5] border-gray-200 focus:outline-1 focus:outline-gray-400 duration-300 text-sm"
               />
               <button className=" border outline-none border-white py-2 px-4 hover:bg-white hover:text-black active:bg-white active:text-black duration-200">
                 Search

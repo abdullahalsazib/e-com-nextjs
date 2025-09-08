@@ -9,6 +9,7 @@ import { BiHeart } from "react-icons/bi";
 import { Button } from "@/components/ui/button";
 import { getProdcutType } from "@/type/type";
 import { BsFacebook, BsMailboxFlag, BsWhatsapp } from "react-icons/bs";
+import Link from "next/link";
 
 interface ProductPageProps {
   params: Promise<{ id: string }>; // params is now a Promise
@@ -124,9 +125,9 @@ const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
             <div className="flex flex-col justify-between gap-0 border p-3 rounded-md">
               <div className="">
                 <div className="flex justify-between items-center">
-                  <h2 className=" text-lg font-semibold capitalize">
+                  <Link href={`/vendor/${product.vendor.id}`} className=" text-lg font-semibold capitalize">
                     {product.vendor.shop_name}
-                  </h2>
+                  </Link>
 
                   <p className="uppercase font-bold text-gray-700">
                     Id: #VHXUeI{product.vendor.id}
@@ -196,35 +197,32 @@ const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
       )}
 
       <div className=" w-full mt-10 ">
-        <div className=" flex items-center justify-start gap-3">
+        <div className=" flex items-center justify-center lg:justify-start gap-3">
           <p
             onClick={() => setSwtichActive("reviews")}
-            className={` text-lg capitalize font-semibold px-5 py-2 border cursor-pointer hover:text-gray-800  ${
-              swtichActive === "reviews"
-                ? "text-black duration-300 dark:text-white"
-                : "text-gray-400 dark:text-gray-500"
-            }`}
+            className={` text-sm lg:text-lg capitalize font-semibold px-5 py-2 border cursor-pointer hover:text-gray-800  ${swtichActive === "reviews"
+              ? "text-black duration-300 dark:text-white"
+              : "text-gray-400 dark:text-gray-500"
+              }`}
           >
             Reviews
           </p>
           <p
             onClick={() => setSwtichActive("details")}
-            className={` text-lg capitalize font-semibold px-5 py-2 border cursor-pointer hover:text-gray-800  ${
-              swtichActive === "details"
-                ? "text-black duration-300 dark:text-white"
-                : "text-gray-400 dark:text-gray-500"
-            }`}
+            className={` text-sm lg:text-lg capitalize font-semibold px-5 py-2 border cursor-pointer hover:text-gray-800  ${swtichActive === "details"
+              ? "text-black duration-300 dark:text-white"
+              : "text-gray-400 dark:text-gray-500"
+              }`}
           >
             Details
           </p>
 
           <p
             onClick={() => setSwtichActive("discussion")}
-            className={` text-lg capitalize font-semibold px-5 py-2 border cursor-pointer hover:text-gray-800  ${
-              swtichActive === "discussion"
-                ? "text-black duration-300 dark:text-white"
-                : "text-gray-400 dark:text-gray-500"
-            }`}
+            className={` text-sm lg:text-lg capitalize font-semibold px-5 py-2 border cursor-pointer hover:text-gray-800  ${swtichActive === "discussion"
+              ? "text-black duration-300 dark:text-white"
+              : "text-gray-400 dark:text-gray-500"
+              }`}
           >
             Discussion
           </p>

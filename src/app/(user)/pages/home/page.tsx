@@ -46,7 +46,8 @@ export default function HomePage() {
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState<boolean>(true);
-
+  
+  
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -76,7 +77,6 @@ export default function HomePage() {
         (Math.random() > 0.5 ? product.price * 1.2 : undefined), // 50% chance to show original price
     };
   };
-
   const numbers = Array.from({ length: 20 }, (_, i) => i);
   const [showAll, setShowAll] = useState(false);
   return (
@@ -100,31 +100,26 @@ export default function HomePage() {
               {numbers
                 .slice(0, showAll ? numbers.length : 9) // show 5 or all
                 .map((key) => (
-                  <>
-                    {loading ? (
-                      <div>
-                        <Skeleton className="  w-[full] h-[100px]" />
-                      </div>
-                    ) : (
-                      <div
-                        key={key}
-                        className="border py-2 rounded-md border-white/60 hover:scale-105 duration-300 cursor-pointer hover:shadow-lg  border-dotted w-[100%] md:h-[auto] overflow-clip m-auto relative flex items-center justify-center bg-blue-500/10 dark:bg-gray-500/20 dark:border-white/10 dark:shadow-gray-50/10"
-                      >
-                        {/* <Image
-                    src={placeholderImage} // replace with your placeholderImage
-                    alt={`placeholder ${key}`}
-                    className=" rounded-md w-[90%] m-auto"
-                    width={120}
-                    height={120}
-                  /> */}
-                        <div className=" w-[100px] h-[100px] flex items-center justify-center text-xs">
-                          category {key + 1}
+                  <div key={key}>
+                    <>
+                      {loading ? (
+                        <div>
+                          <Skeleton className="  w-[full] h-[100px]" />
                         </div>
-                        <div className="w-full h-full absolute top-0 left-0 duration-300 hover:bg-blue-500/20 hover:backdrop-blur-xs m-auto"></div>
-                        {/* <p className="absolute -bottom-0">Category {key}</p> */}
-                      </div>
-                    )}
-                  </>
+                      ) : (
+                        <div
+                          key={key}
+                          className="border py-2 rounded-md border-white/60 hover:scale-105 duration-300 cursor-pointer hover:shadow-lg  border-dotted w-[100%] md:h-[auto] overflow-clip m-auto relative flex items-center justify-center bg-blue-500/10 dark:bg-gray-500/20 dark:border-white/10 dark:shadow-gray-50/10"
+                        >
+                          <div className=" w-[100px] h-[100px] flex items-center justify-center text-xs">
+                            category {key + 1}
+                          </div>
+                          <div className="w-full h-full absolute top-0 left-0 duration-300 hover:bg-blue-500/20 hover:backdrop-blur-xs m-auto"></div>
+                          {/* <p className="absolute -bottom-0">Category {key}</p> */}
+                        </div>
+                      )}
+                    </>
+                  </div>
                 ))}
             </div>
             <div className=" mt-4 w-full flex items-center justify-center">
@@ -176,9 +171,7 @@ export default function HomePage() {
                 {loading && (
                   <>
                     {numbers.slice(0, 6).map((key) => (
-                      <>
-                        <ProductCardSkeleton key={key} />
-                      </>
+                      <ProductCardSkeleton key={key} />
                     ))}
                   </>
                 )}
@@ -221,9 +214,9 @@ export default function HomePage() {
             {loading && (
               <>
                 {numbers.slice(0, 6).map((key) => (
-                  <>
+                  <div key={key}>
                     <ProductCardSkeleton key={key} />
-                  </>
+                  </div>
                 ))}
               </>
             )}
@@ -276,9 +269,9 @@ export default function HomePage() {
               {loading && (
                 <>
                   {numbers.slice(0, 6).map((key) => (
-                    <>
+                    <div key={key}>
                       <ProductCardSkeleton key={key} />
-                    </>
+                    </div>
                   ))}
                 </>
               )}
