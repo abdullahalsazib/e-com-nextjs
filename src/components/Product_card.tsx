@@ -2,7 +2,7 @@
 "use client";
 import { FaRegHeart, FaHeart, FaStar } from "react-icons/fa";
 import p1 from "@/../public/product-image/image-1.png";
-import { Product2 } from "../type/product";
+import type { Product2 } from "../type/product";
 import { Button } from "./ui/button";
 import { useWishlist } from "@/context/WishlistContext";
 import { useCart } from "@/context/CartListContext";
@@ -21,11 +21,9 @@ const defaultProduct: Product2 = {
 };
 
 const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
-  // const router = useRouter();
   const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
   const { addToCart, loading: cartLoading } = useCart();
 
-  // Safely find if current product is in wishlist
   const wishlistedItem = wishlist.find(
     (item) => item?.product?.id === product.ID
   );
@@ -41,12 +39,10 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
       } else {
         await addToWishlist({
           id: product.ID,
-
           product: {
             id: product.ID,
             name: product.name,
             price: product.price,
-            // image_url: product.image_url,
           },
         });
         toast.success(`Added ${product.name} to wishlist`);
@@ -61,7 +57,6 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
     stock = 0,
     image_url = p1.src,
     name = "Product Name",
-    description = "",
     price = 0,
     rating = 0,
     review_count = 0,
@@ -76,11 +71,15 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
 
     for (let i = 1; i <= 5; i++) {
       if (i <= fullStars) {
-        stars.push(<FaStar key={i} className="text-[#E9A426]" />);
+        stars.push(
+          <FaStar key={i} className="text-amber-400 drop-shadow-sm" />
+        );
       } else if (i === fullStars + 1 && hasHalfStar) {
-        stars.push(<FaStar key={i} className="text-[#E9A426] opacity-50" />);
+        stars.push(<FaStar key={i} className="text-amber-400 opacity-50" />);
       } else {
-        stars.push(<FaStar key={i} className="text-[#CACDD8]" />);
+        stars.push(
+          <FaStar key={i} className="text-gray-300 dark:text-gray-600" />
+        );
       }
     }
 
@@ -101,101 +100,98 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
   };
 
   const { isAuthenticated } = useAuth();
-  // const QuickHandleButton = (e: any, id: number) => {
-  //   e.stopPropagation();
-  //   router.push(`/pages/products/${id}`);
-  //   // /products/${product?.ID}
-  // };
 
   return (
-    <div className="bg-white dark:bg-white dark:text-white flex items-center justify-between flex-col border-[1.5] border-slate-100 dark:border-slate-900 hover:shadow-xl transition-shadow duration-500 relative active:scale-105">
-      {/* Product Image */}
-      <Link
-        href={`/pages/products/${product.ID}`}
-        className="peer cursor-pointer hover:scale-110 duration-500 bg-transparent w-[full] h-[250px] flex items-center justify-center"
-      >
-        <img src={`${image_url}`} alt={name} width={"200px"} />
-      </Link>
+    <div className="group bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 overflow-hidden">
+      {/* Product Image Container */}
+      <div className="relative aspect-square overflow-hidden bg-gray-50 dark:bg-gray-800">
+        <Link
+          href={`/pages/products/${product.ID}`}
+          className="block w-full h-full"
+        >
+          <img
+            src={image_url || "/placeholder.svg"}
+            alt={name}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+        </Link>
 
-      {/* Product Info */}
-      <div className=" peer-hover:bg-blue-300/10 peer-hover:blur-xs duration-500 bg-slate-100 dark:bg-black  w-full  h-[140px] flex flex-col justify-between">
-        <div className=" flex flex-col gap-1 items-start justify-start py-2 px-2">
-          <div className=" w-full flex items-center justify-between gap-2">
-            <Link
-              href={`/pages/products/${product.ID}`}
-              className="dark:text-gray-100 text-gray-900 hover:underline duration-300"
-            >
-              <h3 className="text-sm font-bold  line-clamp-1  capitalize">
-                {name}
-              </h3>
-            </Link>
-
-            <span className="text-sm self-start font-bold dark:text-gray-300 text-gray-700">
-              <sup> $</sup>
-              {price}.<sup>00</sup>
-              {/* .toFixed(2) */}
-            </span>
-          </div>
-          {/* <p className="text-xs text-gray-500 line-clamp-1">{description}</p> */}
-
-          <div>
-            <div className="flex items-center justify-start w-full relative">
-              <div>
-                {rating > 0 && (
-                  <div className="flex items-center">
-                    <div className="flex text-xs">{renderStars()}</div>
-                    <span className="text-[12px] text-gray-500 ml-2">
-                      ({review_count})
-                    </span>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
+        {/* Stock Status Badge */}
+        <div className="absolute top-3 left-3">
+          <span
+            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium backdrop-blur-sm ${
+              inStock
+                ? "bg-green-100/90 text-green-700 dark:bg-green-900/90 dark:text-green-300"
+                : "bg-red-100/90 text-red-700 dark:bg-red-900/90 dark:text-red-300"
+            }`}
+          >
+            <IoCheckmarkCircle className="w-3 h-3" />
+            {inStock ? "In Stock" : "Out of Stock"}
+          </span>
         </div>
 
-        <div className=" flex w-full flex-row justify-between items-center gap-1">
-          <div className=" flex w-full">
-            {/* addTocart */}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleAddToCart();
-              }}
-              disabled={cartLoading || !inStock || !isAuthenticated}
-              // className={`text-xs capitalize ring-2 bg-transparent text-black dark:text-white rounded-full px-5 py-1.5  ${cartLoading || !inStock || !isAuthenticated
-              //   ? "active:scale-100 hover:scale-100 ring-1 ring-white/50 pointer-events-none bg-black/50"
-              //   : "text-gray-400 ring-black/50 dark:ring-white/50 hover:bg-black/100 dark:hover:bg-blue-500/40 hover:ring-blue-500 dark:hover:ring-blue-500 hover:text-white duration-500 active:scale-105"
-              //   } `}
-              className=" w-full bg-black/70 text-white py-3 px-5 text-sm dark:bg-gray-800/70 dark:text-white/40 dark:hover:text-white dark:hover:bg-white/50 hover:bg-black/90 capitalize duration-300"
-            >
-              {/* <FaCartArrowDown /> */}
-              add to cart
-            </button>
-          </div>
+        {/* Wishlist Button */}
+        <div className="absolute top-3 right-3">
+          <Button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              toggleWishlist();
+            }}
+            size="sm"
+            variant="ghost"
+            className="w-9 h-9 rounded-full bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm hover:bg-white dark:hover:bg-gray-700 hover:scale-110 transition-all duration-200 shadow-sm"
+          >
+            {isWishlisted ? (
+              <FaHeart className="w-4 h-4 text-red-500" />
+            ) : (
+              <FaRegHeart className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+            )}
+          </Button>
         </div>
       </div>
 
-      {/* absolute card top */}
-      <div className="peer-hover:bg-blue-300/10 peer-hover:blur-xs duration-500 flex justify-between items-center absolute py-3 bg-transparent w-full px-5">
-        <p
-          className={`text-xs flex items-center gap-1 ${
-            inStock ? "text-green-700" : "text-red-600"
-          }`}
-        >
-          <IoCheckmarkCircle className=" animate-pulse" />
-          {inStock ? "In stock" : "Out of stock"}
-        </p>
-        {/* wishlist */}
+      {/* Product Info */}
+      <div className="p-4 space-y-3">
+        {/* Product Name and Price */}
+        <div className="space-y-1">
+          <Link
+            href={`/pages/products/${product.ID}`}
+            className="block group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-200"
+          >
+            <h3 className="font-semibold text-gray-900 dark:text-gray-100 line-clamp-2 text-sm leading-tight">
+              {name}
+            </h3>
+          </Link>
+
+          <div className="flex items-center justify-between">
+            <span className="text-lg font-bold text-gray-900 dark:text-gray-100">
+              ${price.toFixed(2)}
+            </span>
+          </div>
+        </div>
+
+        {/* Rating */}
+        {rating > 0 && (
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-0.5">{renderStars()}</div>
+            <span className="text-xs text-gray-500 dark:text-gray-400">
+              ({review_count})
+            </span>
+          </div>
+        )}
+
+        {/* Add to Cart Button */}
         <Button
           onClick={(e) => {
+            e.preventDefault();
             e.stopPropagation();
-            toggleWishlist();
+            handleAddToCart();
           }}
-          size={"icon"}
-          className=" hover:scale-105 duration-500 size-9 bg-transparent rounded-full dark:bg-transparent text-black hover:bg-transparent"
+          disabled={cartLoading || !inStock || !isAuthenticated}
+          className="w-full bg-gray-900 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-white text-white font-medium py-2.5 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isWishlisted ? <FaHeart className="text-red-500" /> : <FaRegHeart />}
+          {cartLoading ? "Adding..." : "Add to Cart"}
         </Button>
       </div>
     </div>

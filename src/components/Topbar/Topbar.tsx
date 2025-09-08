@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "../ui/button";
 import { CiShop } from "react-icons/ci";
 import { Dialog } from "@radix-ui/react-dialog";
@@ -17,6 +17,8 @@ import { MdHelpCenter, MdLocalShipping } from "react-icons/md";
 import { RiCustomerServiceLine } from "react-icons/ri";
 import { useAuth } from "@/context/AuthContext";
 import hasRole from "@/lib/role-extr";
+import { Menu, X } from "lucide-react";
+import { motion } from "framer-motion";
 const HelpSupport = [
   { label: "Help Center", href: "#", icon: <MdHelpCenter /> },
   {
@@ -29,8 +31,9 @@ const HelpSupport = [
 
 const Topbar = () => {
   const { user, isAuthenticated } = useAuth();
+  const [openMenu, setOpenMenu] = useState(false);
 
-  const isSuperAdmin = hasRole(user?.roles, "superadmin");
+  // const isSuperAdmin = hasRole(user?.roles, "superadmin");
   // const isAdmin = hasRole(user?.roles, "admin");
   const isUserRole = hasRole(user?.roles, "user");
 
@@ -38,37 +41,68 @@ const Topbar = () => {
   const vendor = user?.vendor || null;
   const isVendor = !!vendor;
 
-  // Vendor status message
-  const vendorStatusMsg = vendor
-    ? vendor.vendor_status === "pending"
-      ? "Pending for Super Admin Approval!"
-      : vendor.vendor_status === "approved"
-        ? "Vendor is approved"
-        : vendor.vendor_status === "rejected"
-          ? "Vendor is rejected"
-          : vendor.vendor_status === "suspended"
-            ? "Vendor is suspended"
-            : "Unknown status"
-    : null;
-
   return (
-    <div className="w-full py-1 px-3 lg:px-5 xl:px-[10%] bg-gradient-to-r from-blue-700 to-blue-400 dark:to-blue-800 dark:from-blue-900 hidden md:flex flex-col md:flex-row items-center justify-between gap-2">
+    <div className="w-full py-1 px-3 lg:px-5 xl:px-[10%] bg-gradient-to-r from-gray-700 to-white/10 dark:to-blue-800 dark:from-blue-900 hidden md:flex flex-col md:flex-row items-center justify-between gap-2">
       {/* Left Section */}
       <div className="flex items-center gap-4 text-white">
-        <Link href="/" className="text-sm whitespace-nowrap">
-          <span className="font-semibold">E-COM</span> Next.js
-        </Link>
-        <div className="hidden lg:flex items-center gap-2 text-xs">
-          <span>Call Us:</span>
-          <span className="font-semibold">+880 123 456 789</span>
+        {/* menu clike to open all category as selection */}
+        <button
+          onClick={() => setOpenMenu(!openMenu)}
+          className=" cursor-pointer border border-transparent hover:border-white duration-300 p-1 active:scale-110 flex items-center justify-center gap-1"
+        >
+          <Menu /> All
+        </button>
+
+        <div>
+          <ul className=" capitalize text-[13px]  flex items-center justify-center gap-">
+            <li>
+              <Link href={"/"} className=" border border-transparent hover:border-1 hover:border-white/50 duration-100 py-2 px-4">Pages</Link>
+            </li>
+            <li>
+              <Link href={"/"} className=" border border-transparent hover:border-1 hover:border-white/50 duration-100 py-2 px-4">Today&apos;s deals</Link>
+            </li>
+            <li>
+              <Link href={"/"} className=" border border-transparent hover:border-1 hover:border-white/50 duration-100 py-2 px-4">Buy again</Link>
+            </li>
+            <li>
+              <Link href={"/"} className=" border border-transparent hover:border-1 hover:border-white/50 duration-100 py-2 px-4">Customer Service</Link>
+            </li>
+            <li>
+              <Link href={"/"} className=" border border-transparent hover:border-1 hover:border-white/50 duration-100 py-2 px-4">gift cards</Link>
+            </li>
+            <li>
+              <Link href={"/"} className=" border border-transparent hover:border-1 hover:border-white/50 duration-100 py-2 px-4">sell</Link>
+            </li>
+          </ul>
         </div>
+        <motion.div
+          initial={{
+            opacity: 0,
+            x: -1000,
+          }}
+          animate={{
+            opacity: 1,
+            x: openMenu ? 0 : -1000,
+          }}
+          transition={{
+            duration: 0.5,
+          }}
+          className={` ${
+            openMenu ? "absolute" : " absolute"
+          } top-0 left-0 w-80 px-2  h-full z-50 bg-black `}
+        >
+          <div className=" py-3 px-2 flex items-center justify-end ">
+            <button className=" cursor-pointer p-2 hover:text-gray-500 duration-300">
+              <X onClick={() => setOpenMenu(false)} className=" w-8 h-8" />
+            </button>
+          </div>
+          Lorem, ipsum.
+        </motion.div>
       </div>
 
       {/* Right Section */}
       <div className="flex items-center flex-wrap justify-center gap-2 text-sm">
-
-
-        {isAuthenticated && isUserRole && !isVendor &&  (
+        {isAuthenticated && isUserRole && !isVendor && (
           <Link href="/register/become-vendor">
             <Button
               variant="link"

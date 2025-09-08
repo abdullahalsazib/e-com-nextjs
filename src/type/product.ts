@@ -18,7 +18,7 @@ export interface Product2 {
   UpdatedAt?: string;
   DeletedAt?: string | null;
   user_id?: number;
-  name: string | undefined;
+  name: string;
   description: string;
   price: number;
   stock: number;

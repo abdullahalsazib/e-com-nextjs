@@ -46,8 +46,7 @@ export default function HomePage() {
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState<boolean>(true);
-  
-  
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -65,18 +64,18 @@ export default function HomePage() {
     fetchProducts();
   }, []);
   // Function to enhance product data with additional fields
-  const enhanceProductData = (product: Product2) => {
-    return {
-      ...product,
-      // Add rating and review count if not provided
-      rating: product.rating || Math.random() * 2 + 3, // Random rating between 3-5
-      review_count: product.review_count || Math.floor(Math.random() * 100),
-      // Add original_price if not provided (for showing discount)
-      original_price:
-        product.original_price ||
-        (Math.random() > 0.5 ? product.price * 1.2 : undefined), // 50% chance to show original price
-    };
-  };
+  // const enhanceProductData = (product: Product2) => {
+  //   return {
+  //     ...product,
+  //     // Add rating and review count if not provided
+  //     rating: product.rating || Math.random() * 2 + 3, // Random rating between 3-5
+  //     review_count: product.review_count || Math.floor(Math.random() * 100),
+  //     // Add original_price if not provided (for showing discount)
+  //     original_price:
+  //       product.original_price ||
+  //       (Math.random() > 0.5 ? product.price * 1.2 : undefined), // 50% chance to show original price
+  //   };
+  // };
   const numbers = Array.from({ length: 20 }, (_, i) => i);
   const [showAll, setShowAll] = useState(false);
   return (
@@ -162,11 +161,11 @@ export default function HomePage() {
             </div>
             <div className="w-full py-2">
               <div
-                className="
-              grid gap-6 sm:grid-cols-2 
-                  md:grid-cols-4 
-                  lg:grid-cols-5 
-                  xl:grid-cols-6"
+                className={`grid gap-6 mb-8
+                 
+                    
+                     "grid-cols-1 md:grid-cols-2 lg:grid-cols-5 "
+                }`}
               >
                 {loading && (
                   <>
@@ -177,7 +176,8 @@ export default function HomePage() {
                 )}
                 {products.map((product) => (
                   <div key={product.ID} className="mb-6 break-inside-avoid">
-                    <ProductCard product={enhanceProductData(product)} />
+                    {/* <ProductCard product={enhanceProductData(product)} /> */}
+                    <ProductCard product={product} />
                   </div>
                 ))}
               </div>
@@ -221,10 +221,7 @@ export default function HomePage() {
               </>
             )}
             {products.map((product) => (
-              <ProductCard
-                key={product.ID}
-                product={enhanceProductData(product)}
-              />
+              <ProductCard key={product.ID} product={product} />
             ))}{" "}
           </div>
           {/* ad and product 2 */}
@@ -276,10 +273,7 @@ export default function HomePage() {
                 </>
               )}
               {products.map((product) => (
-                <ProductCard
-                  key={product.ID}
-                  product={enhanceProductData(product)}
-                />
+                <ProductCard key={product.ID} product={product} />
               ))}{" "}
             </div>
           </div>
@@ -311,10 +305,7 @@ export default function HomePage() {
                 </>
               )}
               {products.map((product) => (
-                <ProductCard
-                  key={product.ID}
-                  product={enhanceProductData(product)}
-                />
+                <ProductCard key={product.ID} product={product} />
               ))}{" "}
             </div>
             <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-2.5 pt-3 mb-10">
@@ -341,10 +332,7 @@ export default function HomePage() {
                 </>
               )}
               {products.map((product) => (
-                <ProductCard
-                  key={product.ID}
-                  product={enhanceProductData(product)}
-                />
+                <ProductCard key={product.ID} product={product} />
               ))}{" "}
             </div>
           </div>

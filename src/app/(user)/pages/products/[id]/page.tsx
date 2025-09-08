@@ -5,7 +5,6 @@ import React, { useEffect, useState } from "react";
 import { getProductById } from "@/services/product.service";
 import CustomBreadcrumb from "@/components/smallComponent/Breadcrumb";
 import { motion } from "framer-motion";
-import { FaSpinner } from "react-icons/fa6";
 import { BiHeart } from "react-icons/bi";
 import { Button } from "@/components/ui/button";
 import { getProdcutType } from "@/type/type";
@@ -22,6 +21,7 @@ const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
     "addInfo" | "reviews" | "discussion"
   >("discussion");
   const [product, setProduct] = useState<getProdcutType | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [zoomPos, setZoomPos] = useState({ x: 0, y: 0 });
@@ -425,7 +425,7 @@ const AddInfo = () => {
 
 import user1 from "@/../public/review-user/1.jpg";
 import user2 from "@/../public/review-user/2.jpg";
-import { Star, StarHalf } from "lucide-react";
+import { Star } from "lucide-react";
 const ReviewUser = () => {
   return (
     <>
@@ -447,9 +447,9 @@ const ReviewUser = () => {
               molestias hic. Lorem ipsum dolor sit amet, consectetur adipisicing
               elit. Minima, nihil.
             </p>{" "}
-            <a href="/" className=" text-blue-500">
+            <Link href="/" className=" text-blue-500">
               more
-            </a>
+            </Link>
           </div>
           {/* for sub review __ */}
           <div>
@@ -471,9 +471,9 @@ const ReviewUser = () => {
                     laudantium quo molestias hic. Lorem ipsum dolor sit amet,
                     consectetur adipisicing elit. Minima, nihil.
                   </p>{" "}
-                  <a href="/" className=" text-blue-500">
+                  <Link href="/" className=" text-blue-500">
                     more
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
