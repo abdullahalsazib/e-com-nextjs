@@ -8,7 +8,12 @@ import { CiShop } from "react-icons/ci";
 import { GrDashboard } from "react-icons/gr";
 import { IoDiamondOutline } from "react-icons/io5";
 
-const navItems = [
+
+interface SidebarProps {
+  isOpen: boolean;
+  toggleSidebar: () => void;
+}
+const navItemsSuperAdmin = [
   {
     name: "Dashboard",
     icon: <GrDashboard />,
@@ -26,10 +31,6 @@ const navItems = [
   },
 ];
 
-interface SidebarProps {
-  isOpen: boolean;
-  toggleSidebar: () => void;
-}
 
 const Super_admin_Sidebar = ({ isOpen }: SidebarProps) => {
   const pathname = usePathname();
@@ -48,7 +49,7 @@ const Super_admin_Sidebar = ({ isOpen }: SidebarProps) => {
       {/* Navigation */}
       <nav className="flex-1 overflow-y-auto py-4 w-full">
         <ul className="space-y-1 px-2">
-          {navItems.map((item) => (
+          {navItemsSuperAdmin.map((item) => (
             <li key={item.name}>
               <Link
                 href={item.path}

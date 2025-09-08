@@ -64,10 +64,10 @@ export const deleteProduct = async (id: number | string) => {
   return response;
 };
 
-// update - PATCH - product status
+// update - PUT - product status
 export const updateProductStatus = async (id: number, status: string) => {
-  const response = await apiClient.patch(
-    `/api/v1/products/vendor/${String(id)}/status`,
+  const response = await apiClient.put(
+    `/api/v1/products/vendor/${id}/status`,
     { status }
   );
   return response;

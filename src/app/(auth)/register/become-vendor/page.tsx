@@ -16,6 +16,8 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { applyVendor } from "@/services/vendor.service";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
+import Link from "next/link";
 
 const FormSchema = z.object({
   shop_name: z.string().min(3, {
@@ -39,12 +41,14 @@ const page = () => {
   });
 
   const navigate = useRouter();
+   const { user } = useAuth();
+  // console.log(user?.vendor?.vendor_status)
   const handleSubmit = async (data: z.infer<typeof FormSchema>) => {
     try {
       const response = await applyVendor(data);
-      console.log("Vendor application response:", response);
+      // console.log("Vendor application response:", response);
       // Simulate API call
-      console.log("Form Data:", data);
+      // console.log("Form Data:", data);
       toast.success("Seller registration successful!");
       navigate.push("/");
       toast.info("waiting for super admin approval!!");
@@ -61,7 +65,17 @@ const page = () => {
           {/* Background gradient */}
         </div>
       </div>
-      <Form {...form}>
+      <div className=" text-lg uppercase text-black">
+           
+      </div>
+      {
+        user?.vendor?.vendor_status === "pending" ? (
+          <div className=" z-50 flex items-center justify-center flex-col gap-10">
+            <h1 className=" text-2xl capitalize">{"you already apply for vendor :) you'r pending wait for super admin approval!"}</h1>
+            <Link href={"/"} className=" underline text-center"><p className=" text-sm capitalize"> back to go shoppnig!</p></Link>
+          </div>
+        ): (
+           <Form {...form}>
         <form
           className=" lg:w-full xl:w-[450px] space-y-6 p-5 z-50 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg bg_blur_effect"
           onSubmit={form.handleSubmit(handleSubmit)}
@@ -147,6 +161,9 @@ const page = () => {
           </div>
         </form>
       </Form>
+        )
+      }
+     
     </div>
   );
 };

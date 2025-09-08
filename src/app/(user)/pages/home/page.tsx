@@ -46,7 +46,8 @@ export default function HomePage() {
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState<boolean>(true);
-
+  
+  
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -76,7 +77,6 @@ export default function HomePage() {
         (Math.random() > 0.5 ? product.price * 1.2 : undefined), // 50% chance to show original price
     };
   };
-
   const numbers = Array.from({ length: 20 }, (_, i) => i);
   const [showAll, setShowAll] = useState(false);
   return (
@@ -171,9 +171,7 @@ export default function HomePage() {
                 {loading && (
                   <>
                     {numbers.slice(0, 6).map((key) => (
-                      <>
-                        <ProductCardSkeleton key={key} />
-                      </>
+                      <ProductCardSkeleton key={key} />
                     ))}
                   </>
                 )}
@@ -216,9 +214,9 @@ export default function HomePage() {
             {loading && (
               <>
                 {numbers.slice(0, 6).map((key) => (
-                  <>
+                  <div key={key}>
                     <ProductCardSkeleton key={key} />
-                  </>
+                  </div>
                 ))}
               </>
             )}
@@ -271,9 +269,9 @@ export default function HomePage() {
               {loading && (
                 <>
                   {numbers.slice(0, 6).map((key) => (
-                    <>
+                    <div key={key}>
                       <ProductCardSkeleton key={key} />
-                    </>
+                    </div>
                   ))}
                 </>
               )}

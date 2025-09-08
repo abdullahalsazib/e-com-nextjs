@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import OrderDetailsModal from "../../vendor/components/OrderDetailsModal";
+import OrderDetailsModal from "../components/OrderDetailsModal";
 
 type OrderStatus =
   | "pending"
@@ -123,7 +123,7 @@ const Orders = () => {
   };
 
   return (
-    <div className="p-6">
+    <div className="p-6 max-w-7xl mx-auto">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-gray-800">Orders</h2>
         <div className="relative w-64">

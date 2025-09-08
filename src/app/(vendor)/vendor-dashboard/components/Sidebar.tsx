@@ -64,7 +64,7 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
             <li key={item.name}>
               <Link
                 href={item.path}
-                className={`flex items-center  p-3 rounded-lg ${pathname === item.path
+                className={`flex items-center ${isOpen ? "justify-start" : "justify-center"} w-full  p-3 rounded-lg ${pathname === item.path
                   ? "dark:bg-slate-800 bg-green-50 text-green-600"
                   : "text-gray-600 dark:hover:bg-gray-800 hover:bg-gray-100"
                   }`}
@@ -113,20 +113,6 @@ const Sidebar = ({ isOpen }: SidebarProps) => {
             </div>
           </div>
         )}
-        {/* <Button size="lg">
-          <CgProfile /> {user?.name}
-        </Button> */}
-        {/* <div className="flex items-center">
-          <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center text-white font-semibold">
-            {user?.ID}
-          </div>
-          {isOpen && (
-            <div className="ml-3">
-              <p className="text-sm font-medium text-gray-700">{user?.name}</p>
-              <p className="text-xs text-gray-500">{user?.role}</p>
-            </div>
-          )}
-        </div> */}
       </div>
     </div>
   );

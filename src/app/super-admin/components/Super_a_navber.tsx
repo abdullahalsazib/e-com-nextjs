@@ -27,6 +27,8 @@ import {
 import { BiBell } from "react-icons/bi";
 import { useRouter } from "next/navigation";
 import hasRole from "@/lib/role-extr";
+import { Menu } from "lucide-react";
+import { CgClose } from "react-icons/cg";
 const Super_admin_navber = ({
   isOpen,
   setOpen,
@@ -41,10 +43,11 @@ const Super_admin_navber = ({
   const { user, logout } = useAuth();
   const navigate = useRouter();
   return (
-    <div className=" w-full dark:bg-slate-900 bg-white py-3 px-6 flex items-center justify-between border-b-[0.01] ">
+    <div className=" w-full dark:bg-slate-900 bg-white py-3 px-6 border-b-[0.01] ">
+     <div className=" max-w-7xl mx-auto flex items-center justify-between ">
       <div className=" flex items-center justify-start gap-6">
         <Button onClick={toggleSidebar} size={"icon"} variant={"secondary"}>
-          {isOpen ? <FaAngleLeft /> : <FaAngleRight />}
+          {isOpen ? <CgClose /> : <Menu />}
         </Button>
         <div>
           <span className=" flex items-center justify-start gap-1">
@@ -109,16 +112,42 @@ const Super_admin_navber = ({
               </Button>
             </PopoverTrigger>
             <PopoverContent className=" text-sm" align="end">
-              <p className=" capitalize">name: {user?.name}</p>
-              <p className=" ">Email: {user?.email}</p>
-              <p className=" capitalize">
-                role:{" "}
-                {hasRole(user?.roles, "superadmin") ? "Super Admin" : "user"}
-              </p>
+              <div className="flex items-start justify-start flex-col gap-5">
+                <div>
+                  <p className=" text-sm capitalize">{user?.name}</p>
+                  <p className=" text-sm capitalize">{user?.email}</p>
+                  <p className=" text-sm capitalize">
+                    {hasRole(user?.roles, "superadmin") ? "super Admin" : "user"}
+                  </p>
+                </div>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button size={"sm"} variant={
+                      "outline"
+                    }>
+                      log out <MdOutlineOutput />
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will log out your system .
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction color="red" onClick={() => logout()}>
+                        Continue
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </div>
             </PopoverContent>
           </Popover>
 
-          <AlertDialog>
+          {/* <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button variant={"secondary"} size={"sm"}>
                 log out <MdOutlineOutput />
@@ -138,8 +167,9 @@ const Super_admin_navber = ({
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
-          </AlertDialog>
+          </AlertDialog> */}
         </div>
+      </div>
       </div>
     </div>
   );

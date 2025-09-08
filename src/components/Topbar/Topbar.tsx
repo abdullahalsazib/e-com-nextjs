@@ -17,9 +17,6 @@ import { MdHelpCenter, MdLocalShipping } from "react-icons/md";
 import { RiCustomerServiceLine } from "react-icons/ri";
 import { useAuth } from "@/context/AuthContext";
 import hasRole from "@/lib/role-extr";
-import { InfoIcon } from "lucide-react";
-import { CustomToolTip } from "../custom_compoent/CustomToolTip";
-
 const HelpSupport = [
   { label: "Help Center", href: "#", icon: <MdHelpCenter /> },
   {
@@ -46,12 +43,12 @@ const Topbar = () => {
     ? vendor.vendor_status === "pending"
       ? "Pending for Super Admin Approval!"
       : vendor.vendor_status === "approved"
-      ? "Vendor is approved"
-      : vendor.vendor_status === "rejected"
-      ? "Vendor is rejected"
-      : vendor.vendor_status === "suspended"
-      ? "Vendor is suspended"
-      : "Unknown status"
+        ? "Vendor is approved"
+        : vendor.vendor_status === "rejected"
+          ? "Vendor is rejected"
+          : vendor.vendor_status === "suspended"
+            ? "Vendor is suspended"
+            : "Unknown status"
     : null;
 
   return (
@@ -69,19 +66,9 @@ const Topbar = () => {
 
       {/* Right Section */}
       <div className="flex items-center flex-wrap justify-center gap-2 text-sm">
-        {isAuthenticated && isVendor && !isSuperAdmin && !isUserRole && (
-          <CustomToolTip bodyContent={vendorStatusMsg ?? ""}>
-            <Button
-              variant="link"
-              size="sm"
-              className="text-yellow-300 uppercase text-xs flex items-center justify-center"
-            >
-              <InfoIcon className="animate-pulse" />
-            </Button>
-          </CustomToolTip>
-        )}
 
-        {isAuthenticated && isUserRole && !isVendor && (
+
+        {isAuthenticated && isUserRole && !isVendor &&  (
           <Link href="/register/become-vendor">
             <Button
               variant="link"
