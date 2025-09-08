@@ -88,7 +88,7 @@ export default function HomePage() {
       <div className={` px-2 md:px-[5%] lg:px-[1%] xl:px-[10%] `}>
         <div>
           <div className=" w-full py-10">
-            <h2 className=" text-lg md:text-xl text-center md:text-left font-semibold md:font-bold lg:py-2">
+            <h2 className=" text-lg md:text-2xl text-center md:text-left font-semibold md:font-bold lg:py-2">
               Category&apos;s
             </h2>
 
@@ -137,7 +137,7 @@ export default function HomePage() {
           {/* Products sections  */}
           <div>
             <div className="  flex items-center justify-between w-full">
-              <h1 className="lg:text-xl font-semibold capitalize">
+              <h1 className="lg:text-2xl font-semibold capitalize">
                 New Products
               </h1>
               <a

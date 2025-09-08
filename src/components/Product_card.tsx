@@ -118,12 +118,17 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
       </Link>
 
       {/* Product Info */}
-      <div className=" peer-hover:bg-blue-300/10 peer-hover:blur-xs duration-500 bg-slate-100 dark:bg-black  w-full  h-[140px] px-2 py-3 flex flex-col justify-between">
-        <div className=" flex flex-col gap-1 items-start justify-start">
+      <div className=" peer-hover:bg-blue-300/10 peer-hover:blur-xs duration-500 bg-slate-100 dark:bg-black  w-full  h-[140px] flex flex-col justify-between">
+        <div className=" flex flex-col gap-1 items-start justify-start py-2 px-2">
           <div className=" w-full flex items-center justify-between gap-2">
-            <h3 className="text-sm font-bold dark:text-gray-100 text-gray-900 line-clamp-1 ">
-              {name}
-            </h3>
+            <Link
+              href={`/pages/products/${product.ID}`}
+              className="dark:text-gray-100 text-gray-900 hover:underline duration-300"
+            >
+              <h3 className="text-sm font-bold  line-clamp-1  capitalize">
+                {name}
+              </h3>
+            </Link>
 
             <span className="text-sm self-start font-bold dark:text-gray-300 text-gray-700">
               <sup> $</sup>
@@ -131,7 +136,7 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
               {/* .toFixed(2) */}
             </span>
           </div>
-          <p className="text-xs text-gray-500 line-clamp-1">{description}</p>
+          {/* <p className="text-xs text-gray-500 line-clamp-1">{description}</p> */}
 
           <div>
             <div className="flex items-center justify-start w-full relative">
@@ -149,8 +154,8 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
           </div>
         </div>
 
-        <div className=" flex flex-row justify-between items-center gap-1">
-          <div className=" flex gap-2">
+        <div className=" flex w-full flex-row justify-between items-center gap-1">
+          <div className=" flex w-full">
             {/* addTocart */}
             <button
               onClick={(e) => {
@@ -158,10 +163,11 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
                 handleAddToCart();
               }}
               disabled={cartLoading || !inStock || !isAuthenticated}
-              className={`text-xs capitalize ring-2 bg-transparent text-black dark:text-white rounded-full px-5 py-1.5  ${cartLoading || !inStock || !isAuthenticated
-                ? "active:scale-100 hover:scale-100 ring-1 ring-white/50 pointer-events-none bg-black/50"
-                : "text-gray-400 ring-black/50 dark:ring-white/50 hover:bg-black/100 dark:hover:bg-blue-500/40 hover:ring-blue-500 dark:hover:ring-blue-500 hover:text-white duration-500 active:scale-105"
-                } `}
+              // className={`text-xs capitalize ring-2 bg-transparent text-black dark:text-white rounded-full px-5 py-1.5  ${cartLoading || !inStock || !isAuthenticated
+              //   ? "active:scale-100 hover:scale-100 ring-1 ring-white/50 pointer-events-none bg-black/50"
+              //   : "text-gray-400 ring-black/50 dark:ring-white/50 hover:bg-black/100 dark:hover:bg-blue-500/40 hover:ring-blue-500 dark:hover:ring-blue-500 hover:text-white duration-500 active:scale-105"
+              //   } `}
+              className=" w-full bg-black/70 text-white py-3 px-5 text-sm dark:bg-gray-800/70 dark:text-white/40 dark:hover:text-white dark:hover:bg-white/50 hover:bg-black/90 capitalize duration-300"
             >
               {/* <FaCartArrowDown /> */}
               add to cart
@@ -173,8 +179,9 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
       {/* absolute card top */}
       <div className="peer-hover:bg-blue-300/10 peer-hover:blur-xs duration-500 flex justify-between items-center absolute py-3 bg-transparent w-full px-5">
         <p
-          className={`text-xs flex items-center gap-1 ${inStock ? "text-green-700" : "text-red-600"
-            }`}
+          className={`text-xs flex items-center gap-1 ${
+            inStock ? "text-green-700" : "text-red-600"
+          }`}
         >
           <IoCheckmarkCircle className=" animate-pulse" />
           {inStock ? "In stock" : "Out of stock"}
