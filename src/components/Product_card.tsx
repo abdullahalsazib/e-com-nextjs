@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import { FaRegHeart, FaHeart, FaStar } from "react-icons/fa";
-import p1 from "@/../public/product-image/image-1.png";
 import type { Product2 } from "../type/product";
 import { Button } from "./ui/button";
 import { useWishlist } from "@/context/WishlistContext";
@@ -10,6 +9,7 @@ import { toast } from "sonner";
 import { useAuth } from "@/context/AuthContext";
 import { IoCheckmarkCircle } from "react-icons/io5";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const defaultProduct: Product2 = {
   ID: 0,
@@ -17,18 +17,18 @@ const defaultProduct: Product2 = {
   description: "Product description not available",
   price: 0,
   stock: 0,
-  image_url: p1.src,
+  image_url: "",
 };
 
 const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
   const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
-  const { addToCart, loading: cartLoading } = useCart();
+  const { addToCart } = useCart();
 
   const wishlistedItem = wishlist.find(
     (item) => item?.product?.id === product.ID
   );
   const isWishlisted = !!wishlistedItem;
-
+  const navigate = useRouter();
   const toggleWishlist = async () => {
     try {
       if (isWishlisted) {
@@ -55,7 +55,7 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
 
   const {
     stock = 0,
-    image_url = p1.src,
+    image_url = "",
     name = "Product Name",
     price = 0,
     rating = 0,
@@ -102,17 +102,17 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
   const { isAuthenticated } = useAuth();
 
   return (
-    <div className="group bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 overflow-hidden">
+    <div className="group bg-white dark:bg-white/10 rounded-xl border border-gray-200 dark:border-black hover:border-gray-300 dark:hover:border-gray-600 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 overflow-hidden">
       {/* Product Image Container */}
-      <div className="relative aspect-square overflow-hidden bg-gray-50 dark:bg-gray-800">
+      <div className="relative aspect-square overflow-hidden bg-gray-50 dark:bg-black/50">
         <Link
           href={`/pages/products/${product.ID}`}
           className="block w-full h-full"
         >
           <img
-            src={image_url || "/placeholder.svg"}
+            src={image_url}
             alt={name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            className="w-full p-4 h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />
         </Link>
 
@@ -184,14 +184,17 @@ const ProductCard = ({ product = defaultProduct }: { product?: Product2 }) => {
         {/* Add to Cart Button */}
         <Button
           onClick={(e) => {
-            e.preventDefault();
             e.stopPropagation();
-            handleAddToCart();
+            if (!isAuthenticated) {
+              navigate.push("/login");
+            } else {
+              handleAddToCart();
+            }
           }}
-          disabled={cartLoading || !inStock || !isAuthenticated}
-          className="w-full bg-gray-900 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-white text-white font-medium py-2.5 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          // disabled={!inStock || !isAuthenticated}
+          className="w-full active:scale-105 bg-gray-900 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-white text-white font-medium py-2.5 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {cartLoading ? "Adding..." : "Add to Cart"}
+          {"Add to Cart"}
         </Button>
       </div>
     </div>

@@ -41,10 +41,11 @@ const page = () => {
   });
 
   const navigate = useRouter();
-   const { user } = useAuth();
+  const { user } = useAuth();
   // console.log(user?.vendor?.vendor_status)
   const handleSubmit = async (data: z.infer<typeof FormSchema>) => {
     try {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const response = await applyVendor(data);
       // console.log("Vendor application response:", response);
       // Simulate API call
@@ -65,105 +66,106 @@ const page = () => {
           {/* Background gradient */}
         </div>
       </div>
-      <div className=" text-lg uppercase text-black">
-           
-      </div>
-      {
-        user?.vendor?.vendor_status === "pending" ? (
-          <div className=" z-50 flex items-center justify-center flex-col gap-10">
-            <h1 className=" text-2xl capitalize">{"you already apply for vendor :) you'r pending wait for super admin approval!"}</h1>
-            <Link href={"/"} className=" underline text-center"><p className=" text-sm capitalize"> back to go shoppnig!</p></Link>
-          </div>
-        ): (
-           <Form {...form}>
-        <form
-          className=" lg:w-full xl:w-[450px] space-y-6 p-5 z-50 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg bg_blur_effect"
-          onSubmit={form.handleSubmit(handleSubmit)}
-        >
-          <div className=" flex flex-col items-center justify-center text-center">
-            <h1 className=" py-2 text-3xl font-semibold tracking-wider mt-4">
-              Apply as a Vendor
-            </h1>
-            <p className=" text-lg text-gray-500">
-              Become a seller and start your own shop on our platform. Fill in
-              the details below to apply.
-            </p>
-          </div>
-          <div className=" grid gap-3">
-            <FormField
-              control={form.control}
-              name="shop_name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Shop Name</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="text"
-                      placeholder="Shop name"
-                      // value={field.value as string}
-                      {...field}
-                    />
-                  </FormControl>
-                  {/* <FormDescription>Please enter a vaid name</FormDescription> */}
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className=" grid gap-3">
-            <FormField
-              control={form.control}
-              name="address"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Address</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="text"
-                      placeholder="address"
-                      // value={field.value as string}
-                      {...field}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className=" grid gap-3">
-            <FormField
-              control={form.control}
-              name="phone"
-              render={({ field }) => (
-                <FormItem>
-                  <div className=" w-full flex items-center justify-between ">
-                    <FormLabel>Phone</FormLabel>
-                  </div>
-                  <FormControl>
-                    <Input
-                      type="text"
-                      placeholder="+880"
-                      // value={field.value as string}
-                      {...field}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-          </div>
+      <div className=" text-lg uppercase text-black"></div>
+      {user?.vendor?.vendor_status === "pending" ? (
+        <div className=" z-50 flex items-center justify-center flex-col gap-10">
+          <h1 className=" text-2xl capitalize">
+            {
+              "you already apply for vendor :) you'r pending wait for super admin approval!"
+            }
+          </h1>
+          <Link href={"/"} className=" underline text-center">
+            <p className=" text-sm capitalize"> back to go shoppnig!</p>
+          </Link>
+        </div>
+      ) : (
+        <Form {...form}>
+          <form
+            className=" lg:w-full xl:w-[450px] space-y-6 p-5 z-50 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg bg_blur_effect"
+            onSubmit={form.handleSubmit(handleSubmit)}
+          >
+            <div className=" flex flex-col items-center justify-center text-center">
+              <h1 className=" py-2 text-3xl font-semibold tracking-wider mt-4">
+                Apply as a Vendor
+              </h1>
+              <p className=" text-lg text-gray-500">
+                Become a seller and start your own shop on our platform. Fill in
+                the details below to apply.
+              </p>
+            </div>
+            <div className=" grid gap-3">
+              <FormField
+                control={form.control}
+                name="shop_name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Shop Name</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="text"
+                        placeholder="Shop name"
+                        // value={field.value as string}
+                        {...field}
+                      />
+                    </FormControl>
+                    {/* <FormDescription>Please enter a vaid name</FormDescription> */}
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className=" grid gap-3">
+              <FormField
+                control={form.control}
+                name="address"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Address</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="text"
+                        placeholder="address"
+                        // value={field.value as string}
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className=" grid gap-3">
+              <FormField
+                control={form.control}
+                name="phone"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className=" w-full flex items-center justify-between ">
+                      <FormLabel>Phone</FormLabel>
+                    </div>
+                    <FormControl>
+                      <Input
+                        type="text"
+                        placeholder="+880"
+                        // value={field.value as string}
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
 
-          <div className=" space-y-3">
-            <Button
-              type="submit"
-              className="w-full flex items-center justify-center"
-              disabled={form.formState.isSubmitting}
-            >
-              {form.formState.isSubmitting ? "Submitting..." : "Apply Now"}
-            </Button>
-          </div>
-        </form>
-      </Form>
-        )
-      }
-     
+            <div className=" space-y-3">
+              <Button
+                type="submit"
+                className="w-full flex items-center justify-center"
+                disabled={form.formState.isSubmitting}
+              >
+                {form.formState.isSubmitting ? "Submitting..." : "Apply Now"}
+              </Button>
+            </div>
+          </form>
+        </Form>
+      )}
     </div>
   );
 };

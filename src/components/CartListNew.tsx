@@ -8,7 +8,11 @@ const CartListNew = () => {
   const { cart, loading, error, cartItemCount, cartTotal } = useCart();
   const { isAuthenticated } = useAuth();
   // console.log("cart form wishlit: ", cart)
-
+  const subtotal = cartTotal;
+  const shipping = 12.0;
+  const tax = 1.87;
+  const gst = 1.81;
+  const total = subtotal + shipping + tax + gst;
   return (
     <div className=" py-4 h-full">
       {!isAuthenticated ? (
@@ -57,6 +61,10 @@ const CartListNew = () => {
                   <span>Subtotal:</span>
                   <span>${cartTotal.toFixed(2)}</span>
                 </div>
+                <div className="flex justify-between dark:text-white font-medium mb-3">
+                  <span>Total:</span>
+                  <span>${total.toFixed(2)}</span>
+                </div>
                 <div className="flex flex-col gap-2">
                   <Link
                     href="/pages/shoping-card"
@@ -66,7 +74,7 @@ const CartListNew = () => {
                     View Cart
                   </Link>
                   <Link
-                    href="/pages/shoping-card"
+                    href={`/pages/checkout`}
                     //   onClick={() => setIsOpen(false)}
                     className="w-full py-2 px-4 rounded-full text-sm text-center border border-blue-500 text-blue-500 hover:bg-blue-50 duration-200 font-medium"
                   >

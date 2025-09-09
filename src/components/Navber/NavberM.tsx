@@ -103,7 +103,7 @@ const NavberM = () => {
             <input
               type="search"
               placeholder="Search for products, categories or brands..."
-              className=" w-full rounded-bl-sm rounded-tl-sm bg-white/90 dark:bg-black xl:py-2 xl:px-5 py-2 px-4  text-black/50 focus:text-black dark:text-slate-300 border-none outline-none duration-300 text-sm"
+              className=" w-full rounded-bl-sm rounded-tl-sm bg-white/90 dark:bg-white/80  xl:py-2 xl:px-5 py-2 px-4  text-black/50 focus:text-black dark:text-black border- outline-none duration-300 text-sm"
             />
             <button className=" bg-white/50 py-1.5 px-3 rounded-br-sm rounded-tr-sm hover:bg-blue-500 duration-300 active:scale-110">
               <SearchIcon className=" text-white" />

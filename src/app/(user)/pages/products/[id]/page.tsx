@@ -2,11 +2,10 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { getProductById } from "@/services/product.service";
+import { getProductById, getProducts } from "@/services/product.service";
 import CustomBreadcrumb from "@/components/smallComponent/Breadcrumb";
 import { motion } from "framer-motion";
 import { BiHeart } from "react-icons/bi";
-import { Button } from "@/components/ui/button";
 import { getProdcutType } from "@/type/type";
 import { BsFacebook, BsMailboxFlag, BsWhatsapp } from "react-icons/bs";
 import Link from "next/link";
@@ -21,7 +20,9 @@ const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
     "addInfo" | "reviews" | "discussion"
   >("discussion");
   const [product, setProduct] = useState<getProdcutType | null>(null);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { cart, updateCartItem, cartItemCount, addToCart } = useCart();
+  const { isAuthenticated } = useAuth();
+  const navigate = useRouter();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [zoomPos, setZoomPos] = useState({ x: 0, y: 0 });
@@ -46,6 +47,24 @@ const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
     fetchProduct();
   }, [id]);
 
+  const handleAddToCart = async () => {
+    try {
+      await addToCart({
+        product_id: product?.ID,
+        quantity: 1,
+      });
+      // toast.success(`${product?.name} added to cart`);
+    } catch (error) {
+      toast.error("Failed to add item to cart");
+      console.error(error);
+    }
+  };
+
+  const handleQuantityChange = async (itemId: number, newQuantity: number) => {
+    if (newQuantity < 1) return;
+    await updateCartItem(itemId, { quantity: newQuantity });
+  };
+
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const { left, top, width, height } =
       e.currentTarget.getBoundingClientRect();
@@ -59,6 +78,27 @@ const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
     { label: "Products", link: "/pages/products" },
     { label: product ? product.name : "Loading...", active: true },
   ];
+
+  const [products, setProducts] = useState<Product2[]>([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await getProducts();
+
+        setProducts(response.data);
+      } catch (err) {
+        setError("Failed to load products");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  const numbers = Array.from({ length: 20 }, (_, i) => i);
 
   return (
     <div className="w-full py-5 px-4 md:px-8 lg:px-[15%] 2xl:px-[20%] min-h-screen bg-gray-50 dark:bg-black">
@@ -151,16 +191,100 @@ const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
                   <div className="flex justify-between items-center">
                     <Link
                       href={`/vendor/${product.vendor.id}`}
-                      className=" text-lg font-semibold capitalize"
+                      className=" hover:underline text-lg duration-300 font-normal hover:scale-105 capitalize flex items-start justify-start "
                     >
                       {product.vendor.shop_name}
+                      {product.vendor.status === "approved" && (
+                        <>
+                          <CustomToolTip
+                            // eslint-disable-next-line react/no-children-prop
+                            children={
+                              <MdOutlineVerified className=" text-blue-500 " />
+                            }
+                            bodyContent="Verified Vendor Account"
+                          />
+                        </>
+                      )}
+                      {product.vendor.status === "suspended" && (
+                        <>
+                          <CustomToolTip
+                            // eslint-disable-next-line react/no-children-prop
+                            children={
+                              <MdOutlineSyncProblem className=" text-red-500" />
+                            }
+                            bodyContent="Risk iussue"
+                          />
+                        </>
+                      )}
                     </Link>
 
                     <p className="uppercase font-bold text-gray-700">
                       Id: #VHXUeI{product.vendor.id}
                     </p>
                   </div>
-                  <div className="pt- pb-5 flex items-center justify-start gap-3">
+                  <hr />
+
+                  <h1 className="text-2xl mt-4 capitalize line-clamp-3 font-bold mb-4 ">
+                    {product.name}
+                  </h1>
+
+                  <p className="text-gray-700 line-clamp-4 text-sm dark:text-gray-300 capitalize text-justify mb-6">
+                    {product.description} Lorem ipsum dolor sit amet,
+                    consectetur adipisicing elit. Fuga, fugit unde veritatis rem
+                    aliquid inventore similique magnam commodi accusantium,
+                    culpa, ipsam autem omnis est perspiciatis ab ducimus nihil
+                    placeat qui.
+                  </p>
+
+                  <div className="flex items-center gap-4">
+                    <span className="text-2xl font-bold">
+                      ${product.price.toFixed(2)}
+                    </span>
+                    <del className="text-sm text-gray-400">
+                      ${product.price.toFixed(2)}
+                    </del>
+                  </div>
+                  <div className="flex gap-1 my-5">
+                    <div className=" grid grid-cols-3">
+                      {cart?.items.map((item) => (
+                        <>
+                          <button
+                            onClick={() =>
+                              handleQuantityChange(item.ID, item.quantity - 1)
+                            }
+                            className=" py-2 px-4 text-center text-lg font-bold  hover:bg-black hover:text-white duration-300 cursor-pointer active:scale-105 border border-black"
+                          >
+                            -
+                          </button>
+                          <button className=" cursor-none py-2 px-4 text-center text-lg font-normal border-t border-b border-black bg-white text-black">
+                            {cartItemCount}
+                          </button>
+                          <button
+                            onClick={() =>
+                              handleQuantityChange(item.ID, item.quantity + 1)
+                            }
+                            className=" py-2 px-4 text-center text-lg font-bold  hover:bg-black hover:text-white duration-300 cursor-pointer active:scale-105 border border-black"
+                          >
+                            +
+                          </button>
+                        </>
+                      ))}
+                    </div>
+                    <button
+                      onClick={() => {
+                        if (!isAuthenticated) navigate.push("/login");
+                        else handleAddToCart();
+                      }}
+                      className=" bg-black text-white py-3 px-5 hover:bg-white hover:text-black border-black border duration-300 active:scale-105"
+                    >
+                      Add to cart
+                    </button>
+                    <button className=" bg-white text-black py-3 px-5 hover:bg-black hover:text-white border-black border duration-300 active:scale-105">
+                      <BiHeart />
+                    </button>
+                  </div>
+                  <hr />
+                  <div className=" mt-4 flex items-center justify-start gap-3">
                     <p className=" text-sm capitalize font-semibold text-gray-500">
                       {" "}
                       contact us :
@@ -183,34 +307,13 @@ const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
                       </li>
                     </ul>
                   </div>
-
-                  <h1 className="text-3xl font-bold mb-4 line-clamp-2">
-                    {product.name}
-                  </h1>
-
-                  <p className="text-gray-700 dark:text-gray-300 capitalize text-justify mb-6">
-                    {product.description} Lorem ipsum dolor sit amet,
-                    consectetur adipisicing elit. Fuga, fugit unde veritatis rem
-                    aliquid inventore similique magnam commodi accusantium,
-                    culpa, ipsam autem omnis est perspiciatis ab ducimus nihil
-                    placeat qui.
-                  </p>
-
-                  <div className="flex items-center gap-4">
-                    <del className="text-xl text-gray-400">
-                      ${product.price.toFixed(2)}
-                    </del>
-                    <span className="text-4xl font-bold">
-                      ${product.price.toFixed(2)}
-                    </span>
-                  </div>
-                  <div className="flex gap-4 mt-6">
-                    <Button className="capitalize" size="lg">
-                      Add to Cart
-                    </Button>
-                    <Button className="capitalize" size="icon">
-                      <BiHeart />
-                    </Button>
+                  <div className=" text-black/70">
+                    <div className="text-sm capitalize">
+                      Category: {product.category?.Slug}
+                    </div>
+                    <div className="text-sm ">
+                      Tag&apos;s: {product.category?.Slug}, and more
+                    </div>
                   </div>
                 </div>
               </div>
@@ -261,6 +364,32 @@ const ProductPage: React.FC<ProductPageProps> = ({ params }) => {
               )}
               {swtichActive == "reviews" && <Reviews />}
               {swtichActive == "addInfo" && <AddInfo />}
+            </div>
+          </div>
+          <div>
+            <div className="flex items-center justify-center space-x-4 mb-7 mt-10">
+              <span className="flex-grow h-[1px] bg-black max-w-[120px]" />
+              <h1 className="text-3xl font-bold text-center uppercase">
+                related product&apos;s
+              </h1>
+              <span className="flex-grow h-[1px] bg-black max-w-[120px]" />
+            </div>
+            <div
+              className={` grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 justify-center items-center gap-2 lg:gap-7`}
+            >
+              {loading && (
+                <>
+                  {numbers.slice(0, 6).map((key) => (
+                    <ProductCardSkeleton key={key} />
+                  ))}
+                </>
+              )}
+              {products.map((product) => (
+                <div key={product.ID} className="mb-6 break-inside-avoid">
+                  {/* <ProductCard product={enhanceProductData(product)} /> */}
+                  <ProductCard product={product} />
+                </div>
+              ))}
             </div>
           </div>
         </>
@@ -426,6 +555,15 @@ const AddInfo = () => {
 import user1 from "@/../public/review-user/1.jpg";
 import user2 from "@/../public/review-user/2.jpg";
 import { Star } from "lucide-react";
+import { MdOutlineSyncProblem, MdOutlineVerified } from "react-icons/md";
+import { CustomToolTip } from "@/components/custom_compoent/CustomToolTip";
+import { useCart } from "@/context/CartListContext";
+import { toast } from "sonner";
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
+import ProductCard from "@/components/Product_card";
+import { Product2 } from "@/type/product";
+import ProductCardSkeleton from "@/components/ProductCardSkeleton";
 const ReviewUser = () => {
   return (
     <>

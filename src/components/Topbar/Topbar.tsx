@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Button } from "../ui/button";
 import { CiShop } from "react-icons/ci";
 import { Dialog } from "@radix-ui/react-dialog";
@@ -19,6 +19,7 @@ import { useAuth } from "@/context/AuthContext";
 import hasRole from "@/lib/role-extr";
 import { Menu, X } from "lucide-react";
 import { motion } from "framer-motion";
+import { useClickOutside } from "@/hooks/useClickOutSide";
 const HelpSupport = [
   { label: "Help Center", href: "#", icon: <MdHelpCenter /> },
   {
@@ -29,12 +30,26 @@ const HelpSupport = [
   { label: "Shipping & Delivery", href: "#", icon: <MdLocalShipping /> },
 ];
 
+const LinkPage = [
+  { title: "home", link: "/" },
+  // { title: "about", link: "/pages/about" },
+  { title: "Product's", link: "/pages/products" },
+  { title: "contact us", link: "/pages/contactus" },
+  { title: "faq", link: "/pages/faq" },
+];
 const Topbar = () => {
   const { user, isAuthenticated } = useAuth();
   const [openMenu, setOpenMenu] = useState(false);
+  const [onHover, setOnHover] = useState(false);
 
-  // const isSuperAdmin = hasRole(user?.roles, "superadmin");
-  // const isAdmin = hasRole(user?.roles, "admin");
+  const openMenuRef = useRef<HTMLDivElement | null>(null);
+  const onHOverRef = useRef<HTMLDivElement | null>(null);
+  useClickOutside(onHOverRef, () => {
+    if (onHover) setOnHover(false);
+  });
+  useClickOutside(openMenuRef, () => {
+    if (openMenu) setOpenMenu(false);
+  });
   const isUserRole = hasRole(user?.roles, "user");
 
   // Vendor check
@@ -55,27 +70,78 @@ const Topbar = () => {
 
         <div>
           <ul className=" capitalize text-[13px]  flex items-center justify-center gap-">
-            <li>
-              <Link href={"/"} className=" border border-transparent hover:border-1 hover:border-white/50 duration-100 py-2 px-4">Pages</Link>
+            <li className=" relative">
+              <button
+                onMouseEnter={() => setOnHover(true)}
+                className="  border border-transparent hover:border-1 hover:border-white/50 duration-100 py-2 px-4"
+              >
+                Pages
+              </button>
+              <div
+                ref={onHOverRef}
+                onMouseLeave={() => setOnHover(false)}
+                className={` ${
+                  onHover ? "absolute duration-300" : "hidden"
+                } top-9 left-4 py-4 bg-white min-w-[200px] min-h-full  z-50`}
+              >
+                <ul className=" text-black py-2 px-3 flex items-start justify-start flex-col gap-5">
+                  {LinkPage.map((item, i) => (
+                    <li key={i}>
+                      <Link
+                        href={item.link}
+                        className=" text-sm py-1.5 border-black/30 hover:border-black duration-300 border-1 px-5 hover:underline cursor-pointer"
+                      >
+                        {item.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </li>
             <li>
-              <Link href={"/"} className=" border border-transparent hover:border-1 hover:border-white/50 duration-100 py-2 px-4">Today&apos;s deals</Link>
+              <Link
+                href={"/pages/products"}
+                className=" border border-transparent hover:border-1 hover:border-white/50 duration-100 py-2 px-4"
+              >
+                Today&apos;s deals
+              </Link>
             </li>
             <li>
-              <Link href={"/"} className=" border border-transparent hover:border-1 hover:border-white/50 duration-100 py-2 px-4">Buy again</Link>
+              <Link
+                href={"/pages/products"}
+                className=" border border-transparent hover:border-1 hover:border-white/50 duration-100 py-2 px-4"
+              >
+                Buy again
+              </Link>
             </li>
             <li>
-              <Link href={"/"} className=" border border-transparent hover:border-1 hover:border-white/50 duration-100 py-2 px-4">Customer Service</Link>
+              <Link
+                href={"/"}
+                className=" border border-transparent hover:border-1 hover:border-white/50 duration-100 py-2 px-4"
+              >
+                Customer Service
+              </Link>
             </li>
             <li>
-              <Link href={"/"} className=" border border-transparent hover:border-1 hover:border-white/50 duration-100 py-2 px-4">gift cards</Link>
+              <Link
+                href={"/"}
+                className=" border border-transparent hover:border-1 hover:border-white/50 duration-100 py-2 px-4"
+              >
+                gift cards
+              </Link>
             </li>
             <li>
-              <Link href={"/"} className=" border border-transparent hover:border-1 hover:border-white/50 duration-100 py-2 px-4">sell</Link>
+              <Link
+                href={"/register"}
+                className=" bg-gradient-to-tl from-black dark:to-blue-600/40 to-blue-500 hover:bg-gradient-to-br duration-300  rounded-full border-none hover:border-1 hover:border-white/50  py-2 px-4"
+              >
+                Vendor&apos;s
+              </Link>
             </li>
           </ul>
         </div>
         <motion.div
+          ref={openMenuRef}
           initial={{
             opacity: 0,
             x: -1000,

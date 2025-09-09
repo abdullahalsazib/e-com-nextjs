@@ -46,7 +46,7 @@ export interface Testimonial {
 }
 
 export interface getProdcutType {
-  id: number;
+  ID: number;
   name: string;
   description: string;
   image_url: string;
@@ -58,8 +58,14 @@ export interface getProdcutType {
     name: string;
     email: string;
   };
+  category?: {
+    ID: number;
+    Name: string;
+    Slug: string;
+  };
   vendor: {
     id: number;
     shop_name: string;
+    status: string;
   };
 }

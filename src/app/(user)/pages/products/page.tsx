@@ -18,11 +18,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Slider } from "@/components/ui/slider";
 import ProductCard from "@/components/Product_card";
 import { Product2 } from "@/type/product";
 import { getProducts } from "@/services/product.service";
 import { getCategorys } from "@/services/category.service";
+import CustomBreadcrumb from "@/components/smallComponent/Breadcrumb";
+
+const breadcrumb = [
+  { label: "Home", link: "/", active: false },
+  { label: "Products", active: true },
+];
 
 export default function ShopPage() {
   const [products, setProducts] = useState<Product2[]>([]);
@@ -36,11 +41,11 @@ export default function ShopPage() {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([
     "All",
   ]);
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 5000]);
+  // const [priceRange, setPriceRange] = useState<[number, number]>([0, 5000]);
   const [sortBy, setSortBy] = useState("default");
   const [gridCols, setGridCols] = useState(3);
   const [currentPage, setCurrentPage] = useState(1);
-  const [showNewOnly, setShowNewOnly] = useState(false);
+  // const [showNewOnly, setShowNewOnly] = useState(false);
 
   const itemsPerPage = 8;
 
@@ -52,7 +57,7 @@ export default function ShopPage() {
         const categoryRes = await getCategorys();
 
         setProducts(productRes.data);
-        setCategories(categoryRes.data.categories)
+        setCategories(categoryRes.data.categories);
       } catch (err) {
         console.error(err);
         setError("Failed to load products or categories");
@@ -62,8 +67,6 @@ export default function ShopPage() {
     };
     fetchData();
   }, []);
-  console.log(categories)
-
   // Filter products
   const filteredProducts = products.filter((product) => {
     const matchesSearch = product.name
@@ -76,11 +79,12 @@ export default function ShopPage() {
         (catSlug) => product.category && product.category.Slug === catSlug
       );
 
-    const matchesPrice =
-      product.price >= priceRange[0] && product.price <= priceRange[1];
-    const matchesNew = !showNewOnly || !!product.rating; // assuming rating indicates new
+    // const matchesPrice =
+    //   product.price >= priceRange[0] && product.price <= priceRange[1];
+    // const matchesNew = !showNewOnly || !!product.rating; // assuming rating indicates new
 
-    return matchesSearch && matchesCategory && matchesPrice && matchesNew;
+    // return matchesSearch && matchesCategory && matchesPrice && matchesNew;
+    return matchesSearch && matchesCategory;
   });
 
   // Sort products
@@ -119,13 +123,22 @@ export default function ShopPage() {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading)
+    return (
+      <div className=" max-w-7xl mx-auto h-[80vh] flex items-center justify-center">
+        Loading...
+      </div>
+    );
   if (error) return <div>{error}</div>;
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8 flex gap-8">
+    <div className="min-h-screen bg-transparent max-w-[80%] mx-auto">
+      <div className=" pt-5">
+        <CustomBreadcrumb items={breadcrumb} />
+      </div>
+      <div className="container mx-auto  py-8 flex gap-8">
         {/* Sidebar */}
+
         <div className="w-80 bg-sidebar rounded-lg p-6 h-fit">
           <h2 className="text-xl font-semibold mb-6 text-sidebar-foreground">
             Filters
@@ -166,7 +179,7 @@ export default function ShopPage() {
                     htmlFor={category}
                     className="text-sm text-sidebar-foreground cursor-pointer capitalize"
                   >
-                    {category} 
+                    {category}
                   </label>
                 </div>
               ))}
@@ -178,22 +191,22 @@ export default function ShopPage() {
             <label className="block text-sm font-medium mb-3 text-sidebar-foreground">
               Price Range
             </label>
-            <Slider
+            {/* <Slider
               value={priceRange}
               onValueChange={setPriceRange}
               max={5000}
               min={0}
               step={10}
               className="mb-2"
-            />
+            /> */}
             <div className="flex justify-between text-sm text-muted-foreground">
-              <span>${priceRange[0]}</span>
-              <span>${priceRange[1]}</span>
+              {/* <span>${priceRange[0]}</span>
+              <span>${priceRange[1]}</span> */}
             </div>
           </div>
 
           {/* New Products */}
-          <div className="mb-6 flex items-center space-x-2">
+          {/* <div className="mb-6 flex items-center space-x-2">
             <Checkbox
               id="new-only"
               checked={showNewOnly}
@@ -205,7 +218,7 @@ export default function ShopPage() {
             >
               Show New Products Only
             </label>
-          </div>
+          </div> */}
         </div>
 
         {/* Product Grid */}
@@ -235,16 +248,16 @@ export default function ShopPage() {
 
             <div className="flex items-center gap-2">
               <Button
-                variant={gridCols === 3 ? "default" : "outline"}
+                variant={gridCols === 4 ? "default" : "outline"}
                 size="sm"
-                onClick={() => setGridCols(3)}
+                onClick={() => setGridCols(4)}
               >
                 <Grid3X3 className="h-4 w-4" />
               </Button>
               <Button
-                variant={gridCols === 4 ? "default" : "outline"}
+                variant={gridCols === 3 ? "default" : "outline"}
                 size="sm"
-                onClick={() => setGridCols(4)}
+                onClick={() => setGridCols(3)}
               >
                 <Grid2X2 className="h-4 w-4" />
               </Button>
@@ -254,7 +267,7 @@ export default function ShopPage() {
           {/* Grid */}
           <div
             className={`grid gap-6 mb-8 ${
-              gridCols === 4
+              gridCols === 3
                 ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
                 : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
             }`}
