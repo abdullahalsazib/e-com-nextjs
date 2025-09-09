@@ -34,6 +34,7 @@ import { DialogContent, DialogTrigger } from "../ui/dialog";
 import { useCart } from "@/context/CartListContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { SearchIcon } from "lucide-react";
+import { ModeToggle } from "../Theme_Button";
 
 const NavberM = () => {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
@@ -42,6 +43,7 @@ const NavberM = () => {
   const [showScrollButton, setShowScrollButton] = useState<boolean>(false);
   const [wishlistOpen, setWishlistOpen] = useState<boolean>(false);
   const { isAuthenticated, user, logout, isLoading } = useAuth();
+  console.log("users: ", user);
 
   // cart and wishlist count
   const { cartItemCount } = useCart();
@@ -260,7 +262,7 @@ const NavberM = () => {
               </Popover>
             </div>
             <div className="grid md:grid-cols-3 grid-cols-4 gap-1">
-              {/* <ModeToggle /> */}
+              <ModeToggle />
               <Button
                 size={"icon"}
                 variant={"outline"}
