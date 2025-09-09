@@ -149,7 +149,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setUser(null);
       setDecodedRoles([]);
       const elapsed = Date.now() - startTime;
-      const minDelay = 5000; // 5s
+      const minDelay = 2000; // 2s
       const remaining = minDelay - elapsed;
 
       if (remaining > 0) {

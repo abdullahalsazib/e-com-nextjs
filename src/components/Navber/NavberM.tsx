@@ -11,7 +11,7 @@ import Topbar from "../Topbar/Topbar";
 import { useClickOutside } from "@/hooks/useClickOutSide";
 import CartListNew from "../CartListNew";
 import WishlistNew from "../WishlistNew";
-import { ModeToggle } from "../Theme_Button";
+// import { ModeToggle } from "../Theme_Button";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 import { useAuth } from "@/context/AuthContext";
@@ -33,6 +33,7 @@ import { Dialog } from "@radix-ui/react-dialog";
 import { DialogContent, DialogTrigger } from "../ui/dialog";
 import { useCart } from "@/context/CartListContext";
 import { useWishlist } from "@/context/WishlistContext";
+import { SearchIcon } from "lucide-react";
 
 const NavberM = () => {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
@@ -78,42 +79,46 @@ const NavberM = () => {
   return (
     <>
       <div
-        className={` border-b ${isScrolled
-          ? "fixed top-0 left-0 z-50 shadow-md w-full bg-white/10 backdrop-blur-md "
-          : " w-full bg-black"
-          }`}
+        className={` border-b ${
+          isScrolled
+            ? "fixed top-0 left-0 z-50 shadow-md w-full bg-white/10 backdrop-blur-md "
+            : " w-full bg-black"
+        }`}
       >
-        <div className={`${isScrolled ? "hidden" : "block"}`}>
+        {/* <div className={`${isScrolled ? "hidden" : "block"}`}>
           <Topbar />
-        </div>
+        </div> */}
 
-        <div className=" w-full py-1 px-3 lg:px-5 xl:px-[10%] flex flex-row items-center justify-between gap-3 lg:gap-4 bg-white dark:bg-black  lg:relative">
+        <div className=" w-full py-1 px-3 lg:px-5 xl:px-[10%] flex flex-row items-center justify-between gap-3 lg:gap-4 bg-black dark:bg-black  lg:relative">
           {/* left section */}
           {/* logo and brand */}
           <Link href={"/"}>
-            <div className=" uppercase text-black dark:text-white font-semibold flex items-center justify-center gap-2">
+            <div className=" uppercase text-white dark:text-white font-semibold flex items-center justify-center gap-2">
               <BsBoxSeamFill className=" text-2xl  " />
               <p>E-Shop</p>
             </div>
           </Link>
           {/* center section */}
-          <div className=" w-full hidden md:block flex-1">
+          <div className=" w-full hidden md:flex items-center justify-center flex-1">
             <input
               type="search"
               placeholder="Search for products, categories or brands..."
-              className=" w-full bg-transparent xl:py-2 xl:px-5 py-2 px-4 rounded-sm text-slate-600 dark:text-slate-300 border-[0.5] border-gray-200 dark:border-gray-800 focus:outline-1 focus:outline-gray-400 dark:focus:outline-gray-700 duration-300 text-sm"
+              className=" w-full rounded-bl-sm rounded-tl-sm bg-white/90 dark:bg-white/80  xl:py-2 xl:px-5 py-2 px-4  text-black/50 focus:text-black dark:text-black border- outline-none duration-300 text-sm"
             />
+            <button className=" bg-white/50 py-1.5 px-3 rounded-br-sm rounded-tr-sm hover:bg-blue-500 duration-300 active:scale-110">
+              <SearchIcon className=" text-white" />
+            </button>
           </div>
           {/* right section */}
           <div className=" py-3 flex items-center justify-center gap-1">
             <div className=" flex items-center justify-center flex-row gap-3">
               {!isAuthenticated && (
                 <div className=" hidden md:flex items-start justify-start flex-col -space-y-1">
-                  <p className=" text-xs text-gray-600 dark:text-gray-400">
+                  <p className=" text-xs text-gray-300 dark:text-gray-400">
                     {" "}
                     Sign in
                   </p>
-                  <p className=" font-bold text-black  dark:text-white text-sm">
+                  <p className=" font-bold text-white  dark:text-white text-sm">
                     Account
                   </p>
                 </div>
@@ -121,7 +126,11 @@ const NavberM = () => {
 
               <Popover>
                 <PopoverTrigger asChild>
-                  <Button size={"icon"} variant={"outline"}>
+                  <Button
+                    size={"icon"}
+                    variant={"outline"}
+                    className=" bg-transparent text-white border-0 hover:text-white active:scale-105 hover:border-1 hover:bg-transparent"
+                  >
                     <FaRegUser className="text-xl" />
                   </Button>
                 </PopoverTrigger>
@@ -162,7 +171,11 @@ const NavberM = () => {
                                 href={`/dashboard/${user?.name}`}
                                 className="block hover:text-blue-500 transition-colors"
                               >
-                                <Button variant={"link"} size={"sm"}>
+                                <Button
+                                  variant={"link"}
+                                  size={"sm"}
+                                  className=""
+                                >
                                   My Account
                                 </Button>
                               </Link>
@@ -247,11 +260,11 @@ const NavberM = () => {
               </Popover>
             </div>
             <div className="grid md:grid-cols-3 grid-cols-4 gap-1">
-              <ModeToggle />
+              {/* <ModeToggle /> */}
               <Button
                 size={"icon"}
                 variant={"outline"}
-                className="relative"
+                className=" relative bg-transparent text-white border-0 hover:text-white active:scale-105 hover:border-1 hover:bg-transparent"
                 onClick={() => setWishlistOpen(true)}
               >
                 <FaRegHeart className="text-xl" />
@@ -270,7 +283,7 @@ const NavberM = () => {
               <Button
                 size={"icon"}
                 variant={"outline"}
-                className=" relative"
+                className=" relative bg-transparent text-white border-0 hover:text-white active:scale-105 hover:border-1 hover:bg-transparent"
                 onClick={() => setCartOpen(true)}
               >
                 <FaCartShopping className=" text-xl" />
@@ -293,10 +306,11 @@ const NavberM = () => {
                 onClick={() => setMenuOpen(true)}
               >
                 <RiMenu2Fill
-                  className={` ${!menuOpen
-                    ? "rotate-y-180 duration-200"
-                    : "rotate-0 duration-200"
-                    }`}
+                  className={` ${
+                    !menuOpen
+                      ? "rotate-y-180 duration-200"
+                      : "rotate-0 duration-200"
+                  }`}
                 />
               </Button>
             </div>
@@ -305,13 +319,15 @@ const NavberM = () => {
           {/* wishlist for Desktop device */}
           <div
             ref={wishlistRef}
-            className={` w-full sm:w-[450px] ${!wishlistOpen
-              ? "translate-x-[100%] duration-300"
-              : `translate-x-0 duration-200 ${!isScrolled
-                ? "top-0 bg_blur_effect border-l"
-                : "  -top-[0%]  "
-              }`
-              } fixed h-screen right-0 top-0 z-50  px-5 py-10 border-l`}
+            className={` w-full sm:w-[450px] ${
+              !wishlistOpen
+                ? "translate-x-[100%] duration-300"
+                : `translate-x-0 duration-200 ${
+                    !isScrolled
+                      ? "top-0 bg_blur_effect border-l"
+                      : "  -top-[0%]  "
+                  }`
+            } fixed h-screen right-0 top-0 z-50  px-5 py-10 border-l`}
           >
             <div className=" w-full flex items-center justify-end">
               <Button
@@ -333,13 +349,15 @@ const NavberM = () => {
           {/* cart for Desktop device */}
           <div
             ref={cartRef}
-            className={` w-full sm:w-[450px] ${!cartOpen
-              ? "translate-x-[100%] duration-300"
-              : `translate-x-0 duration-200 border-l ${!isScrolled
-                ? "top-0 bg_blur_effect"
-                : "  -top-[0%] border-l  "
-              }`
-              } fixed h-screen right-0 top-0 z-50  px-5 py-10 border-l`}
+            className={` w-full sm:w-[450px] ${
+              !cartOpen
+                ? "translate-x-[100%] duration-300"
+                : `translate-x-0 duration-200 border-l ${
+                    !isScrolled
+                      ? "top-0 bg_blur_effect"
+                      : "  -top-[0%] border-l  "
+                  }`
+            } fixed h-screen right-0 top-0 z-50  px-5 py-10 border-l`}
           >
             <div className=" w-full flex items-center justify-end">
               <Button
@@ -360,11 +378,13 @@ const NavberM = () => {
 
           {/* mobile device navber  */}
           <div
-            className={`  z-50  right-0  md:hidden fixed py-5 px-3 ${!menuOpen
-              ? "-translate-x-[200%] duration-200 opacity-0"
-              : `translate-x-0 duration-400 w-[100%] h-screen fixed ${!isScrolled ? "top-0" : "  -top-[0%] bg-black "
-              }`
-              }
+            className={`  z-50  right-0  md:hidden fixed py-5 px-3 ${
+              !menuOpen
+                ? "-translate-x-[200%] duration-200 opacity-0"
+                : `translate-x-0 duration-400 w-[100%] h-screen fixed ${
+                    !isScrolled ? "top-0" : "  -top-[0%] bg-black "
+                  }`
+            }
                 `}
           >
             <div className=" z-[9999] w-full  flex items-center justify-end">
@@ -388,6 +408,10 @@ const NavberM = () => {
             </div>
             <div className=" -z-30 bg-white/60 dark:bg-white/5 backdrop-blur-lg w-full h-screen absolute left-0 top-0"></div>
           </div>
+        </div>
+
+        <div className={`${isScrolled ? "hidden" : "block "}`}>
+          <Topbar />
         </div>
       </div>
       {showScrollButton && (

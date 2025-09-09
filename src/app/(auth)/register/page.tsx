@@ -66,7 +66,7 @@ function InputForm() {
         // role: selectedRole, // pass the role
       });
       toast.success(data.message);
-      route.push("/");
+      route.push("/login");
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
         console.log(err);

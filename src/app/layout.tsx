@@ -32,13 +32,10 @@ export default function RootLayout({
       style={{ colorScheme: "light" }}
       suppressHydrationWarning
     >
-      <body
-        cz-shortcut-listen="true"
-        className={`  antialiased`}
-      >
+      <body cz-shortcut-listen="true" className={`  antialiased`}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >

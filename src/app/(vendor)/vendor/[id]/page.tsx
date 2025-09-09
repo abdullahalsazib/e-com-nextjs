@@ -128,7 +128,7 @@ const page: React.FC<ProductPageProps> = ({ params }) => {
         <div className=" w-ful">
           {switchActive === "store" && <Vendor_Store />}
           {switchActive === "profile" && <Vendor_Profile />}
-          {switchActive === "products" && <Vendor_Product />}
+          {switchActive === "products" && <Vendor_Product  vendorId={Number(id)}/>}
         </div>
       </div>
     </>
